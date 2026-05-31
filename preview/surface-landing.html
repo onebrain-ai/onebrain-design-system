@@ -152,6 +152,7 @@
   @media (max-width: 768px) {
     .nav__links { display: none; }
     .nav__cta { display: none; }
+    .nav__in .accent-dots { display: none; }
     .nav__toggle { display: inline-flex; }
     .grid-6 { grid-template-columns: repeat(2, 1fr); }
   }
@@ -183,6 +184,13 @@
       <a href="#waitlist">Pricing</a>
     </nav>
     <span class="nav__spacer"></span>
+    <!-- runtime accent setting — re-keys the landing page from the nav -->
+    <div class="accent-dots" role="radiogroup" aria-label="Accent color" data-accent-key="ob-accent" data-accent-default="cyan" style="margin-right:var(--space-5)">
+      <button class="accent-dot" type="button" role="radio" data-accent="cyan" style="--sw:var(--color-accent-2)" aria-label="Cyan accent" title="Cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      <button class="accent-dot" type="button" role="radio" data-accent="violet" style="--sw:var(--color-accent)" aria-label="Violet accent" title="Violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      <button class="accent-dot" type="button" role="radio" data-accent="magenta" style="--sw:var(--color-accent-3)" aria-label="Magenta accent" title="Magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      <button class="accent-dot" type="button" role="radio" data-accent="amber" style="--sw:var(--color-accent-4)" aria-label="Amber accent" title="Amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+    </div>
     <a href="#waitlist" class="btn-tech nav__cta">Request Access</a>
     <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navMobile">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -461,5 +469,6 @@
   }
 })();
 </script>
+<script src="accent-picker.js"></script>
 </body>
 </html>

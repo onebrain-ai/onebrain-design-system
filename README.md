@@ -68,7 +68,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ├── SKILL.md                   Agent-usable skill entry (YAML frontmatter)
 ├── PROVENANCE.md              Where every token/asset/rule came from
 ├── colors_and_type.css        Primitives + semantic intent tokens + @font-face bindings
-├── components.css             Reusable component layer (buttons, forms, nav, data, feedback, overlays)
+├── components.css             Reusable component layer (buttons, forms, nav, data, feedback, overlays, accent picker)
 ├── tokens/                    Cross-platform token export (DTCG source + generated outputs)
 │   ├── tokens.json            Single source of truth (W3C DTCG)
 │   ├── build.js               Zero-dependency generator (node tokens/build.js)
@@ -92,6 +92,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   └── src/                   Astro build-time libs (lib/, middleware.ts, api/)
 ├── preview/                   Reviewable cards (see Preview Manifest below)
 │   ├── _preview.css           Shared atmosphere: section orb + boot reveal (linked by every card)
+│   ├── accent-picker.js       Shared runtime accent picker — re-keys a surface from one `.accent-dots` control
 │   ├── components-forms.html      Full form kit (consumes components.css) — inputs, select, checkbox/radio/switch/range, validation, composer, buttons
 │   ├── components-feedback.html   Alerts, toasts, badges, progress, skeleton, spinner, empty-state, modal/tooltip/dropdown
 │   ├── components-data.html       Table, list, tabs, breadcrumb, pagination, avatars, stats, density toggle
@@ -119,6 +120,10 @@ demonstrates real, source-backed tokens/components/assets.
 Every card also links `preview/_preview.css` — the shared atmosphere layer that adds the
 blurred section **orb** (DESIGN.md §1) and a one-shot **boot reveal** (§7), both with a
 `prefers-reduced-motion` fallback. It layers depth/motion only; it never restyles a card.
+Every **SURFACE** card (mobile, dashboard, desktop, landing, deck) carries the runtime
+**accent picker** (`.accent-dots` + `preview/accent-picker.js`) at its natural settings home
+— click a swatch to re-key the whole surface; the choice persists and follows you across
+surfaces (shared `ob-accent` key). See DESIGN.md §2 "User-settable accent (runtime)".
 
 | Preview card | Inspect | Demonstrates (source-backed) |
 |---|---|---|

@@ -201,7 +201,14 @@ The dark-first product surfaces are untouched.
   focus, streak pips, glows. Offer only the four brand accents (cyan / violet / magenta /
   amber) so any choice stays on-palette, and persist it (e.g. `localStorage`). This is the
   one legitimate place a solid-accent *fill* appears — the picker swatch, which **is** the
-  color. Reference implementation: `preview/surface-mobile.html` → "You / Appearance".
+  color. Shipped as a reusable component: the `.accent-dots` chrome strip (`components.css`)
+  driven by the shared, dependency-free `preview/accent-picker.js` (per-group config via
+  `data-accent-target` / `data-accent-key` / `data-accent-default`; the default key
+  `ob-accent` is shared so a chosen accent follows the user across surfaces). It is wired into
+  every surface at its natural settings home — the mobile **You / Appearance** screen, the
+  dashboard top bar, the desktop sidebar, the landing nav, and the deck presenter chrome —
+  and re-keys `<html>` (overriding `:root`, so even fixed chrome follows). Reference:
+  `preview/surface-mobile.html` → "You / Appearance".
 
 ---
 

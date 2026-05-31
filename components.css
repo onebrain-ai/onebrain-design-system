@@ -337,12 +337,39 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
 .dropdown .sep { height: 1px; background: var(--border-subtle); margin: 6px 0; }
 
 /* ---------------------------------------------------------------------------
+   7.5 ACCENT PICKER — user-settable runtime accent (chrome strip).
+   A compact row of the four brand-accent swatches. Selecting one re-keys the
+   surface from --section-accent / --action-primary / --action-primary-weak /
+   --grad-button (driven by preview/accent-picker.js), so eyebrows, active tabs,
+   CTAs, chips, focus rings and glows all follow one source of truth. Each dot is
+   the ONE legitimate solid-accent fill in the system — it IS the color. Offer
+   only the four brand accents so any choice stays on-palette. See DESIGN.md §2.
+   --------------------------------------------------------------------------- */
+.accent-dots { display: inline-flex; align-items: center; gap: 7px; }
+.accent-dots .accent-dot {
+  appearance: none; -webkit-appearance: none; cursor: pointer; flex: 0 0 auto;
+  width: 18px; height: 18px; padding: 0; border: 1px solid var(--border-strong);
+  background: var(--sw); display: grid; place-content: center; position: relative;
+  transition: box-shadow var(--dur-fast) ease, transform var(--dur-fast) ease;
+}
+.accent-dots .accent-dot svg {
+  width: 11px; height: 11px; color: #050507; opacity: 0; transform: scale(0.3);
+  transition: opacity var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out-expo);
+}
+.accent-dots .accent-dot:hover { transform: translateY(-1px); box-shadow: 0 0 10px color-mix(in srgb, var(--sw) 55%, transparent); }
+.accent-dots .accent-dot.is-sel { box-shadow: 0 0 0 1px var(--bg-base), 0 0 0 3px var(--sw), 0 0 14px color-mix(in srgb, var(--sw) 40%, transparent); }
+.accent-dots .accent-dot.is-sel svg { opacity: 1; transform: scale(1); }
+.accent-dots .accent-dot:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+/* Optional mono label preceding the dots in dense chrome. */
+.accent-dots .accent-lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-disabled); margin-right: 3px; }
+
+/* ---------------------------------------------------------------------------
    8. REDUCED MOTION — honor the user preference everywhere.
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .cyber-dot.is-pulse, .skeleton, .spinner { animation: none; }
   .btn-tech, .btn-ghost, .btn-quiet, .btn-danger, .cyber-input, .cyber-card,
   .cyber-tabs button::after, .composer, .modal, .drawer, .toast, .tooltip .tip,
-  .progress .bar { transition: none; }
+  .progress .bar, .accent-dots .accent-dot, .accent-dots .accent-dot svg { transition: none; }
   .modal, .drawer.drawer-left, .drawer { transform: none; }
 }
