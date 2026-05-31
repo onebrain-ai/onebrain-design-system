@@ -163,7 +163,8 @@ const tokens = {
       "pill": "999px"
     },
     "clipPath": {
-      "tech": "polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%)"
+      "cut": "12px",
+      "tech": "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)"
     },
     "shadow": {
       "glowCta": "0 0 14px rgba(255,45,146,.5)",
@@ -356,7 +357,8 @@ const tokens = {
       "pill": "999px"
     },
     "clipPath": {
-      "tech": "polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%)"
+      "cut": "12px",
+      "tech": "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)"
     },
     "shadow": {
       "glowCta": "0 0 14px rgba(255,45,146,.5)",

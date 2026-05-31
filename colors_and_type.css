@@ -237,8 +237,15 @@
   --radius-xs:   2px;     /* inline code, tiny chips                    */
   --radius-sm:   4px;     /* skip link, small controls                 */
   --radius-pill: 999px;   /* counter, status dots                      */
-  /* Angled "tech" corner cut used by .btn-tech (source clip-path). */
-  --clip-tech: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+  /* Angled "tech" corner cut (source: .btn-tech clip-path). Corners are a
+     FIXED size (--clip-cut), NOT percentages — percentage cuts balloon into
+     huge diagonal wedges as a button widens (a long full-width CTA got
+     ~10%-of-width cuts that read as a clumsy outline). Fixed cuts stay an even,
+     tasteful 12px at ANY width. Every .btn-tech / framed CTA / composer-send in
+     the system references this ONE token, so the shape is identical everywhere
+     and width-independent. */
+  --clip-cut:  12px;
+  --clip-tech: polygon(var(--clip-cut) 0, 100% 0, 100% calc(100% - var(--clip-cut)), calc(100% - var(--clip-cut)) 100%, 0 100%, 0 var(--clip-cut));
 
   /* -- Borders ------------------------------------------------------------- */
   --border-hairline: 1px solid var(--color-border);

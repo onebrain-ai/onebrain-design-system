@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>OneBrain — Buttons &amp; Pills</title>
 <link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
 <link rel="stylesheet" href="_preview.css" />
 <style>
   body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
@@ -21,23 +22,9 @@
   .rowwrap{ display:flex; flex-wrap:wrap; gap:18px 22px; align-items:center; }
   .hint{ font-family:var(--font-mono); font-size:10.5px; color:var(--color-muted); margin-top:10px; letter-spacing:.05em; }
 
-  /* primary CTA — source .btn-tech */
-  .btn-tech{ position:relative; display:inline-block; clip-path:var(--clip-tech); background:var(--grad-button);
-    padding:1.5px; transition:box-shadow .2s ease; border:0; cursor:pointer; }
-  .btn-tech-inner{ clip-path:var(--clip-tech); background:var(--color-bg); padding:12px 26px; transition:background .2s ease;
-    font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#fff; font-size:.85rem; }
-  .btn-tech:hover{ box-shadow:var(--glow-cta); }
-  .btn-tech:hover .btn-tech-inner{ background:#fff; color:#0a0a12; }
-
-  /* secondary / ghost */
-  .btn-ghost{ font-family:var(--font-mono); font-size:.75rem; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--color-accent-2); background:transparent; border:1px solid color-mix(in srgb,var(--color-accent-2) 40%,transparent);
-    padding:12px 22px; cursor:pointer; transition:border-color .2s,color .2s,box-shadow .2s; }
-  .btn-ghost:hover{ border-color:var(--color-accent-2); color:#fff; box-shadow:0 0 14px color-mix(in srgb,var(--color-accent-2) 35%,transparent); }
-  .btn-quiet{ font-family:var(--font-mono); font-size:.75rem; letter-spacing:.16em; text-transform:uppercase; color:var(--color-muted);
-    background:var(--color-surface); border:1px solid var(--color-border); padding:12px 20px; cursor:pointer; transition:.2s; }
-  .btn-quiet:hover{ color:var(--color-text); border-color:var(--color-border); background:var(--color-surface-2); }
-  .btn-quiet[disabled]{ opacity:.4; cursor:not-allowed; }
+  /* .btn-tech (primary CTA), .btn-ghost (secondary) and .btn-quiet now come
+     from the shared ../components.css — no per-file copy, so the fixed-size
+     corner-cut + states stay identical to every other surface. */
 
   /* nav link with [ ] bracket reveal — source .nav-glass a */
   .nav{ display:flex; gap:28px; align-items:center; background:rgba(2,2,4,.92); border:1px solid var(--color-border); padding:14px 22px; }

@@ -107,7 +107,8 @@
   --ob-radius-xs: 2px;
   --ob-radius-sm: 4px;
   --ob-radius-pill: 999px;
-  --ob-clipPath-tech: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+  --ob-clipPath-cut: 12px;
+  --ob-clipPath-tech: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   --ob-shadow-glowCta: 0 0 14px rgba(255,45,146,.5);
   --ob-shadow-glowCyan: 0 0 22px rgba(0,243,255,.55);
   --ob-shadow-shadowOverlay: 0 24px 60px rgba(0,0,0,.55);

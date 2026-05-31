@@ -284,7 +284,11 @@ Verify no horizontal scroll at 360 / 600 / 768 / 1024 / 1280 / 1440 / 1920.
 This is a cyber system: corners are **cut, not rounded**.
 `--radius-0` (0) is the default for panels/cards. `--radius-xs` (2px) for inline code/chips,
 `--radius-sm` (4px) for small controls, `--radius-pill` (999px) only for the nav counter
-and status dots. Framed CTAs use the angled `--clip-tech` clip-path instead of any radius.
+and status dots. Framed CTAs use the angled `--clip-tech` clip-path instead of any radius —
+its corners are a **fixed size** (`--clip-cut`, 12px), not percentages, so the cut stays an even
+hairline at ANY button width (a percentage cut balloons into a huge diagonal wedge as a button
+widens). Every `.btn-tech` / framed CTA / composer-send references this one token, so the
+corner-cut shape is identical everywhere and width-independent.
 
 ### Elevation / shadow
 There is essentially **no soft drop-shadow elevation**. "Raised" reads as either a hairline
