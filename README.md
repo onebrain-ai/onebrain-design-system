@@ -5,6 +5,10 @@ product code. It captures the futuristic, minimal, professional **cyberpunk / Tr
 "operator console"** look so any future project can generate OneBrain-branded artifacts
 that are instantly recognizable as a serious AI developer tool.
 
+**Live preview** (rendered, no local server needed): **<https://onebrain-ai.github.io/onebrain-design-system/>**
+— the launcher (`index.html`) opens every surface, preview card, and doc directly in the
+browser via GitHub Pages.
+
 > **Visual direction:** dark-first near-black canvas, four neon signal accents, italic
 > uppercase display type, monospace HUD, corner-cut geometry, neon-glow elevation.
 > Tokens in [`colors_and_type.css`](colors_and_type.css) · rules in [`DESIGN.md`](DESIGN.md)
@@ -100,6 +104,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ├── preview/                   Reviewable cards (see Preview Manifest below)
 │   ├── _preview.css           Shared atmosphere: section orb + boot reveal (linked by every card)
 │   ├── accent-picker.js       Shared runtime accent picker — re-keys a surface from one `.accent-dots` control
+│   ├── _home.js               Shared back-to-Index pill injected on every sub-page (mirrors docs.html)
 │   ├── components-forms.html      Full form kit (consumes components.css) — inputs, select, checkbox/radio/switch/range, validation, composer, buttons
 │   ├── components-feedback.html   Alerts, toasts, badges, progress, skeleton, spinner, empty-state, modal/tooltip/dropdown
 │   ├── components-data.html       Table, list, tabs, breadcrumb, pagination, avatars, stats, density toggle
@@ -127,6 +132,9 @@ demonstrates real, source-backed tokens/components/assets.
 Every card also links `preview/_preview.css` — the shared atmosphere layer that adds the
 blurred section **orb** (DESIGN.md §1) and a one-shot **boot reveal** (§7), both with a
 `prefers-reduced-motion` fallback. It layers depth/motion only; it never restyles a card.
+Each card also loads `preview/_home.js`, which injects one fixed bottom-left **Index** pill
+linking back to the launcher (`index.html`) — the same single-source affordance on every
+sub-page, mirroring the docs reader's back button (`ui_kits/app/` loads it too).
 Every **SURFACE** card (mobile, dashboard, desktop, landing, deck) carries the runtime
 **accent picker** (`.accent-dots` + `preview/accent-picker.js`) at its natural settings home
 — click a swatch to re-key the whole surface; the choice persists and follows you across
