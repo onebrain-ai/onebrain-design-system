@@ -193,8 +193,9 @@
     .tab.is-active { color: var(--section-accent); }
     .tab.is-active svg { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--section-accent) 60%, transparent)); }
     /* center capture (+) — corner-cut "tech" action tile, mirrors .btn-tech:
-       1.5px gradient frame + dark elevated inner + accent glyph + float glow.
-       Accent is expressed as frame/glyph/glow (per §2), never a solid fill. */
+       1.5px gradient frame + dark elevated inner + WHITE glyph + accent float glow.
+       Accent is the frame + glow (per §2); the glyph stays neutral white like
+       .btn-tech text, never a solid fill. */
     .tab-center { position: relative; }
     .tab-center .plus-btn {
       width: 46px; height: 46px; display: grid; place-content: center; margin-top: -10px;
@@ -206,14 +207,13 @@
     .tab-center .plus-btn > span {
       display: grid; place-content: center; width: 100%; height: 100%;
       clip-path: polygon(22% 0, 100% 0, 100% 78%, 78% 100%, 0 100%, 0 22%);
-      background: var(--bg-elevated); color: var(--section-accent);
+      background: var(--bg-elevated); color: var(--color-white);
     }
     .tab-center .plus-btn span svg { width: 20px; height: 20px;
       filter: drop-shadow(0 0 4px color-mix(in srgb, var(--section-accent) 65%, transparent)); }
     .tab-center:hover .plus-btn { transform: translateY(-1px);
       box-shadow: 0 7px 20px color-mix(in srgb, var(--section-accent) 34%, transparent); }
     .tab-center.is-active .plus-btn { box-shadow: var(--glow-cta); }
-    .tab-center.is-active .plus-btn > span { color: var(--color-white); }
 
     /* Home indicator */
     .home-bar { flex: none; display: grid; place-items: center; padding: 7px 0 9px; background: var(--color-bg-deep); }
