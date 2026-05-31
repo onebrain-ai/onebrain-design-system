@@ -67,7 +67,7 @@ surfaces, decks, or diagrams so the output instantly reads as "futuristic, AI, O
 - **Domain evidence:** `onebrain-ai/onebrain` plugin — vault structure (`00-inbox` …
   `07-logs`), skill names, 5 sub-agents, the Harness OS stack, the co-evolution loop.
 - Both repos read via the bounded `github-design-context` intake (this-device git-clone);
-  snapshots in `context/github/`.
+  the raw snapshots were pruned post-build and are re-pullable via the same intake command.
 
 ## When to use this skill
 

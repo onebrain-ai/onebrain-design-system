@@ -1,6 +1,0 @@
-{
-  "qmd": {
-    "command": "qmd",
-    "args": ["mcp"]
-  }
-}

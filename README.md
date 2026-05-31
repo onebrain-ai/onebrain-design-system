@@ -52,10 +52,10 @@ format. (Product Context for the design system: the surfaces below are what it d
 3. **Branded technical diagrams** — architecture stack, co-evolution loop, vault hub.
 
 ### Source references
-| Source | What it provided | Evidence |
+| Source | What it provided | Read via |
 |---|---|---|
-| [`onebrain-ai/website`](https://github.com/onebrain-ai/website) | The visual system — `src/styles/global.css` tokens + component classes, brand SVGs, icons | `context/github/onebrain-ai-website.md` + `…/files/` |
-| [`onebrain-ai/onebrain`](https://github.com/onebrain-ai/onebrain) | The product domain — skills, sub-agents, vault structure, version, voice | `context/github/onebrain-ai-onebrain.md` + `…/files/` |
+| [`onebrain-ai/website`](https://github.com/onebrain-ai/website) | The visual system — `src/styles/global.css` tokens + component classes, brand SVGs, icons | bounded git-clone intake (re-pullable) |
+| [`onebrain-ai/onebrain`](https://github.com/onebrain-ai/onebrain) | The product domain — skills, sub-agents, vault structure, version, voice | bounded git-clone intake (re-pullable) |
 | Uploaded fonts | Chakra Petch ×10, JetBrains Mono ×2 | `fonts/` |
 
 Both repos were read with the bounded `github-design-context` intake (this-device
@@ -97,7 +97,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   ├── favicon.ico            rebuilt from brain.svg (source had a framework default)
 │   └── logo.svg               byte-for-byte from source
 ├── fonts/                     12 brand font files, bound in colors_and_type.css
-├── source_examples/           High-signal originals (outside context/)
+├── source_examples/           High-signal originals (lifted from the raw intake)
 │   ├── styles/global.css      The real theme + component CSS
 │   ├── agents/                inbox-classifier.md · task-extractor.md
 │   └── src/                   Astro build-time libs (lib/, middleware.ts, api/)
@@ -115,12 +115,15 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   ├── surface-mobile.html        SURFACE: iOS app flow (Vault · Capture · Skills · You/Appearance) — live accent-color setting
 │   ├── surface-desktop.html       SURFACE: desktop operator console (three-pane + ⌘K palette)
 │   └── surface-landing.html       SURFACE: marketing site (hero, features, harness-OS stack, waitlist)
-├── ui_kits/app/               Runnable operator-console UI kit (React + Babel)
-│   ├── index.html
-│   ├── README.md
-│   └── components/            App · Sidebar · AssistantsList · ChatArea · MessageBubble · InputBar
-└── context/                   Raw intake evidence (notes + file snapshots)
+└── ui_kits/app/               Runnable operator-console UI kit (React + Babel)
+    ├── index.html
+    ├── README.md
+    └── components/            App · Sidebar · AssistantsList · ChatArea · MessageBubble · InputBar
 ```
+
+> The raw intake evidence (formerly `context/`) was pruned after extraction to keep the
+> package lean — re-pull it via the bounded `github-design-context` intake if a future
+> audit needs the originals. See [`PROVENANCE.md`](PROVENANCE.md).
 
 ---
 

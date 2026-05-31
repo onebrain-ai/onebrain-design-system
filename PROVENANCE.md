@@ -6,15 +6,20 @@ can trust and re-verify the system.
 
 ## Sources
 
-| Source | Type | Read method | Evidence note |
-|---|---|---|---|
-| `https://github.com/onebrain-ai/website` | GitHub repo (marketing site, Astro + Tailwind v4) | **git-clone** (this-device) | `context/github/onebrain-ai-website.md` |
-| `https://github.com/onebrain-ai/onebrain` | GitHub repo (the product: AI-harness plugin, 29+ skills) | **git-clone** (this-device) | `context/github/onebrain-ai-onebrain.md` |
-| ChakraPetch (10 files) + JetBrainsMono (2 files) | Uploaded brand fonts | provided at setup | uploaded as `assets_*.ttf` at root → canonical home `fonts/`; the redundant root copies were removed in a later cleanup, `fonts/` is the single source bound in `colors_and_type.css` |
+| Source | Type | Read method |
+|---|---|---|
+| `https://github.com/onebrain-ai/website` | GitHub repo (marketing site, Astro + Tailwind v4) | **git-clone** (this-device) |
+| `https://github.com/onebrain-ai/onebrain` | GitHub repo (the product: AI-harness plugin, 29+ skills) | **git-clone** (this-device) |
+| ChakraPetch (10 files) + JetBrainsMono (2 files) | Uploaded brand fonts | provided at setup; canonical home `fonts/` (bound in `colors_and_type.css`) |
 
 Both repositories were read with the bounded `github-design-context` intake command
 (this-device `git clone`), per the source-context runbook — not via direct connector
-tree/content/raw calls. Snapshots live under `context/github/<repo>/files/`.
+tree/content/raw calls. The raw intake snapshots (formerly under
+`context/github/<repo>/files/`) were **removed after extraction** to keep the package
+lean — re-run the same intake command to regenerate them if a future audit needs the
+originals. Everything the design system actually depends on was lifted into the package
+itself: tokens (`colors_and_type.css`, `tokens/`), `source_examples/`, `assets/`,
+`build/`, and `fonts/`.
 
 ## Color — every value is verbatim from source
 
@@ -77,20 +82,19 @@ ring are all lifted from that file.
 
 - `assets/brain.svg`, `assets/apple-touch-icon.png`,
   `assets/diagrams/{harness-os-stack,coevo-loop,vault-hub}.svg` — copied byte-for-byte
-  from `context/github/onebrain-ai-website/files/public/…`.
+  from the `onebrain-ai/website` repo's `public/…` (via the intake snapshot).
 - `build/icon.png`, `build/logo.svg` — the same runtime icons preserved with
   runtime-style filenames (byte-for-byte; not redrawn or re-encoded).
 - `assets/favicon.ico` + `build/favicon.ico` — **rebuilt from `brain.svg`**, NOT
-  byte-for-byte. The captured source favicon
-  (`context/github/onebrain-ai-website/files/public/favicon.ico`, 655 B, 32×32 PNG)
-  is the Astro framework's default starter mark (white "A" on a dark square) — the
-  source site never replaced it. Per explicit user feedback ("favicon need to sync
-  with brand logo") it was regenerated from the real brand logo: the gradient brain
-  mark centered on the `#050507` brand canvas, exported as a true multi-size ICO
-  (16·32·48, 32-bit). The original Astro favicon is retained untouched under
-  `context/…/files/public/favicon.ico` as captured evidence.
+  byte-for-byte. The source repo's favicon (655 B, 32×32 PNG) is the Astro framework's
+  default starter mark (white "A" on a dark square) — the source site never replaced
+  it. Per explicit user feedback ("favicon need to sync with brand logo") it was
+  regenerated from the real brand logo: the gradient brain mark centered on the
+  `#050507` brand canvas, exported as a true multi-size ICO (16·32·48, 32-bit). The
+  original Astro default is recoverable from `onebrain-ai/website` `public/favicon.ico`
+  if ever needed.
 - `fonts/*.ttf` — the 12 uploaded brand font files, clean-named.
-- `source_examples/` — high-signal originals kept outside `context/`:
+- `source_examples/` — high-signal originals lifted out of the raw intake into the package:
   `styles/global.css` (the full theme + component CSS), `agents/inbox-classifier.md`,
   `agents/task-extractor.md`, and the Astro build-time libs materialized by intake
   (`src/lib/*`, `src/middleware.ts`, `src/pages/api/waitlist.ts`).
