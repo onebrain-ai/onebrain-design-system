@@ -23,14 +23,22 @@
 /* ---------------------------------------------------------------------------
    1. BUTTONS
    --------------------------------------------------------------------------- */
-/* Primary CTA — corner-cut gradient frame with a dark inner panel (source). */
+/* Primary CTA — corner-cut gradient frame with a dark inner panel (source).
+   The corner cut is a FIXED size (--btn-cut), NOT --clip-tech's percentages:
+   percentage corners balloon into huge diagonal wedges as the button widens
+   (a long "Request Access" submit got ~10%-of-width cuts that read as a clumsy
+   outline). Fixed cuts keep an even ~1.5px hairline frame with tasteful 12px
+   corners at ANY width. --btn-cut + --clip-btn inherit into .btn-tech-inner,
+   so the gradient frame and the dark panel always share one corner geometry. */
 .btn-tech {
+  --btn-cut: 12px;
+  --clip-btn: polygon(var(--btn-cut) 0, 100% 0, 100% calc(100% - var(--btn-cut)), calc(100% - var(--btn-cut)) 100%, 0 100%, 0 var(--btn-cut));
   position: relative; display: inline-block; border: 0; cursor: pointer;
-  clip-path: var(--clip-tech); background: var(--grad-button); padding: 1.5px;
+  clip-path: var(--clip-btn); background: var(--grad-button); padding: 1.5px;
   transition: box-shadow var(--dur-fast) ease;
 }
 .btn-tech-inner {
-  display: block; clip-path: var(--clip-tech); background: var(--bg-base);
+  display: block; clip-path: var(--clip-btn); background: var(--bg-base);
   padding: 12px 26px; color: var(--color-white);
   font-family: var(--font-display); font-style: italic; font-weight: var(--weight-bold);
   text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.85rem;
@@ -65,18 +73,10 @@
 .btn-tech.btn-sm, .btn-sm.btn-tech { padding: 1.5px; }
 .btn-sm.btn-tech .btn-tech-inner, .btn-tech.btn-sm .btn-tech-inner { padding: 8px 18px; font-size: 0.78rem; }
 .btn-block { display: flex; width: 100%; justify-content: center; }
-/* Full-width tech CTA: --clip-tech's PERCENTAGE corner-cuts balloon into
-   oversized gradient wedges as the button widens (a 390px block button gets
-   ~39px corner triangles — reads as a huge clumsy outline). Pin block CTAs to
-   FIXED-size cuts and let the inner panel fill the width, so the gradient stays
-   an even ~1.5px hairline frame with tasteful 12px corners at any width. */
-.btn-tech.btn-block {
-  --clip-block: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
-  clip-path: var(--clip-block);
-}
-.btn-tech.btn-block .btn-tech-inner {
-  clip-path: var(--clip-block); flex: 1; width: 100%; text-align: center;
-}
+/* Full-width tech CTA: base .btn-tech now carries fixed-size corner cuts, so
+   block only needs to stretch the inner panel to fill the width — the gradient
+   stays an even hairline frame with the same tasteful corners at any width. */
+.btn-tech.btn-block .btn-tech-inner { flex: 1; width: 100%; text-align: center; }
 
 /* ---------------------------------------------------------------------------
    2. PILLS · BADGES · TAGS
