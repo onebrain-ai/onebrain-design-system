@@ -38,7 +38,8 @@ surfaces, decks, or diagrams so the output instantly reads as "futuristic, AI, O
   desktop / mobile / RN surfaces; web stays on `colors_and_type.css`. See `tokens/README.md`.
 - **`PROVENANCE.md`** — exactly where every token/asset/rule came from + honest gaps.
 - **`preview/`** — focused, reviewable HTML cards (color, type, spacing, components,
-  brand assets) for the Design System tab.
+  brand assets, two hero variants, and five full **surface scaffolds** —
+  dashboard, slide deck, mobile, desktop, landing) for the Design System tab.
 - **`assets/`** — preserved brand marks: `brain.svg` logo, `apple-touch-icon.png`,
   `favicon.ico` (rebuilt from `brain.svg` — see below), and three live architecture
   diagrams under `assets/diagrams/`.
