@@ -1,4 +1,4 @@
-# OneBrain Design System
+# OneBrain
 
 > Category: Custom · Surface: web (dark-first) · Aesthetic: cyberpunk / Tron "operator console"
 > Source of truth for color, type, spacing, layout, components, motion, voice.

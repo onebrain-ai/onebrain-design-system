@@ -16,6 +16,10 @@ uploads/
 # --- Open Design host machinery (not part of the portable package) ---
 .od-skills/
 *.artifact.json
+# OD design-system registry metadata (display name / status / local revisions) —
+# local-only; the portable package is defined by DESIGN.md + tokens, not this.
+metadata.json
+revisions/
 
 # --- Stray reference / marked-up screenshots dropped at project root (not referenced) ---
 mpt*-*.jpg

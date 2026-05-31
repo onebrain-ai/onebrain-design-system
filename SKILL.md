@@ -1,5 +1,5 @@
 ---
-name: onebrain-is-an-ai-design-system
+name: onebrain-design-system
 description: >-
   Futuristic cyberpunk / Tron "operator console" design system extracted from the
   OneBrain product (onebrain-ai/website + onebrain-ai/onebrain). Use when generating
