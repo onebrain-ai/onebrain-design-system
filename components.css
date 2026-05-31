@@ -65,6 +65,18 @@
 .btn-tech.btn-sm, .btn-sm.btn-tech { padding: 1.5px; }
 .btn-sm.btn-tech .btn-tech-inner, .btn-tech.btn-sm .btn-tech-inner { padding: 8px 18px; font-size: 0.78rem; }
 .btn-block { display: flex; width: 100%; justify-content: center; }
+/* Full-width tech CTA: --clip-tech's PERCENTAGE corner-cuts balloon into
+   oversized gradient wedges as the button widens (a 390px block button gets
+   ~39px corner triangles — reads as a huge clumsy outline). Pin block CTAs to
+   FIXED-size cuts and let the inner panel fill the width, so the gradient stays
+   an even ~1.5px hairline frame with tasteful 12px corners at any width. */
+.btn-tech.btn-block {
+  --clip-block: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  clip-path: var(--clip-block);
+}
+.btn-tech.btn-block .btn-tech-inner {
+  clip-path: var(--clip-block); flex: 1; width: 100%; text-align: center;
+}
 
 /* ---------------------------------------------------------------------------
    2. PILLS · BADGES · TAGS

@@ -17,7 +17,11 @@ uploads/
 .od-skills/
 *.artifact.json
 
-# --- Stray reference images dropped at project root (not referenced) ---
+# --- Stray reference / marked-up screenshots dropped at project root (not referenced) ---
 mpt*-*.jpg
 mpt*-*.png
 mpt*-*.jpeg
+# OD preview-comment screenshots use a rolling timestamp prefix (mpt*, mpu*, …)
+*-drawing-*.png
+*-drawing-*.jpg
+*-drawing-*.jpeg

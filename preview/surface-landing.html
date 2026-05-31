@@ -76,7 +76,9 @@
   .nav__mobile a { display: block; padding: 14px var(--space-5); font-family: var(--font-mono);
     font-size: var(--text-sm); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted);
     border-bottom: 1px solid var(--color-border); }
-  .nav__mobile .btn-tech { display: block; margin: var(--space-4) var(--space-5); }
+  /* keep the gradient frame thin: the generic .nav__mobile a padding (14px 24px)
+     would otherwise inflate btn-tech's 1.5px frame into a fat band. */
+  .nav__mobile .btn-tech { display: block; width: auto; padding: 1.5px; margin: var(--space-4) var(--space-5); }
   .nav__mobile .btn-tech .btn-tech-inner { text-align: center; }
 
   /* ============================ HERO ============================ */
