@@ -143,6 +143,27 @@ from `global.css @theme`. Tokens: see `colors_and_type.css`.
 `--color-loop` `#a8d000` / `#d4ff45` (co-evolution loop). Use these only in
 architecture/diagram contexts so each subsystem keeps its identity.
 
+### Data-viz / chart palette
+For dashboards + analytics, `colors_and_type.css` ships a chart scale. The six
+**categorical** series (`--chart-1` … `--chart-6`) alias the accents + diagram colors,
+so they inherit the light re-ink automatically; the chrome stays low-contrast so the
+data is the signal, not the frame.
+
+| Token | Aliases | Use |
+|---|---|---|
+| `--chart-1` | cyan `accent-2` | primary series |
+| `--chart-2` | violet `accent` | second series |
+| `--chart-3` | magenta `accent-3` | third series |
+| `--chart-4` | amber `accent-4` | fourth series |
+| `--chart-5` | lime `success` | fifth series |
+| `--chart-6` | vault `#a78bfa` (light `#6d28d9`) | sixth series |
+| `--chart-grid` | `rgba(255,255,255,.06)` | gridlines |
+| `--chart-axis` | `--color-muted` | axis labels / ticks |
+| `--chart-track` | `rgba(255,255,255,.05)` | bar track / sequential base |
+
+Use 1–3 series typically; the full six only for genuinely categorical data. Build charts
+as inline SVG/CSS keyed to these tokens — never a chart library's default colors.
+
 ### Light-theme accents (re-inked for white ground)
 The neon accents above are tuned for the near-black canvas. On the light theme
 (`[data-theme="light"]`, for spec sheets / print) electric cyan and amber wash out
@@ -226,6 +247,23 @@ generous around hero/headlines, tight inside data cards.
 - **Nav height / scroll-padding**: `64px`.
 - **Card grid gap / stack rhythm**: `18–24px`.
 
+### Breakpoints (reference scale)
+One canonical scale every surface shares (mirrored as `--bp-*` vars + a `breakpoint`
+group in `tokens/`). CSS `@media` cannot read custom properties, so author media queries
+with these literals; the vars exist for JS / native + documentation.
+
+| Token | Value | Surface |
+|---|---|---|
+| `--bp-sm` | `360px` | mobile compact |
+| `--bp-md` | `600px` | large phone / foldable |
+| `--bp-lg` | `768px` | tablet portrait |
+| `--bp-xl` | `1024px` | tablet landscape / small laptop — console multi-col threshold |
+| `--bp-2xl` | `1280px` | laptop / content shell |
+| `--bp-wide` | `1440px` | desktop |
+| `--bp-ultra` | `1920px` | wide |
+
+Verify no horizontal scroll at 360 / 600 / 768 / 1024 / 1280 / 1440 / 1920.
+
 ### Radius — deliberately sharp
 This is a cyber system: corners are **cut, not rounded**.
 `--radius-0` (0) is the default for panels/cards. `--radius-xs` (2px) for inline code/chips,
@@ -303,6 +341,9 @@ previews, and the UI kit reproduce them.
   (`success` lime, `info` cyan, `warning` amber, `danger` magenta).
 - **Diagrams** are first-class brand components (`assets/diagrams/*.svg`): layered stack,
   three-step loop, hub-and-spoke — each keyed to its domain accent.
+- **Icons.** Inline SVG only, in the Lucide line style — `viewBox="0 0 24 24"`,
+  `fill="none" stroke="currentColor" stroke-width="1.75"`, round caps/joins, sized
+  16 / 20 / 24. `currentColor` so they inherit text/accent color. Never emoji as UI icons.
 
 ---
 

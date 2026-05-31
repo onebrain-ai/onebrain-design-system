@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Operator Dashboard</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<style>
+  /* ---- Surface accent: cyan is the default --section-accent; we keep it. ---- */
+  *{ box-sizing: border-box; }
+  body{ margin:0; min-height:100vh; }
+
+  /* HUD lattice backdrop (mirrors preview surfaces) */
+  .grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size); }
+
+  .shell{ display:grid; grid-template-columns:248px 1fr; min-height:100vh; }
+
+  /* ----------------------------------------------------------------- SIDEBAR */
+  .side{ position:sticky; top:0; align-self:start; height:100vh; display:flex; flex-direction:column;
+    background:var(--bg-sunken); border-right:1px solid var(--border-default); }
+  .side-brand{ display:flex; align-items:center; gap:12px; padding:18px 18px 16px; border-bottom:1px solid var(--border-subtle); }
+  .side-brand img{ width:30px; height:30px; filter:var(--glow-brand); flex:none; }
+  .side-brand .wm{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:var(--tracking-tight); font-size:1.15rem; color:var(--color-white); line-height:1; }
+  .side-brand .ver{ display:block; font-family:var(--font-mono); font-size:9px; letter-spacing:.24em;
+    color:var(--text-disabled); margin-top:4px; }
+
+  .nav-kicker{ font-family:var(--font-mono); font-size:9px; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--text-disabled); padding:18px 18px 8px; }
+  .navlist{ list-style:none; margin:0; padding:0 10px; flex:1; overflow-y:auto; }
+  .navlist a{ display:flex; align-items:center; gap:11px; padding:9px 10px; text-decoration:none;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; color:var(--text-secondary);
+    border-left:2px solid transparent; transition:color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast); }
+  .navlist a svg{ width:16px; height:16px; flex:none; color:var(--text-disabled); transition:color var(--dur-fast); }
+  .navlist a .nlabel{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .navlist a .ncount{ font-variant-numeric:tabular-nums; font-size:11px; color:var(--text-disabled); letter-spacing:.04em; }
+  .navlist a:hover{ color:var(--text-primary); background:var(--action-primary-weak); }
+  .navlist a:hover svg{ color:var(--section-accent); }
+  .navlist a.is-active{ color:var(--color-white); background:var(--action-primary-weak);
+    border-left-color:var(--section-accent); }
+  .navlist a.is-active svg{ color:var(--section-accent); }
+  .navlist a.is-active .ncount{ color:var(--section-accent); }
+
+  .side-foot{ padding:14px 16px; border-top:1px solid var(--border-subtle); }
+
+  /* ------------------------------------------------------------------ TOPBAR */
+  .main{ display:flex; flex-direction:column; min-width:0; }
+  .topbar{ position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:16px;
+    padding:12px clamp(16px,2.4vw,28px); background:color-mix(in srgb, var(--color-bg-deep) 92%, transparent);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid var(--border-default); }
+  .topbar .crumbwrap{ min-width:0; }
+  .topbar .search{ margin-left:auto; position:relative; width:min(300px, 38vw); }
+  .topbar .search svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--text-disabled); pointer-events:none; }
+  .topbar .search input.cyber-input{ padding-left:36px; min-height:var(--control-h-sm); }
+  .density{ display:flex; align-items:center; gap:9px; font-family:var(--font-mono); font-size:10px;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--text-secondary); white-space:nowrap; flex:none; }
+
+  /* hamburger (mobile only) */
+  .menu-btn{ display:none; background:var(--bg-surface); border:1px solid var(--border-default); color:var(--text-secondary);
+    width:36px; height:36px; place-content:center; cursor:pointer; flex:none; }
+  .menu-btn svg{ width:18px; height:18px; }
+
+  /* ------------------------------------------------------------------- BOARD */
+  .board{ padding:clamp(16px,2.4vw,28px); display:flex; flex-direction:column; gap:18px; }
+
+  .pagehead{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .pagehead h1{ margin:6px 0 0; font-family:var(--font-display); font-style:italic; font-weight:700;
+    text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(1.6rem,3.2vw,2.4rem); color:var(--color-white); }
+
+  .statgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .stat .stat-d{ display:flex; align-items:center; gap:6px; margin-top:9px; font-family:var(--font-mono);
+    font-size:10px; letter-spacing:.12em; color:var(--text-disabled); }
+  .stat .stat-d svg{ width:13px; height:13px; }
+  .stat .stat-d.up{ color:var(--fb-success); }
+  .stat .stat-d.warn{ color:var(--fb-warning); }
+
+  .panels{ display:grid; grid-template-columns:1.6fr 1fr; gap:18px; }
+
+  .panel{ background:var(--bg-surface); border:1px solid var(--border-default); padding:18px; min-width:0; }
+  .panel-head{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .panel-title{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:.04em; font-size:.95rem; color:var(--color-white); }
+  .panel-sub{ font-family:var(--font-mono); font-size:9px; letter-spacing:.26em; text-transform:uppercase; color:var(--text-disabled); }
+  .legend{ display:flex; gap:14px; align-items:center; margin-left:auto; flex-wrap:wrap; }
+  .legend .lg{ display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:10px;
+    letter-spacing:.08em; color:var(--text-secondary); }
+  .legend .sw{ width:9px; height:9px; flex:none; }
+
+  /* chart svg fills its panel width responsively */
+  .chartbox{ width:100%; }
+  .chartbox svg{ width:100%; height:auto; display:block; }
+  .bar-rect{ transition:opacity var(--dur-fast); }
+  .bar-grp:hover .bar-rect{ opacity:.65; }
+
+  /* donut row */
+  .donut-row{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+  .donut-row svg{ width:148px; height:148px; flex:none; }
+  .donut-legend{ display:grid; gap:9px; flex:1; min-width:160px; }
+  .donut-legend .dl{ display:flex; align-items:center; gap:9px; font-family:var(--font-mono); font-size:11px; color:var(--text-secondary); }
+  .donut-legend .dl .sw{ width:9px; height:9px; flex:none; }
+  .donut-legend .dl .dlname{ flex:1; min-width:0; }
+  .donut-legend .dl .dlnum{ color:var(--text-primary); font-variant-numeric:tabular-nums; }
+  .donut-legend .dl .dlpct{ color:var(--text-disabled); width:38px; text-align:right; font-variant-numeric:tabular-nums; }
+
+  /* sessions panel */
+  .sess-head{ display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+  .filterbar{ display:flex; gap:6px; margin-left:auto; flex-wrap:wrap; }
+  .fbtn{ font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    background:var(--bg-elevated); border:1px solid var(--border-default); color:var(--text-secondary);
+    padding:6px 11px; cursor:pointer; transition:color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast); }
+  .fbtn:hover{ color:var(--text-primary); border-color:var(--border-strong); }
+  .fbtn.is-on{ color:var(--text-on-accent); background:var(--action-primary); border-color:var(--action-primary); }
+  .tablewrap{ overflow-x:auto; }
+  .cyber-table th.sortable{ cursor:pointer; user-select:none; white-space:nowrap; }
+  .cyber-table th.sortable:hover{ color:var(--text-secondary); }
+  .cyber-table th .sarrow{ display:inline-block; width:8px; margin-left:5px; opacity:.4; }
+  .cyber-table th[aria-sort="ascending"] .sarrow,
+  .cyber-table th[aria-sort="descending"] .sarrow{ opacity:1; color:var(--section-accent); }
+  .cyber-table td.skill{ color:var(--section-accent); }
+  .norows td{ color:var(--text-disabled); text-align:center; padding:26px 16px; }
+
+  .feed .row svg{ width:15px; height:15px; flex:none; color:var(--text-disabled); }
+  .feed .row.is-active svg{ color:var(--section-accent); }
+  .feed .row .fname{ color:var(--text-primary); }
+
+  /* ------------------------------------------------------- RESPONSIVE LAYOUT */
+  @media (max-width:1100px){ .panels{ grid-template-columns:1fr; } }
+  @media (max-width:860px){ .statgrid{ grid-template-columns:repeat(2,1fr); } }
+
+  @media (max-width:760px){
+    .shell{ grid-template-columns:1fr; }
+    .menu-btn{ display:grid; }
+    .side{ position:fixed; top:0; left:0; bottom:0; z-index:60; width:min(258px,82vw);
+      transform:translateX(-100%); transition:transform var(--dur-base) var(--ease-out-expo); }
+    .side.is-open{ transform:none; }
+    .side-scrim{ position:fixed; inset:0; z-index:55; background:var(--scrim);
+      opacity:0; visibility:hidden; transition:opacity var(--dur-base), visibility var(--dur-base); }
+    .side-scrim.is-open{ opacity:1; visibility:visible; }
+    .topbar .search{ width:auto; flex:1; }
+    .density .dlabel{ display:none; }
+  }
+  @media (max-width:420px){
+    .statgrid{ grid-template-columns:1fr; }
+    .crumbwrap{ display:none; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .navlist a, .fbtn, .bar-rect, .side, .side-scrim, .feed .row svg{ transition:none; }
+  }
+</style>
+</head>
+<body class="ob-root" data-density="comfortable" id="dash">
+  <div class="grid-bg"></div>
+  <div class="side-scrim" id="sideScrim"></div>
+
+  <div class="shell">
+    <!-- ============================================================ SIDEBAR -->
+    <aside class="side" id="side" aria-label="Vault navigation">
+      <div class="side-brand">
+        <img src="../assets/brain.svg" alt="" />
+        <div>
+          <span class="wm">OneBrain</span>
+          <span class="ver">PLUGIN v3.1.6 · CLI ≥3.1.0</span>
+        </div>
+      </div>
+
+      <div class="nav-kicker">// PARA vault</div>
+      <ul class="navlist">
+        <li><a href="#" class="is-active" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+          <span class="nlabel">00-inbox</span><span class="ncount">14</span></a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/></svg>
+          <span class="nlabel">01-projects</span><span class="ncount">9</span></a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <span class="nlabel">02-areas</span><span class="ncount">6</span></a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+          <span class="nlabel">03-resources</span><span class="ncount">312</span></a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1"/><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><path d="M10 13h4"/></svg>
+          <span class="nlabel">04-archive</span><span class="ncount">88</span></a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          <span class="nlabel">07-logs</span><span class="ncount">541</span></a></li>
+      </ul>
+
+      <div class="side-foot">
+        <span class="cyber-pill" style="width:100%; justify-content:flex-start;">
+          <span class="cyber-dot is-pulse" style="color:var(--fb-success)"></span> SYSTEM ONLINE
+        </span>
+      </div>
+    </aside>
+
+    <!-- =============================================================== MAIN -->
+    <div class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="Open vault navigation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <nav class="crumbwrap"><ol class="breadcrumb" style="padding:0;margin:0">
+          <li><a href="#" onclick="return false">Vault</a></li>
+          <li><a href="#" onclick="return false">Operator</a></li>
+          <li aria-current="page">Dashboard</li>
+        </ol></nav>
+
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="cyber-input" id="search" type="search" placeholder="Filter sessions… (skill / status)" aria-label="Filter sessions table" />
+        </div>
+
+        <label class="density" title="Toggle layout density">
+          <span class="dlabel">Compact</span>
+          <span class="cyber-switch"><input type="checkbox" id="densityToggle" aria-label="Compact density" /></span>
+        </label>
+
+        <span class="avatar" title="ke@onebrain.run">KE</span>
+      </header>
+
+      <main class="board">
+        <div class="pagehead">
+          <div>
+            <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> VAULT OVERVIEW · LIVE</span>
+            <h1>Operator Dashboard</h1>
+          </div>
+          <span class="panel-sub">SYNCED 09:42 · onebrain.yml</span>
+        </div>
+
+        <!-- ------------------------------------------------------- STAT ROW -->
+        <section class="statgrid" aria-label="Vault statistics">
+          <div class="stat">
+            <div class="stat-n"><em>1,284</em></div>
+            <div class="stat-l">Notes captured</div>
+            <div class="stat-d up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M14 7h7v7"/></svg> +37 this week</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n"><em>37</em></div>
+            <div class="stat-l">Skills run today</div>
+            <div class="stat-d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> 6 scheduled</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n"><em>6,902</em></div>
+            <div class="stat-l">Wikilinks</div>
+            <div class="stat-d up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg> +214 linked</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n"><em>14</em></div>
+            <div class="stat-l">Inbox backlog</div>
+            <div class="stat-d warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4M12 16h.01"/><circle cx="12" cy="12" r="10"/></svg> run /consolidate</div>
+          </div>
+        </section>
+
+        <!-- ----------------------------------------------------- CHART ROW -->
+        <section class="panels">
+          <!-- Primary bar chart: skills run last 14 days -->
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Skills run — last 14 days</div>
+                <div class="panel-sub" style="margin-top:5px">DAILY INVOCATIONS · /capture · /connect · /consolidate</div>
+              </div>
+              <div class="legend">
+                <span class="lg"><span class="sw" style="background:var(--chart-1)"></span>Captures</span>
+                <span class="lg"><span class="sw" style="background:color-mix(in srgb,var(--chart-1) 32%,transparent)"></span>Other skills</span>
+              </div>
+            </div>
+            <div class="chartbox" id="barchart" role="img" aria-label="Bar chart of skills run per day over the last 14 days"></div>
+          </div>
+
+          <!-- Secondary donut: capture sources -->
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Capture sources</div>
+                <div class="panel-sub" style="margin-top:5px">LAST 14 DAYS · BY SUB-AGENT</div>
+              </div>
+            </div>
+            <div class="donut-row">
+              <svg id="donut" viewBox="0 0 42 42" role="img" aria-label="Donut chart of capture sources by sub-agent"></svg>
+              <div class="donut-legend" id="donutLegend"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ----------------------------------------------- SESSIONS TABLE -->
+        <section class="panel">
+          <div class="sess-head">
+            <div>
+              <div class="panel-title">Recent sessions</div>
+              <div class="panel-sub" style="margin-top:5px">07-logs · CLICK A HEADER TO SORT</div>
+            </div>
+            <div class="filterbar" role="group" aria-label="Filter sessions by status">
+              <button class="fbtn is-on" data-status="all">All</button>
+              <button class="fbtn" data-status="synced">Synced</button>
+              <button class="fbtn" data-status="indexing">Indexing</button>
+              <button class="fbtn" data-status="stale">Stale</button>
+            </div>
+          </div>
+          <div class="tablewrap">
+            <table class="cyber-table" id="sessTable">
+              <thead><tr>
+                <th class="sortable" data-key="session" data-type="text">Session<span class="sarrow">↕</span></th>
+                <th class="sortable" data-key="skill" data-type="text">Skill<span class="sarrow">↕</span></th>
+                <th class="sortable" data-key="status" data-type="text">Status<span class="sarrow">↕</span></th>
+                <th class="sortable num" data-key="notes" data-type="num">Notes<span class="sarrow">↕</span></th>
+                <th class="sortable num" data-key="dur" data-type="num">Duration<span class="sarrow">↕</span></th>
+              </tr></thead>
+              <tbody id="sessBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------------ ACTIVITY FEED -->
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Co-evolution loop</div>
+              <div class="panel-sub" style="margin-top:5px">CAPTURE → EVOLVE → WRAPUP · LIVE EVENTS</div>
+            </div>
+          </div>
+          <div class="cyber-list feed">
+            <div class="row is-active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              <span class="fname">/capture</span>&nbsp;idea — vault routing heuristics<span class="stamp">09:42</span></div>
+            <div class="row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+              <span class="fname">/connect</span>&nbsp;+8 wikilinks to [[Operator Console]]<span class="stamp">09:38</span></div>
+            <div class="row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg>
+              <span class="fname">/consolidate</span>&nbsp;inbox processed · 14 → 0<span class="stamp">09:31</span></div>
+            <div class="row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="fname">/wrapup</span>&nbsp;session saved to 07-logs · memory updated<span class="stamp">Yesterday</span></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* -------------------------------------------------- DENSITY TOGGLE (real) */
+  var dash = document.getElementById('dash');
+  document.getElementById('densityToggle').addEventListener('change', function(e){
+    dash.setAttribute('data-density', e.target.checked ? 'compact' : 'comfortable');
+  });
+
+  /* ----------------------------------------------- MOBILE SIDEBAR DRAWER */
+  var side = document.getElementById('side');
+  var scrim = document.getElementById('sideScrim');
+  function openSide(){ side.classList.add('is-open'); scrim.classList.add('is-open'); }
+  function closeSide(){ side.classList.remove('is-open'); scrim.classList.remove('is-open'); }
+  document.getElementById('menuBtn').addEventListener('click', openSide);
+  scrim.addEventListener('click', closeSide);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeSide(); });
+
+  /* ============================================ PRIMARY BAR CHART (SVG) */
+  // 14 days, two stacked series: captures + other skills. Realistic demo counts.
+  var days = [
+    {d:'18',c:5,o:3},{d:'19',c:8,o:4},{d:'20',c:6,o:5},{d:'21',c:11,o:6},
+    {d:'22',c:9,o:4},{d:'23',c:3,o:2},{d:'24',c:2,o:1},{d:'25',c:12,o:7},
+    {d:'26',c:14,o:8},{d:'27',c:10,o:6},{d:'28',c:7,o:5},{d:'29',c:13,o:9},
+    {d:'30',c:9,o:6},{d:'31',c:16,o:11}
+  ];
+  (function drawBars(){
+    var W=560, H=240, padL=30, padR=10, padT=14, padB=26;
+    var plotW=W-padL-padR, plotH=H-padT-padB;
+    var max=0; days.forEach(function(x){ if(x.c+x.o>max) max=x.c+x.o; });
+    var top=Math.ceil(max/5)*5; // tidy axis ceiling
+    var n=days.length, gap=8;
+    var bw=(plotW-gap*(n-1))/n;
+    function y(v){ return padT + plotH - (v/top)*plotH; }
+    var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">';
+    // gridlines + y labels
+    var ticks=4;
+    for(var i=0;i<=ticks;i++){
+      var val=Math.round(top/ticks*i);
+      var gy=y(val);
+      svg+='<line x1="'+padL+'" y1="'+gy.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+gy.toFixed(1)+'" stroke="var(--chart-grid)" stroke-width="1"/>';
+      svg+='<text x="'+(padL-6)+'" y="'+(gy+3).toFixed(1)+'" text-anchor="end" font-family="var(--font-mono)" font-size="8" fill="var(--chart-axis)">'+val+'</text>';
+    }
+    // bars (stacked: other on bottom dim, captures on top bright)
+    days.forEach(function(x,k){
+      var bx=padL + k*(bw+gap);
+      var hO=(x.o/top)*plotH, hC=(x.c/top)*plotH;
+      var yO=padT+plotH-hO, yC=yO-hC;
+      svg+='<g class="bar-grp">';
+      svg+='<title>Day '+x.d+' · '+x.c+' captures · '+x.o+' other ('+(x.c+x.o)+' total)</title>';
+      svg+='<rect class="bar-rect" x="'+bx.toFixed(1)+'" y="'+yO.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+Math.max(0,hO).toFixed(1)+'" fill="color-mix(in srgb,var(--chart-1) 32%,transparent)"/>';
+      svg+='<rect class="bar-rect" x="'+bx.toFixed(1)+'" y="'+yC.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+Math.max(0,hC).toFixed(1)+'" fill="var(--chart-1)"/>';
+      svg+='</g>';
+      // x labels: show every other to avoid crowding
+      if(k%2===1 || k===n-1){
+        svg+='<text x="'+(bx+bw/2).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--chart-axis)">'+x.d+'</text>';
+      }
+    });
+    svg+='</svg>';
+    document.getElementById('barchart').innerHTML=svg;
+  })();
+
+  /* ================================================ DONUT (capture sources) */
+  var sources=[
+    {name:'Inbox Classifier', n:142, color:'var(--chart-1)'},
+    {name:'Knowledge Linker', n:96,  color:'var(--chart-2)'},
+    {name:'Link Suggester',   n:74,  color:'var(--chart-3)'},
+    {name:'Tag Suggester',    n:51,  color:'var(--chart-4)'},
+    {name:'Task Extractor',   n:33,  color:'var(--chart-5)'}
+  ];
+  (function drawDonut(){
+    var total=sources.reduce(function(s,x){ return s+x.n; },0);
+    var R=15.9155, C=2*Math.PI*R; // r tuned so circumference ~= 100 units
+    var off=25; // start at top
+    var svg='<circle cx="21" cy="21" r="'+R+'" fill="none" stroke="var(--chart-track)" stroke-width="6"/>';
+    var acc=0;
+    sources.forEach(function(x){
+      var frac=x.n/total, len=frac*100;
+      svg+='<circle cx="21" cy="21" r="'+R+'" fill="none" stroke="'+x.color+'" stroke-width="6"'
+        +' stroke-dasharray="'+len.toFixed(2)+' '+(100-len).toFixed(2)+'"'
+        +' stroke-dashoffset="'+( (100 - acc) + off ).toFixed(2)+'"'
+        +' transform="rotate(0 21 21)"><title>'+x.name+' · '+x.n+'</title></circle>';
+      acc+=len;
+    });
+    svg+='<text x="21" y="20.4" text-anchor="middle" font-family="var(--font-display)" font-style="italic" font-weight="700" font-size="7" fill="var(--color-white)">'+total+'</text>';
+    svg+='<text x="21" y="25" text-anchor="middle" font-family="var(--font-mono)" font-size="2.4" letter-spacing="0.18" fill="var(--chart-axis)">CAPTURES</text>';
+    document.getElementById('donut').innerHTML=svg;
+
+    var legend=sources.map(function(x){
+      var pct=Math.round(x.n/total*100);
+      return '<div class="dl"><span class="sw" style="background:'+x.color+'"></span>'
+        +'<span class="dlname">'+x.name+'</span>'
+        +'<span class="dlnum">'+x.n+'</span>'
+        +'<span class="dlpct">'+pct+'%</span></div>';
+    }).join('');
+    document.getElementById('donutLegend').innerHTML=legend;
+  })();
+
+  /* ================================================ SESSIONS TABLE (data) */
+  var sessions=[
+    {session:'2026-05-31 · AM', skill:'/capture',     status:'Synced',   sclass:'badge-success', notes:12, dur:142},
+    {session:'2026-05-31 · AM', skill:'/consolidate', status:'Indexing', sclass:'badge-info',    notes:142,dur:418},
+    {session:'2026-05-30 · PM', skill:'/connect',     status:'Synced',   sclass:'badge-success', notes:2,  dur:64},
+    {session:'2026-05-30 · PM', skill:'/distill',     status:'Stale',    sclass:'badge-warning', notes:7,  dur:206},
+    {session:'2026-05-30 · AM', skill:'/research',    status:'Synced',   sclass:'badge-success', notes:5,  dur:512},
+    {session:'2026-05-29 · PM', skill:'/wrapup',      status:'Synced',   sclass:'badge-success', notes:3,  dur:48},
+    {session:'2026-05-29 · AM', skill:'/connect',     status:'Indexing', sclass:'badge-info',    notes:8,  dur:151},
+    {session:'2026-05-28 · PM', skill:'/daily',       status:'Stale',    sclass:'badge-warning', notes:1,  dur:22}
+  ];
+
+  var body=document.getElementById('sessBody');
+  var activeStatus='all';
+  var searchTerm='';
+  var sortKey=null, sortDir=1, sortType='text';
+
+  function fmtDur(s){ var m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r; }
+
+  function render(){
+    var rows=sessions.slice();
+    // status filter
+    if(activeStatus!=='all'){
+      rows=rows.filter(function(r){ return r.status.toLowerCase()===activeStatus; });
+    }
+    // search filter (skill + status + session)
+    if(searchTerm){
+      var q=searchTerm.toLowerCase();
+      rows=rows.filter(function(r){
+        return (r.skill+' '+r.status+' '+r.session).toLowerCase().indexOf(q)!==-1;
+      });
+    }
+    // sort
+    if(sortKey){
+      rows.sort(function(a,b){
+        var av=a[sortKey], bv=b[sortKey];
+        if(sortType==='num'){ return (av-bv)*sortDir; }
+        return String(av).localeCompare(String(bv))*sortDir;
+      });
+    }
+    if(rows.length===0){
+      body.innerHTML='<tr class="norows"><td colspan="5">— No sessions match the current filter</td></tr>';
+      return;
+    }
+    body.innerHTML=rows.map(function(r){
+      return '<tr>'
+        +'<td><b>'+r.session+'</b></td>'
+        +'<td class="skill">'+r.skill+'</td>'
+        +'<td><span class="badge '+r.sclass+'">'+r.status+'</span></td>'
+        +'<td class="num">'+r.notes+'</td>'
+        +'<td class="num">'+fmtDur(r.dur)+'</td>'
+        +'</tr>';
+    }).join('');
+  }
+
+  // status filter buttons
+  Array.prototype.forEach.call(document.querySelectorAll('.fbtn'), function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('is-on'); });
+      btn.classList.add('is-on');
+      activeStatus=btn.getAttribute('data-status');
+      render();
+    });
+  });
+
+  // search
+  document.getElementById('search').addEventListener('input', function(e){
+    searchTerm=e.target.value.trim();
+    render();
+  });
+
+  // sortable headers
+  Array.prototype.forEach.call(document.querySelectorAll('#sessTable th.sortable'), function(th){
+    th.addEventListener('click', function(){
+      var key=th.getAttribute('data-key');
+      sortType=th.getAttribute('data-type');
+      if(sortKey===key){ sortDir*=-1; } else { sortKey=key; sortDir=1; }
+      // reset aria-sort on all, set on this
+      document.querySelectorAll('#sessTable th.sortable').forEach(function(h){ h.removeAttribute('aria-sort'); });
+      th.setAttribute('aria-sort', sortDir===1 ? 'ascending' : 'descending');
+      var ar=th.querySelector('.sarrow');
+      document.querySelectorAll('#sessTable .sarrow').forEach(function(a){ a.textContent='↕'; });
+      ar.textContent = sortDir===1 ? '↑' : '↓';
+      render();
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

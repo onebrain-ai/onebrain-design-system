@@ -220,6 +220,7 @@ module.exports = {
       colors: {
 ${ref('color')}
 ${ref('state')}
+${ref('chart')}
       },
       fontFamily: {
 ${fontFamily}

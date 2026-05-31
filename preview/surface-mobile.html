@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneBrain — Mobile</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    /* ---- Mobile surface layout only; all color/type from the linked tokens ---- */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 40px 20px 64px; }
+
+    /* hot magenta is the ONE accent for the mobile surface */
+    .mobile-surface { --section-accent: var(--color-accent-3); --action-primary: var(--color-accent-3); }
+
+    .surface-head { max-width: 1180px; margin: 0 auto 36px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .surface-head .logo { width: 30px; height: 30px; flex: none; }
+    .surface-head h1 {
+      margin: 0; font-family: var(--font-display); font-style: italic; font-weight: var(--weight-bold);
+      text-transform: uppercase; letter-spacing: var(--tracking-tight); line-height: 1;
+      font-size: var(--text-xl); color: var(--color-white);
+    }
+    .surface-head .meta { margin-left: auto; font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-disabled); }
+
+    /* ---- The phone flow ---- */
+    .flow { display: flex; gap: 36px; justify-content: center; align-items: flex-start; flex-wrap: wrap; max-width: 1280px; margin: 0 auto; }
+
+    /* ---- iPhone frame (390 content) ---- */
+    .phone {
+      width: 390px; max-width: 100%; flex: none;
+      background: #000; border: 1px solid var(--color-border);
+      border-radius: 52px; padding: 11px;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.04), var(--shadow-overlay), var(--glow-accent);
+    }
+    .screen {
+      position: relative; height: 800px; overflow: hidden;
+      background: var(--color-bg); border-radius: 42px;
+      display: flex; flex-direction: column;
+    }
+    /* HUD lattice backdrop on each screen */
+    .screen::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+    }
+    .screen > * { position: relative; z-index: 1; }
+
+    /* Dynamic Island */
+    .island {
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 116px; height: 33px; background: #000; border-radius: 20px; z-index: 6;
+      display: flex; align-items: center; justify-content: flex-end; padding-right: 11px; gap: 8px;
+    }
+    .island .cam { width: 9px; height: 9px; border-radius: 50%; background: #0a0a14; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+    .island .cam::after { content: ''; display: block; width: 4px; height: 4px; margin: 2.5px; border-radius: 50%; background: color-mix(in srgb, var(--section-accent) 60%, #061018); }
+
+    /* Status bar */
+    .statusbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 26px 6px; font-family: var(--font-mono); flex: none;
+    }
+    .statusbar .time { font-size: 14px; font-weight: var(--weight-semibold); color: var(--color-white); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+    .statusbar .sys { display: flex; align-items: center; gap: 7px; color: var(--color-text); }
+    .statusbar .sys svg { display: block; }
+
+    /* Screen header (app context) */
+    .scr-head { padding: 14px 22px 12px; flex: none; }
+    .scr-eyebrow { display: flex; align-items: center; gap: 10px; }
+    .scr-eyebrow .k { font-family: var(--font-mono); font-size: var(--eyebrow-size); letter-spacing: 0.34em; text-transform: uppercase; color: var(--section-accent); }
+    .scr-eyebrow .date { margin-left: auto; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-disabled); }
+    .scr-title { margin: 8px 0 0; font-family: var(--font-display); font-style: italic; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-tight); line-height: 0.98; font-size: 1.75rem; color: var(--color-white); }
+    .scr-title em { color: var(--section-accent); font-style: italic; }
+
+    /* Scroll body */
+    .scr-body { flex: 1 1 auto; overflow-y: auto; padding: 6px 22px 18px; scrollbar-width: none; }
+    .scr-body::-webkit-scrollbar { display: none; }
+
+    /* Section label */
+    .sec-label { display: flex; align-items: center; gap: 8px; margin: 18px 0 10px; font-family: var(--font-mono); font-size: var(--eyebrow-size); letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-disabled); }
+    .sec-label .count { margin-left: auto; letter-spacing: 0.12em; color: var(--text-disabled); font-variant-numeric: tabular-nums; }
+    .sec-label svg { width: 14px; height: 14px; color: var(--section-accent); }
+
+    /* Check-in / streak module */
+    .checkin { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; background: var(--color-surface-2); border: 1px solid var(--border-subtle); padding: 16px; }
+    .checkin .ci-n { font-family: var(--font-display); font-style: italic; font-weight: var(--weight-bold); font-size: var(--text-2xl); line-height: 1; color: var(--color-white); font-variant-numeric: tabular-nums; }
+    .checkin .ci-n em { color: var(--section-accent); font-style: italic; }
+    .checkin .ci-l { margin-top: 6px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-secondary); }
+    .week { display: flex; gap: 6px; }
+    .week .d { display: grid; place-items: center; gap: 5px; font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.06em; color: var(--text-disabled); }
+    .week .d .pip { width: 12px; height: 12px; border: 1px solid var(--border-default); background: transparent; }
+    .week .d.on .pip { background: var(--section-accent); border-color: var(--section-accent); box-shadow: var(--glow-sm); color: var(--section-accent); }
+    .week .d.today .pip { border-color: var(--section-accent); box-shadow: 0 0 0 1px var(--section-accent); }
+
+    /* Task rows ("- [ ]" style) */
+    .tasks { background: var(--color-surface); border: 1px solid var(--border-default); }
+    .task { display: flex; align-items: flex-start; gap: 12px; padding: 13px 15px; border-bottom: 1px solid var(--border-subtle); cursor: pointer; }
+    .task:last-child { border-bottom: 0; }
+    .task .box { width: 18px; height: 18px; flex: none; margin-top: 1px; border: 1px solid var(--border-strong); background: var(--bg-surface); display: grid; place-content: center; transition: border-color var(--dur-fast), background var(--dur-fast); }
+    .task .box svg { width: 12px; height: 12px; color: var(--text-on-accent); opacity: 0; transform: scale(0.4); transition: opacity var(--dur-fast), transform var(--dur-fast) var(--ease-out-expo); }
+    .task .t-main { min-width: 0; flex: 1; }
+    .task .t-text { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; color: var(--text-primary); }
+    .task .t-meta { margin-top: 4px; display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-disabled); }
+    .task .t-meta .lnk { color: var(--section-accent); }
+    .task.is-done .box { background: var(--section-accent); border-color: var(--section-accent); }
+    .task.is-done .box svg { opacity: 1; transform: scale(1); }
+    .task.is-done .t-text { color: var(--text-disabled); text-decoration: line-through; }
+
+    /* Recent capture rows */
+    .recents { background: var(--color-surface); border: 1px solid var(--border-default); }
+    .cap-row { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-bottom: 1px solid var(--border-subtle); }
+    .cap-row:last-child { border-bottom: 0; }
+    .cap-row .ic { width: 30px; height: 30px; flex: none; display: grid; place-content: center; border: 1px solid var(--border-default); background: var(--bg-elevated); color: var(--section-accent); }
+    .cap-row .ic svg { width: 15px; height: 15px; }
+    .cap-row .c-main { min-width: 0; flex: 1; }
+    .cap-row .c-title { font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cap-row .c-sub { margin-top: 3px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-disabled); }
+    .cap-row .stamp { margin-left: auto; flex: none; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; color: var(--text-disabled); }
+
+    /* ---- Capture screen composer ---- */
+    .composer-shell { background: var(--color-surface); border: 1px solid var(--border-default); transition: border-color var(--dur-fast), box-shadow var(--dur-fast); }
+    .composer-shell:focus-within { border-color: var(--border-focus); box-shadow: 0 0 22px color-mix(in srgb, var(--section-accent) 22%, transparent); }
+    .composer-head { display: flex; align-items: center; gap: 10px; padding: 12px 15px; border-bottom: 1px solid var(--border-subtle); }
+    .composer-head .slash { font-family: var(--font-mono); font-size: 14px; color: var(--section-accent); }
+    .composer-head .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-secondary); }
+    .cap-area {
+      width: 100%; box-sizing: border-box; min-height: 150px; resize: none;
+      background: transparent; border: 0; outline: none;
+      color: var(--text-primary); font-family: var(--font-mono); font-size: 14px; line-height: 1.6;
+      padding: 14px 15px;
+    }
+    .cap-area::placeholder { color: var(--text-secondary); }
+    .composer-foot { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-top: 1px solid var(--border-subtle); }
+    .composer-foot .chars { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-disabled); font-variant-numeric: tabular-nums; }
+    .composer-foot .grow { margin-left: auto; }
+
+    /* Suggested wikilink chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+      padding: 7px 11px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em;
+      color: var(--section-accent); background: color-mix(in srgb, var(--section-accent) 6%, transparent);
+      border: 1px solid color-mix(in srgb, var(--section-accent) 32%, transparent);
+      transition: background var(--dur-fast), color var(--dur-fast), box-shadow var(--dur-fast), opacity var(--dur-fast);
+    }
+    .chip svg { width: 13px; height: 13px; }
+    .chip:hover { background: color-mix(in srgb, var(--section-accent) 14%, transparent); box-shadow: 0 0 12px color-mix(in srgb, var(--section-accent) 28%, transparent); }
+    .chip.is-used { opacity: 0.42; pointer-events: none; }
+    .chip.is-used .plus { display: none; }
+
+    /* Capture target select */
+    .target-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--color-surface-2); border: 1px solid var(--border-subtle); font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); }
+    .target-row svg { width: 15px; height: 15px; color: var(--section-accent); flex: none; }
+    .target-row b { color: var(--text-primary); font-weight: 500; }
+    .target-row .chev { margin-left: auto; color: var(--text-disabled); }
+
+    /* ---- Skills screen ---- */
+    .skill-row { display: flex; align-items: center; gap: 13px; padding: 13px 15px; border-bottom: 1px solid var(--border-subtle); cursor: pointer; transition: background var(--dur-fast); }
+    .skill-row:last-child { border-bottom: 0; }
+    .skill-row:hover { background: var(--action-primary-weak); }
+    .skill-row .s-ic { width: 34px; height: 34px; flex: none; display: grid; place-content: center; border: 1px solid var(--border-default); background: var(--bg-elevated); color: var(--section-accent); transition: border-color var(--dur-fast), box-shadow var(--dur-fast); }
+    .skill-row .s-ic svg { width: 17px; height: 17px; }
+    .skill-row .s-main { min-width: 0; flex: 1; }
+    .skill-row .s-cmd { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-primary); }
+    .skill-row .s-cmd .sl { color: var(--section-accent); }
+    .skill-row .s-desc { margin-top: 3px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.06em; color: var(--text-disabled); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .skill-row .s-go { flex: none; color: var(--text-disabled); transition: color var(--dur-fast), transform var(--dur-fast); }
+    .skill-row.is-active { background: color-mix(in srgb, var(--section-accent) 10%, transparent); border-left: 2px solid var(--section-accent); }
+    .skill-row.is-active .s-ic { border-color: var(--section-accent); box-shadow: var(--glow-sm); color: var(--section-accent); }
+    .skill-row.is-active .s-go { color: var(--section-accent); transform: translateX(2px); }
+    .skill-row .s-run { display: none; flex: none; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--section-accent); }
+    .skill-row.is-active .s-run { display: inline; }
+    .skill-row.is-active .s-go { display: none; }
+
+    /* ---- Bottom tab bar ---- */
+    .tabbar {
+      flex: none; position: relative; display: grid; grid-template-columns: repeat(5, 1fr);
+      padding: 8px 10px 4px; background: var(--color-bg-deep);
+      border-top: 1px solid var(--border-default);
+    }
+    .tab {
+      appearance: none; background: transparent; border: 0; cursor: pointer;
+      display: grid; place-items: center; gap: 4px; min-height: 52px; padding: 6px 2px;
+      font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-disabled); transition: color var(--dur-fast);
+    }
+    .tab svg { width: 22px; height: 22px; }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.is-active { color: var(--section-accent); }
+    .tab.is-active svg { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--section-accent) 60%, transparent)); }
+    /* center capture (+) */
+    .tab-center { position: relative; }
+    .tab-center .plus-btn {
+      width: 50px; height: 50px; display: grid; place-content: center; margin-top: -16px;
+      background: var(--grad-button); clip-path: var(--clip-tech); padding: 1.5px;
+    }
+    .tab-center .plus-btn span { display: grid; place-content: center; width: 100%; height: 100%; clip-path: var(--clip-tech); background: var(--color-bg); color: #fff; }
+    .tab-center .plus-btn span svg { width: 22px; height: 22px; }
+    .tab-center.is-active .plus-btn { box-shadow: var(--glow-cta); }
+
+    /* Home indicator */
+    .home-bar { flex: none; display: grid; place-items: center; padding: 7px 0 9px; background: var(--color-bg-deep); }
+    .home-bar i { display: block; width: 128px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.30); }
+
+    /* Frame caption */
+    .cap { margin-top: 16px; text-align: center; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-disabled); }
+    .cap b { color: var(--section-accent); font-weight: 500; }
+
+    /* Toast (capture confirm) */
+    .scr-toast {
+      position: absolute; left: 18px; right: 18px; bottom: 132px; z-index: 8;
+      display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+      background: var(--bg-elevated); border: 1px solid var(--border-default); border-left: 2px solid var(--section-accent);
+      box-shadow: var(--elev-3); font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);
+      opacity: 0; transform: translateY(8px); pointer-events: none;
+      transition: opacity var(--dur-base) ease, transform var(--dur-base) var(--ease-out-expo);
+    }
+    .scr-toast.is-show { opacity: 1; transform: none; }
+    .scr-toast .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--section-accent); box-shadow: var(--glow-sm); }
+    .scr-toast b { color: var(--text-primary); font-weight: 500; }
+
+    /* ---- Responsive: stack frames; redesign at small widths ---- */
+    @media (max-width: 1280px) { .flow { gap: 28px; } }
+    @media (max-width: 480px) {
+      body { padding: 28px 14px 48px; }
+      .phone { border-radius: 44px; padding: 9px; }
+      .screen { height: 760px; border-radius: 36px; }
+      .surface-head .meta { display: none; }
+    }
+    @media (max-width: 414px) {
+      .phone { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+      .task .box svg, .chip, .skill-row, .skill-row .s-go, .scr-toast, .composer-shell, .cap-area { transition: none !important; }
+    }
+  </style>
+</head>
+<body class="ob-root mobile-surface">
+
+  <header class="surface-head">
+    <img class="logo" src="../assets/brain.svg" alt="OneBrain">
+    <h1>OneBrain Mobile</h1>
+    <span class="meta">iOS · Plugin v3.1.6</span>
+  </header>
+
+  <main class="flow">
+
+    <!-- ============ SCREEN 1 — VAULT / TODAY ============ -->
+    <div class="frame">
+      <div class="phone">
+        <div class="screen">
+          <div class="island"><span class="cam"></span></div>
+
+          <!-- status bar -->
+          <div class="statusbar">
+            <span class="time">9:41</span>
+            <span class="sys">
+              <!-- signal -->
+              <svg width="18" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/></svg>
+              <!-- wifi -->
+              <svg width="17" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M8.5 16.43a6 6 0 0 1 7 0"/><path d="M12 20h.01"/><path d="M2 8.82a16 16 0 0 1 20 0"/></svg>
+              <!-- battery -->
+              <svg width="24" height="13" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="2.5" width="20" height="9" rx="2"/><path d="M23.5 5.5v3" stroke-width="2"/><rect x="3" y="4.5" width="13" height="5" rx="0.5" fill="currentColor" stroke="none"/></svg>
+            </span>
+          </div>
+
+          <div class="scr-head">
+            <div class="scr-eyebrow">
+              <span class="k">// Vault</span>
+              <span class="date">Sun · May 31</span>
+            </div>
+            <h2 class="scr-title">Today's <em>Briefing</em></h2>
+          </div>
+
+          <div class="scr-body">
+            <!-- check-in / streak -->
+            <div class="checkin">
+              <div>
+                <div class="ci-n"><em>12</em>-day streak</div>
+                <div class="ci-l">Captured · daily ran 9:00</div>
+              </div>
+              <div class="week" aria-label="Last seven days">
+                <span class="d on"><span class="pip"></span>M</span>
+                <span class="d on"><span class="pip"></span>T</span>
+                <span class="d on"><span class="pip"></span>W</span>
+                <span class="d on"><span class="pip"></span>T</span>
+                <span class="d on"><span class="pip"></span>F</span>
+                <span class="d on"><span class="pip"></span>S</span>
+                <span class="d on today"><span class="pip"></span>S</span>
+              </div>
+            </div>
+
+            <!-- tasks due today -->
+            <div class="sec-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="m18 9 3 3-3 3"/></svg>
+              Due Today <span class="count">2 / 4</span>
+            </div>
+            <div class="tasks" id="taskList">
+              <div class="task" role="button" tabindex="0">
+                <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span class="t-main">
+                  <span class="t-text">Draft launch note in 01-projects</span>
+                  <span class="t-meta"><span class="lnk">[[Operator Console]]</span> · 14:00</span>
+                </span>
+              </div>
+              <div class="task" role="button" tabindex="0">
+                <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span class="t-main">
+                  <span class="t-text">Run /consolidate on 00-inbox</span>
+                  <span class="t-meta">14 items queued</span>
+                </span>
+              </div>
+              <div class="task is-done" role="button" tabindex="0">
+                <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span class="t-main">
+                  <span class="t-text">Review Knowledge Linker output</span>
+                  <span class="t-meta">Done · 09:24</span>
+                </span>
+              </div>
+              <div class="task is-done" role="button" tabindex="0">
+                <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span class="t-main">
+                  <span class="t-text">Read /daily briefing</span>
+                  <span class="t-meta">Done · 09:01</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- recent captures -->
+            <div class="sec-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+              Recent Captures <span class="count">8 today</span>
+            </div>
+            <div class="recents">
+              <div class="cap-row">
+                <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+                <span class="c-main">
+                  <span class="c-title">Persistent memory beats prompts</span>
+                  <span class="c-sub">/capture · 03-resources</span>
+                </span>
+                <span class="stamp">2m</span>
+              </div>
+              <div class="cap-row">
+                <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+                <span class="c-main">
+                  <span class="c-title">onebrain.run pricing page</span>
+                  <span class="c-sub">/bookmark · 03-resources</span>
+                </span>
+                <span class="stamp">41m</span>
+              </div>
+              <div class="cap-row">
+                <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M3 12h3M18 12h3M12 3v3M12 18v3"/></svg></span>
+                <span class="c-main">
+                  <span class="c-title">Harness OS layering idea</span>
+                  <span class="c-sub">/braindump · 00-inbox</span>
+                </span>
+                <span class="stamp">1h</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB BAR (Vault active) -->
+          <nav class="tabbar" aria-label="Primary">
+            <button class="tab is-active" data-tab="vault" aria-current="page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><circle cx="12" cy="12" r="3"/><path d="M12 4v5M12 15v5M4 12h5M15 12h5"/></svg>
+              Vault
+            </button>
+            <button class="tab" data-tab="skills">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+              Skills
+            </button>
+            <span class="tab tab-center" data-tab="capture" aria-hidden="true">
+              <span class="plus-btn"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span>
+            </span>
+            <button class="tab" data-tab="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search
+            </button>
+            <button class="tab" data-tab="you">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              You
+            </button>
+          </nav>
+          <div class="home-bar"><i></i></div>
+        </div>
+      </div>
+      <p class="cap"><b>01</b> · Vault / Today</p>
+    </div>
+
+    <!-- ============ SCREEN 2 — CAPTURE ============ -->
+    <div class="frame">
+      <div class="phone">
+        <div class="screen">
+          <div class="island"><span class="cam"></span></div>
+
+          <div class="statusbar">
+            <span class="time">9:43</span>
+            <span class="sys">
+              <svg width="18" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/></svg>
+              <svg width="17" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M8.5 16.43a6 6 0 0 1 7 0"/><path d="M12 20h.01"/><path d="M2 8.82a16 16 0 0 1 20 0"/></svg>
+              <svg width="24" height="13" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="2.5" width="20" height="9" rx="2"/><path d="M23.5 5.5v3" stroke-width="2"/><rect x="3" y="4.5" width="13" height="5" rx="0.5" fill="currentColor" stroke="none"/></svg>
+            </span>
+          </div>
+
+          <div class="scr-head">
+            <div class="scr-eyebrow">
+              <span class="k">// Capture</span>
+              <span class="date">00-inbox</span>
+            </div>
+            <h2 class="scr-title">New <em>Note</em></h2>
+          </div>
+
+          <div class="scr-body">
+            <div class="composer-shell">
+              <div class="composer-head">
+                <span class="slash">/</span>
+                <span class="label">capture</span>
+              </div>
+              <textarea class="cap-area" id="captureArea" placeholder="Capture a thought… it files to 00-inbox and gets wikilinks suggested as you type."></textarea>
+              <div class="composer-foot">
+                <span class="chars"><span id="charCount">0</span> chars</span>
+                <span class="grow"></span>
+                <button class="btn-tech btn-sm" id="captureBtn" type="button"><span class="btn-tech-inner">Capture</span></button>
+              </div>
+            </div>
+
+            <div class="sec-label" style="margin-top:20px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Suggested Wikilinks
+            </div>
+            <div class="chips" id="chipList">
+              <button class="chip" type="button" data-link="[[Operator Console]]"><svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>[[Operator Console]]</button>
+              <button class="chip" type="button" data-link="[[Harness OS]]"><svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>[[Harness OS]]</button>
+              <button class="chip" type="button" data-link="[[Persistent Memory]]"><svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>[[Persistent Memory]]</button>
+              <button class="chip" type="button" data-link="[[PARA Folders]]"><svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>[[PARA Folders]]</button>
+            </div>
+
+            <div class="sec-label" style="margin-top:20px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="m6 16 6-12 6 12"/><path d="M8 12h8"/></svg>
+              Filed To
+            </div>
+            <div class="target-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6l2 2h8v12H4z"/></svg>
+              <span>Folder · <b>00-inbox</b></span>
+              <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+            </div>
+          </div>
+
+          <div class="scr-toast" id="captureToast"><span class="dot"></span><span>Captured to <b>00-inbox</b> · queued for Inbox Classifier</span></div>
+
+          <!-- TAB BAR (Capture active) -->
+          <nav class="tabbar" aria-label="Primary">
+            <button class="tab" data-tab="vault">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><circle cx="12" cy="12" r="3"/><path d="M12 4v5M12 15v5M4 12h5M15 12h5"/></svg>
+              Vault
+            </button>
+            <button class="tab" data-tab="skills">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+              Skills
+            </button>
+            <span class="tab tab-center is-active" data-tab="capture" aria-current="page" aria-hidden="true">
+              <span class="plus-btn"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span>
+            </span>
+            <button class="tab" data-tab="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search
+            </button>
+            <button class="tab" data-tab="you">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              You
+            </button>
+          </nav>
+          <div class="home-bar"><i></i></div>
+        </div>
+      </div>
+      <p class="cap"><b>02</b> · Capture</p>
+    </div>
+
+    <!-- ============ SCREEN 3 — SKILLS ============ -->
+    <div class="frame">
+      <div class="phone">
+        <div class="screen">
+          <div class="island"><span class="cam"></span></div>
+
+          <div class="statusbar">
+            <span class="time">9:45</span>
+            <span class="sys">
+              <svg width="18" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/></svg>
+              <svg width="17" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M8.5 16.43a6 6 0 0 1 7 0"/><path d="M12 20h.01"/><path d="M2 8.82a16 16 0 0 1 20 0"/></svg>
+              <svg width="24" height="13" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="2.5" width="20" height="9" rx="2"/><path d="M23.5 5.5v3" stroke-width="2"/><rect x="3" y="4.5" width="13" height="5" rx="0.5" fill="currentColor" stroke="none"/></svg>
+            </span>
+          </div>
+
+          <div class="scr-head">
+            <div class="scr-eyebrow">
+              <span class="k">// Skills</span>
+              <span class="date">29 available</span>
+            </div>
+            <h2 class="scr-title">Quick <em>Actions</em></h2>
+          </div>
+
+          <div class="scr-body">
+            <div class="sec-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+              Run a Skill <span class="count">tap to run</span>
+            </div>
+            <div class="recents" id="skillList">
+              <div class="skill-row" role="button" tabindex="0">
+                <span class="s-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+                <span class="s-main"><span class="s-cmd"><span class="sl">/</span>capture</span><span class="s-desc">Quick note with wikilink suggestions</span></span>
+                <span class="s-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+                <span class="s-run">Running…</span>
+              </div>
+              <div class="skill-row" role="button" tabindex="0">
+                <span class="s-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><path d="M3 16v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="m7 11 5 5 5-5"/></svg></span>
+                <span class="s-main"><span class="s-cmd"><span class="sl">/</span>consolidate</span><span class="s-desc">Process 00-inbox into the knowledge base</span></span>
+                <span class="s-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+                <span class="s-run">Running…</span>
+              </div>
+              <div class="skill-row" role="button" tabindex="0">
+                <span class="s-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a3 3 0 0 1 3 3v6"/></svg></span>
+                <span class="s-main"><span class="s-cmd"><span class="sl">/</span>connect</span><span class="s-desc">Find links to strengthen the graph</span></span>
+                <span class="s-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+                <span class="s-run">Running…</span>
+              </div>
+              <div class="skill-row" role="button" tabindex="0">
+                <span class="s-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                <span class="s-main"><span class="s-cmd"><span class="sl">/</span>daily</span><span class="s-desc">Briefing: tasks due + open items</span></span>
+                <span class="s-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+                <span class="s-run">Running…</span>
+              </div>
+              <div class="skill-row" role="button" tabindex="0">
+                <span class="s-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+                <span class="s-main"><span class="s-cmd"><span class="sl">/</span>research</span><span class="s-desc">Web research → 03-resources note</span></span>
+                <span class="s-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+                <span class="s-run">Running…</span>
+              </div>
+              <div class="skill-row" role="button" tabindex="0">
+                <span class="s-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6h6"/><path d="M4 2h10l6 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path d="M9 13h6M9 17h4"/></svg></span>
+                <span class="s-main"><span class="s-cmd"><span class="sl">/</span>distill</span><span class="s-desc">Synthesize notes on a topic</span></span>
+                <span class="s-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+                <span class="s-run">Running…</span>
+              </div>
+              <div class="skill-row" role="button" tabindex="0">
+                <span class="s-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12h6M9 16h6"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>
+                <span class="s-main"><span class="s-cmd"><span class="sl">/</span>doctor</span><span class="s-desc">Diagnose vault + plugin health</span></span>
+                <span class="s-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+                <span class="s-run">Running…</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB BAR (Skills active) -->
+          <nav class="tabbar" aria-label="Primary">
+            <button class="tab" data-tab="vault">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><circle cx="12" cy="12" r="3"/><path d="M12 4v5M12 15v5M4 12h5M15 12h5"/></svg>
+              Vault
+            </button>
+            <button class="tab is-active" data-tab="skills" aria-current="page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+              Skills
+            </button>
+            <span class="tab tab-center" data-tab="capture" aria-hidden="true">
+              <span class="plus-btn"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span>
+            </span>
+            <button class="tab" data-tab="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search
+            </button>
+            <button class="tab" data-tab="you">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              You
+            </button>
+          </nav>
+          <div class="home-bar"><i></i></div>
+        </div>
+      </div>
+      <p class="cap"><b>03</b> · Skills</p>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* --- Screen 1: tasks toggle done/undone (the "- [ ]" rows) --- */
+      var taskList = document.getElementById('taskList');
+      if (taskList) {
+        taskList.querySelectorAll('.task').forEach(function (t) {
+          var toggle = function () { t.classList.toggle('is-done'); };
+          t.addEventListener('click', toggle);
+          t.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+          });
+        });
+      }
+
+      /* --- Screen 2: capture composer --- */
+      var area = document.getElementById('captureArea');
+      var charCount = document.getElementById('charCount');
+      var chipList = document.getElementById('chipList');
+      var captureBtn = document.getElementById('captureBtn');
+      var toast = document.getElementById('captureToast');
+      var toastTimer = null;
+
+      function updateCount() { if (charCount) charCount.textContent = area.value.length; }
+
+      if (area) { area.addEventListener('input', updateCount); }
+
+      /* tapping a suggested wikilink chip inserts it at the caret */
+      if (chipList && area) {
+        chipList.querySelectorAll('.chip').forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            var link = chip.getAttribute('data-link') || '';
+            var v = area.value;
+            var start = (typeof area.selectionStart === 'number') ? area.selectionStart : v.length;
+            var end = (typeof area.selectionEnd === 'number') ? area.selectionEnd : v.length;
+            var pad = (start > 0 && !/\s$/.test(v.slice(0, start))) ? ' ' : '';
+            var insert = pad + link + ' ';
+            area.value = v.slice(0, start) + insert + v.slice(end);
+            var pos = start + insert.length;
+            area.focus();
+            try { area.setSelectionRange(pos, pos); } catch (e) {}
+            updateCount();
+            chip.classList.add('is-used');
+          });
+        });
+      }
+
+      if (captureBtn && area && toast) {
+        captureBtn.addEventListener('click', function () {
+          if (!area.value.trim()) {
+            area.focus();
+            area.placeholder = 'Type a thought first, then Capture.';
+            return;
+          }
+          toast.classList.add('is-show');
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () { toast.classList.remove('is-show'); }, 2600);
+          area.value = '';
+          updateCount();
+          /* reset chips so they can be suggested again */
+          if (chipList) chipList.querySelectorAll('.chip.is-used').forEach(function (c) { c.classList.remove('is-used'); });
+        });
+      }
+
+      /* --- Screen 3: skill rows show a brief active state when tapped --- */
+      var skillList = document.getElementById('skillList');
+      if (skillList) {
+        skillList.querySelectorAll('.skill-row').forEach(function (row) {
+          var fire = function () {
+            skillList.querySelectorAll('.skill-row.is-active').forEach(function (r) {
+              if (r !== row) { r.classList.remove('is-active'); }
+            });
+            row.classList.add('is-active');
+            if (row._t) clearTimeout(row._t);
+            row._t = setTimeout(function () { row.classList.remove('is-active'); }, 1600);
+          };
+          row.addEventListener('click', fire);
+          row.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); }
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

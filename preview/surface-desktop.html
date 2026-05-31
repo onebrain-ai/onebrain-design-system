@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneBrain — Operator Console</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    /* ===== Desktop window shell — section accent: CYAN (system default) ===== */
+    .ob-root { overflow: hidden; height: 100vh; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    .app-window {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border-2);
+      box-shadow: var(--elev-3);
+      overflow: hidden;
+    }
+
+    /* ---- Title bar ---- */
+    .titlebar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--space-3);
+      height: 40px;
+      padding: 0 var(--space-4);
+      background: var(--color-bg-deep);
+      border-bottom: 1px solid var(--color-border);
+      flex: 0 0 auto;
+      user-select: none;
+    }
+    .traffic { display: flex; align-items: center; gap: var(--space-2); }
+    .traffic span {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border-2);
+    }
+    .traffic span.r { background: rgba(255,45,146,.14); border-color: var(--color-accent-3); }
+    .traffic span.y { background: rgba(255,176,0,.14); border-color: var(--color-accent-4); }
+    .traffic span.g { background: rgba(168,208,0,.14); border-color: var(--color-loop); }
+    .titlebar__wordmark {
+      display: flex; align-items: center; gap: var(--space-2);
+      justify-self: center;
+    }
+    .titlebar__wordmark .ob-display { font-size: var(--text-sm); letter-spacing: 0.04em; }
+    .titlebar__right { justify-self: end; display: flex; align-items: center; gap: var(--space-3); }
+    .kbd {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-muted);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-2);
+      padding: 4px var(--space-2);
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+    }
+    .kbd:hover { color: var(--section-accent); border-color: var(--section-accent); }
+    .kbd svg { width: 16px; height: 16px; }
+
+    /* ---- 3-pane console grid ---- */
+    .console {
+      flex: 1 1 auto;
+      display: grid;
+      grid-template-columns: 252px 1fr 320px;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ---- LEFT: sidebar ---- */
+    .sidebar {
+      display: flex; flex-direction: column;
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      min-height: 0; overflow-y: auto;
+    }
+    .sidebar__brand {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      flex: 0 0 auto;
+    }
+    .sidebar__brand .ob-display { font-size: var(--text-lg); }
+    .sidebar__brain {
+      width: 28px; height: 28px; flex: 0 0 auto;
+      filter: drop-shadow(0 0 8px rgba(0,243,255,.25));
+    }
+    .rail-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--color-ghost);
+      padding: var(--space-4) var(--space-4) var(--space-2);
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: 9px var(--space-4);
+      font-family: var(--font-mono); font-size: var(--text-sm);
+      color: var(--color-muted);
+      border-left: 2px solid transparent;
+      cursor: pointer;
+      transition: color var(--dur-fast) ease, background var(--dur-fast) ease, border-color var(--dur-fast) ease;
+    }
+    .nav-item:hover { color: var(--color-text); background: rgba(255,255,255,.03); }
+    .nav-item--active {
+      color: var(--color-white);
+      background: var(--action-primary-weak);
+      border-left-color: var(--section-accent);
+    }
+    .nav-item__count {
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--color-ghost);
+      font-variant-numeric: tabular-nums;
+    }
+    .nav-item--active .nav-item__count { color: var(--section-accent); }
+    .nav-item svg { width: 16px; height: 16px; flex: 0 0 auto; }
+
+    .skills-rail {
+      display: flex; flex-wrap: wrap; gap: var(--space-2);
+      padding: 0 var(--space-4) var(--space-4);
+    }
+    .skill-pill {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--color-muted);
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border-2);
+      padding: 4px 9px;
+      cursor: pointer;
+      transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+    }
+    .skill-pill:hover { color: var(--section-accent); border-color: color-mix(in srgb, var(--section-accent) 45%, transparent); }
+
+    .sidebar__footer {
+      margin-top: auto;
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-4);
+      border-top: 1px solid var(--color-border);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-loop);
+      flex: 0 0 auto;
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto;
+      background: var(--color-loop); box-shadow: 0 0 10px var(--color-loop);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .sidebar__footer .ver { margin-left: auto; color: var(--color-muted); letter-spacing: 0.1em; }
+
+    /* ---- CENTER: session console ---- */
+    .main {
+      display: flex; flex-direction: column;
+      background: var(--color-bg);
+      min-width: 0; min-height: 0;
+    }
+    .main__head {
+      flex: 0 0 auto;
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg-deep);
+    }
+    .main__head .ob-display { font-size: var(--text-lg); margin: 0; }
+    .accent-bar { width: 3px; height: 34px; background: var(--section-accent); box-shadow: 0 0 10px var(--section-accent); flex: 0 0 auto; }
+    .main__path {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--color-ghost); letter-spacing: 0.06em; margin-top: 3px;
+    }
+    .icon-btn {
+      margin-left: auto;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+    }
+    .icon-btn:hover { color: var(--section-accent); border-color: var(--section-accent); }
+    .icon-btn svg { width: 18px; height: 18px; }
+
+    .log {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: var(--space-5);
+      display: flex; flex-direction: column; gap: var(--space-5);
+      min-height: 0;
+    }
+
+    /* message rows */
+    .msg { display: flex; gap: var(--space-3); animation: msg-in var(--dur-base) ease both; }
+    @keyframes msg-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .msg__avatar {
+      flex: 0 0 auto;
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      border: 1px solid var(--color-border-2);
+      background: var(--color-surface);
+      color: var(--color-muted);
+    }
+    .msg--user .msg__avatar { color: var(--section-accent); border-color: var(--section-accent); box-shadow: var(--glow-cyan); }
+    .msg--agent .msg__avatar { color: var(--color-text); }
+    .msg__body { min-width: 0; flex: 1 1 auto; }
+    .msg__role {
+      font-family: var(--font-mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 0.28em;
+      color: var(--color-ghost); margin-bottom: var(--space-2);
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .msg__time { margin-left: auto; color: var(--color-border); letter-spacing: 0.1em; }
+
+    .bubble {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-sm);
+      line-height: 1.65;
+      color: var(--color-faint);
+    }
+    .msg--user .bubble {
+      background: var(--color-surface-2);
+      border-left: 2px solid var(--section-accent);
+      color: var(--color-text);
+      font-family: var(--font-mono);
+    }
+    .bubble strong { color: var(--color-text); font-weight: 600; }
+    .bubble .ob-mono { color: var(--color-text); }
+    .wl {
+      font-family: var(--font-mono);
+      color: var(--section-accent);
+      cursor: pointer;
+      border-bottom: 1px dashed color-mix(in srgb, var(--section-accent) 40%, transparent);
+    }
+    .wl:hover { border-bottom-style: solid; }
+    .route {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      margin-top: var(--space-3);
+      font-family: var(--font-mono); font-size: var(--text-xs);
+      color: var(--color-muted);
+    }
+    .route svg { width: 14px; height: 14px; color: var(--section-accent); flex: 0 0 auto; }
+
+    /* co-evolution loop chips */
+    .loop { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-3); flex-wrap: wrap; }
+    .loop__step {
+      font-family: var(--font-mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      padding: 3px var(--space-2);
+      border: 1px solid var(--color-border-2);
+      color: var(--color-muted);
+      background: var(--color-surface-2);
+    }
+    .loop__step--on { color: var(--section-accent); border-color: color-mix(in srgb, var(--section-accent) 55%, transparent); box-shadow: 0 0 0 1px rgba(0,243,255,.1); }
+    .loop__arrow { color: var(--color-ghost); }
+
+    /* composer dock */
+    .dock {
+      flex: 0 0 auto;
+      padding: var(--space-4) var(--space-5);
+      border-top: 1px solid var(--color-border);
+      background: var(--color-bg-deep);
+    }
+    .composer { max-width: none; }
+    .composer__input {
+      flex: 1; min-width: 0; background: transparent; border: none;
+      color: var(--color-text); font-family: var(--font-mono); font-size: 14px;
+      padding: 14px 12px;
+    }
+    .composer__input::placeholder { color: var(--color-muted); }
+    .composer__input:focus { outline: none; }
+    .composer__submit { clip-path: var(--clip-tech); background: var(--grad-button); padding: 1.5px; margin: 5px; border: 0; cursor: pointer; transition: box-shadow var(--dur-fast) ease; }
+    .composer__submit:hover { box-shadow: var(--glow-cta); }
+    .composer__submit span {
+      display: flex; align-items: center; gap: 6px;
+      clip-path: var(--clip-tech); background: var(--color-bg); color: #fff;
+      font-family: var(--font-display); font-style: italic; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em; padding: 9px 18px; font-size: 0.78rem;
+      transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+    }
+    .composer__submit span svg { width: 15px; height: 15px; }
+    .composer__submit:hover span { background: #fff; color: #0a0a12; }
+    .dock__hint {
+      margin-top: var(--space-2);
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--color-ghost); letter-spacing: 0.04em;
+    }
+    .dock__hint b { color: var(--section-accent); font-weight: 400; }
+
+    /* ---- RIGHT: inspector ---- */
+    .inspector {
+      background: var(--color-surface);
+      border-left: 1px solid var(--color-border);
+      overflow-y: auto;
+      min-height: 0;
+      display: flex; flex-direction: column;
+    }
+    .insp__head {
+      padding: var(--space-4) var(--space-4) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .insp__note { font-size: var(--text-sm); color: var(--color-text); margin: var(--space-2) 0 0; font-family: var(--font-mono); line-height: 1.5; }
+    .insp__block { padding: var(--space-4); border-bottom: 1px solid var(--color-border); }
+    .insp__label {
+      font-family: var(--font-mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 0.3em;
+      color: var(--color-ghost); margin: 0 0 var(--space-3);
+      display: flex; align-items: center;
+    }
+    .meta-row { display: flex; justify-content: space-between; gap: var(--space-3); font-size: var(--text-sm); padding: 3px 0; }
+    .meta-row dt { color: var(--color-ghost); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; }
+    .meta-row dd { margin: 0; color: var(--color-muted); font-family: var(--font-mono); font-size: 11px; font-variant-numeric: tabular-nums; text-align: right; }
+    .backlink { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) 0; font-size: var(--text-sm); font-family: var(--font-mono); color: var(--color-muted); cursor: pointer; }
+    .backlink:hover { color: var(--section-accent); }
+    .backlink svg { width: 14px; height: 14px; color: var(--color-ghost); flex: 0 0 auto; }
+    .backlink:hover svg { color: var(--section-accent); }
+
+    /* Knowledge Linker — sub-agent SOURCE COLOR is blue (semantic, not section accent) */
+    .linker { --src: var(--color-vault); }
+    .linker .insp__label { color: var(--color-harness); }
+    .suggest {
+      border: 1px solid var(--color-border);
+      border-left: 2px solid var(--color-harness);
+      background: var(--color-surface-2);
+      padding: var(--space-3);
+      margin-bottom: var(--space-3);
+      cursor: pointer;
+      transition: border-color var(--dur-fast) ease;
+    }
+    .suggest:last-child { margin-bottom: 0; }
+    .suggest:hover { border-color: color-mix(in srgb, var(--color-harness) 50%, transparent); }
+    .suggest__top { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-1); }
+    .suggest__title { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text); }
+    .suggest__conf { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--color-harness); font-variant-numeric: tabular-nums; }
+    .suggest__why { font-size: 10px; font-family: var(--font-mono); color: var(--color-ghost); line-height: 1.5; }
+    .src-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-harness); box-shadow: 0 0 8px var(--color-harness); flex: 0 0 auto; }
+    .insp__label .src-dot { margin-right: 7px; }
+
+    /* ---- command palette ---- */
+    .palette-wrap {
+      position: fixed; inset: 0; z-index: 50;
+      background: var(--scrim);
+      display: none;
+      align-items: flex-start; justify-content: center;
+      padding: 12vh var(--space-4) var(--space-4);
+    }
+    .palette-wrap.open { display: flex; }
+    .palette { width: min(560px, 100%); }
+    .palette__field {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border: 1px solid var(--section-accent);
+      box-shadow: var(--glow-cyan);
+    }
+    .palette__field svg { width: 18px; height: 18px; color: var(--section-accent); flex: 0 0 auto; }
+    .palette__field input {
+      flex: 1; min-width: 0; background: transparent; border: none;
+      color: var(--color-text); font-family: var(--font-mono); font-size: var(--text-base);
+    }
+    .palette__field input:focus { outline: none; }
+    .palette__field input::placeholder { color: var(--color-muted); }
+    .palette__list { max-height: 46vh; overflow-y: auto; }
+    .palette__item {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: 11px var(--space-3);
+      font-family: var(--font-mono); font-size: 12.5px;
+      color: var(--color-muted); cursor: pointer;
+      transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+    }
+    .palette__item:hover, .palette__item--active { background: var(--action-primary-weak); color: var(--color-text); }
+    .palette__item svg { width: 16px; height: 16px; flex: 0 0 auto; color: var(--section-accent); }
+    .palette__item .cmd-name { color: var(--color-text); }
+    .palette__item .cmd-desc { color: var(--color-ghost); margin-left: auto; font-size: 10px; text-align: right; }
+    .palette__empty { padding: var(--space-4) var(--space-3); font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); }
+
+    /* ---- mobile toggles (hidden on desktop) ---- */
+    .pane-toggle { display: none; }
+    .scrim-pane {
+      position: absolute; inset: 0; background: var(--scrim); z-index: 20; display: none;
+    }
+    .scrim-pane.show { display: block; }
+
+    /* ===== RESPONSIVE ===== */
+    /* collapse RIGHT inspector under 1280 */
+    @media (max-width: 1279px) {
+      .console { grid-template-columns: 252px 1fr; }
+      .inspector {
+        position: absolute; top: 0; right: 0; bottom: 0;
+        width: min(340px, 86vw); z-index: 30;
+        box-shadow: var(--elev-3);
+        transform: translateX(100%);
+        transition: transform var(--dur-base) ease;
+      }
+      .inspector.open { transform: none; }
+      .pane-toggle.insp-toggle { display: inline-flex; }
+    }
+    /* collapse LEFT sidebar under 1024 */
+    @media (max-width: 1023px) {
+      .console { grid-template-columns: 1fr; }
+      .sidebar {
+        position: absolute; top: 0; left: 0; bottom: 0;
+        width: min(280px, 84vw); z-index: 30;
+        box-shadow: var(--elev-3);
+        transform: translateX(-100%);
+        transition: transform var(--dur-base) ease;
+      }
+      .sidebar.open { transform: none; }
+      .pane-toggle.nav-toggle { display: inline-flex; }
+    }
+    @media (max-width: 600px) {
+      .titlebar { grid-template-columns: auto 1fr auto; padding: 0 var(--space-3); }
+      .titlebar__wordmark { justify-self: start; }
+      .traffic { display: none; }
+      .kbd .kbd-label { display: none; }
+      .main__head { padding: var(--space-3) var(--space-4); }
+      .log, .dock { padding: var(--space-4) var(--space-3); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .msg { animation: none; }
+      .inspector, .sidebar, .icon-btn, .kbd, .nav-item, .skill-pill,
+      .composer__submit, .composer__submit span, .suggest, .palette__item { transition: none; }
+      .status-dot { animation: none; }
+    }
+  </style>
+</head>
+<body class="ob-root">
+  <div class="app-window">
+    <!-- ===== TITLE BAR ===== -->
+    <header class="titlebar">
+      <div class="traffic" aria-hidden="true">
+        <span class="r"></span><span class="y"></span><span class="g"></span>
+      </div>
+      <div class="titlebar__wordmark">
+        <span class="ob-display">OneBrain</span>
+        <span class="ob-mono" style="font-size:10px;color:var(--color-ghost);letter-spacing:0.2em">OPERATOR CONSOLE</span>
+      </div>
+      <div class="titlebar__right">
+        <button class="pane-toggle nav-toggle kbd" id="navToggle" aria-label="Toggle vault sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <button class="kbd" id="paletteBtn" aria-label="Open command palette">
+          <span>&#8984;K</span><span class="kbd-label">commands</span>
+        </button>
+        <button class="pane-toggle insp-toggle kbd" id="inspToggle" aria-label="Toggle inspector">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14"/><line x1="15" y1="5" x2="15" y2="19"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== 3-PANE CONSOLE ===== -->
+    <div class="console">
+      <div class="scrim-pane" id="scrim"></div>
+
+      <!-- LEFT SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar__brand">
+          <img class="sidebar__brain" src="../assets/brain.svg" alt="OneBrain logo">
+          <span class="ob-display">OneBrain</span>
+        </div>
+
+        <div class="rail-label">// Vault · PARA</div>
+        <nav id="folders" aria-label="Vault folders"></nav>
+
+        <hr class="cyber-divider" style="border:0;border-top:1px solid var(--color-border);margin:var(--space-3) var(--space-4)">
+
+        <div class="rail-label">// Skills · 29</div>
+        <div class="skills-rail" id="skills"></div>
+
+        <div class="sidebar__footer">
+          <span class="status-dot"></span>
+          <span>System Online</span>
+          <span class="ver">v3.1.6</span>
+        </div>
+      </aside>
+
+      <!-- CENTER MAIN -->
+      <main class="main">
+        <div class="main__head">
+          <span class="accent-bar"></span>
+          <div>
+            <h2 class="ob-display" id="mainTitle">01-projects</h2>
+            <div class="main__path" id="mainPath">~/vault/01-projects · session #482</div>
+          </div>
+          <button class="icon-btn" id="paletteBtn2" title="Run command (Cmd+K)" aria-label="Run command">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          </button>
+        </div>
+
+        <div class="log" id="log" aria-live="polite"></div>
+
+        <!-- composer dock -->
+        <div class="dock">
+          <form class="composer" id="composer">
+            <span class="composer-slash">/</span>
+            <input class="composer__input" id="cmd" autocomplete="off"
+                   placeholder="Type a command…  capture  connect  distill  consolidate"
+                   aria-label="Command composer">
+            <button class="composer__submit" type="submit" aria-label="Run command">
+              <span>Run
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </button>
+          </form>
+          <div class="dock__hint">Prefix with <b>/</b> to run a skill &middot; press <b>&#8984;K</b> for the command palette</div>
+        </div>
+      </main>
+
+      <!-- RIGHT INSPECTOR -->
+      <aside class="inspector" id="inspector">
+        <div class="insp__head">
+          <p class="insp__label">Active Note</p>
+          <p class="insp__note" id="inspNote">[[Q3 Roadmap — Memory Engine]]</p>
+        </div>
+
+        <div class="insp__block">
+          <p class="insp__label">Metadata</p>
+          <dl style="margin:0">
+            <div class="meta-row"><dt>folder</dt><dd>01-projects</dd></div>
+            <div class="meta-row"><dt>created</dt><dd>2026-05-14</dd></div>
+            <div class="meta-row"><dt>modified</dt><dd>2026-05-31</dd></div>
+            <div class="meta-row"><dt>words</dt><dd>1,284</dd></div>
+            <div class="meta-row"><dt>backlinks</dt><dd id="blCount">4</dd></div>
+          </dl>
+          <div style="display:flex; gap:var(--space-2); flex-wrap:wrap; margin-top:var(--space-3)">
+            <span class="tag">#project</span>
+            <span class="tag">#memory</span>
+            <span class="tag">#active</span>
+          </div>
+        </div>
+
+        <div class="insp__block">
+          <p class="insp__label">Backlinks &amp; Wikilinks</p>
+          <div id="backlinks"></div>
+        </div>
+
+        <div class="insp__block linker">
+          <p class="insp__label"><span class="src-dot"></span>Knowledge Linker · suggestions</p>
+          <div id="suggestions"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ===== COMMAND PALETTE ===== -->
+  <div class="palette-wrap" id="paletteWrap" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette">
+      <div class="palette__field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="paletteInput" placeholder="Run a skill…  /capture  /connect  /distill" aria-label="Search commands" autocomplete="off">
+      </div>
+      <div class="dropdown palette__list" id="paletteList" role="listbox"></div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    "use strict";
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+
+    /* ---- icons (Lucide-style, inline) ---- */
+    var IC = {
+      inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',
+      folder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/></svg>',
+      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+      book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+      archive: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5"/><path d="M4 8v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+      link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+      cmd: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 0 0 0-6z"/></svg>'
+    };
+
+    /* ---- vault folders (PARA) ---- */
+    var folders = [
+      { id: "00-inbox",     icon: IC.inbox,    count: 7 },
+      { id: "01-projects",  icon: IC.folder,   count: 12 },
+      { id: "02-areas",     icon: IC.layers,   count: 9 },
+      { id: "03-resources", icon: IC.book,     count: 64 },
+      { id: "04-archive",   icon: IC.archive,  count: 218 },
+      { id: "07-logs",      icon: IC.activity, count: 482 }
+    ];
+    var active = "01-projects";
+
+    /* ---- skills (real OneBrain skills) ---- */
+    var skills = ["capture","braindump","bookmark","consolidate","connect","distill",
+      "daily","weekly","recap","learn","memory-review","moc","research","summarize",
+      "reading-notes","doctor","tasks","onboarding","update","pause","resume","schedule"];
+
+    /* ---- palette commands ---- */
+    var palette = [
+      { name: "/capture",     desc: "save a note + suggest links" },
+      { name: "/connect",     desc: "find note connections" },
+      { name: "/distill",     desc: "synthesize a topic" },
+      { name: "/consolidate", desc: "process the inbox" },
+      { name: "/daily",       desc: "daily briefing" },
+      { name: "/weekly",      desc: "weekly reflection" },
+      { name: "/doctor",      desc: "vault health check" },
+      { name: "/tasks",       desc: "task dashboard" },
+      { name: "/research",    desc: "research a topic" },
+      { name: "/recap",       desc: "promote insights" }
+    ];
+
+    /* ---- backlinks for the active note ---- */
+    var backlinks = [
+      "[[Persistent Memory Spec]]",
+      "[[Vault Hub — MOC]]",
+      "[[Skill — consolidate]]",
+      "[[Weekly Review 2026-W21]]"
+    ];
+
+    /* ---- Knowledge Linker suggestions (blue sub-agent) ---- */
+    var suggestions = [
+      { title: "[[Co-Evolution Loop]]",       conf: "0.91", why: "shares CAPTURE -> EVOLVE -> WRAPUP terminology with 3 inbox notes" },
+      { title: "[[onebrain.yml — schedule]]", conf: "0.84", why: "referenced by the roadmap's automation section" },
+      { title: "[[Harness OS Stack]]",        conf: "0.78", why: "co-occurs with 'memory engine' across 02-areas" }
+    ];
+
+    /* ---- render: folders ---- */
+    function renderFolders() {
+      var nav = $("#folders");
+      nav.innerHTML = "";
+      folders.forEach(function (f) {
+        var el = document.createElement("div");
+        el.className = "nav-item" + (f.id === active ? " nav-item--active" : "");
+        el.setAttribute("role", "button");
+        el.setAttribute("tabindex", "0");
+        el.innerHTML = f.icon + "<span>" + f.id + "</span><span class='nav-item__count'>" + f.count + "</span>";
+        el.addEventListener("click", function () { selectFolder(f.id); });
+        el.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectFolder(f.id); }
+        });
+        nav.appendChild(el);
+      });
+    }
+    function selectFolder(id) {
+      active = id;
+      $("#mainTitle").textContent = id;
+      $("#mainPath").textContent = "~/vault/" + id + " · session #482";
+      renderFolders();
+      closePanes();
+    }
+
+    /* ---- render: skills rail ---- */
+    function renderSkills() {
+      var rail = $("#skills");
+      rail.innerHTML = "";
+      skills.forEach(function (s) {
+        var b = document.createElement("button");
+        b.className = "skill-pill";
+        b.type = "button";
+        b.textContent = s;
+        b.title = "/" + s;
+        b.addEventListener("click", function () { setComposer("/" + s + " "); });
+        rail.appendChild(b);
+      });
+    }
+
+    /* ---- render: backlinks ---- */
+    function renderBacklinks() {
+      var box = $("#backlinks");
+      box.innerHTML = "";
+      backlinks.forEach(function (b) {
+        var el = document.createElement("div");
+        el.className = "backlink";
+        el.setAttribute("role", "button");
+        el.setAttribute("tabindex", "0");
+        el.innerHTML = IC.link + "<span>" + esc(b) + "</span>";
+        box.appendChild(el);
+      });
+      $("#blCount").textContent = backlinks.length;
+    }
+
+    /* ---- render: suggestions ---- */
+    function renderSuggestions() {
+      var box = $("#suggestions");
+      box.innerHTML = "";
+      suggestions.forEach(function (s) {
+        var el = document.createElement("div");
+        el.className = "suggest";
+        el.setAttribute("role", "button");
+        el.setAttribute("tabindex", "0");
+        el.innerHTML =
+          "<div class='suggest__top'><span class='src-dot'></span>" +
+          "<span class='suggest__title'>" + esc(s.title) + "</span>" +
+          "<span class='suggest__conf'>" + s.conf + "</span></div>" +
+          "<div class='suggest__why'>" + esc(s.why) + "</div>";
+        el.addEventListener("click", function () { setComposer("/connect " + s.title + " "); });
+        box.appendChild(el);
+      });
+    }
+
+    /* ---- console log ---- */
+    var log = $("#log");
+    function time() {
+      var d = new Date();
+      return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    }
+    function esc(s) {
+      return String(s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; });
+    }
+    function addUser(text) {
+      var row = document.createElement("div");
+      row.className = "msg msg--user";
+      row.innerHTML =
+        "<div class='msg__avatar'>U</div><div class='msg__body'>" +
+        "<div class='msg__role'>You<span class='msg__time'>" + time() + "</span></div>" +
+        "<div class='bubble'>" + esc(text) + "</div></div>";
+      log.appendChild(row);
+      scrollLog();
+    }
+    function addAgent(html) {
+      var row = document.createElement("div");
+      row.className = "msg msg--agent";
+      row.innerHTML =
+        "<div class='msg__avatar'>AI</div><div class='msg__body'>" +
+        "<div class='msg__role'>OneBrain<span class='msg__time'>" + time() + "</span></div>" +
+        "<div class='bubble'>" + html + "</div></div>";
+      log.appendChild(row);
+      scrollLog();
+    }
+    function scrollLog() { log.scrollTop = log.scrollHeight; }
+
+    /* ---- seed the session with a realistic flow ---- */
+    function seed() {
+      addUser("/capture Memory engine should reuse the consolidate pass before WRAPUP");
+      addAgent(
+        "Saved to <strong>01-projects</strong> as a new note. Routed by the Inbox Classifier." +
+        "<div class='route'>" + IC.arrow + " routed &rarr; <span class='ob-mono'>01-projects/memory-engine.md</span></div>" +
+        "<div style='margin-top:var(--space-3)'>Suggested wikilinks: " +
+        "<span class='wl'>[[Persistent Memory Spec]]</span> &middot; " +
+        "<span class='wl'>[[Co-Evolution Loop]]</span></div>"
+      );
+      addUser("/connect");
+      addAgent(
+        "Knowledge Linker found <strong>3</strong> candidate connections and wove them into the graph." +
+        "<div style='margin-top:var(--space-3)'>Strengthened: <span class='wl'>[[Vault Hub — MOC]]</span> &rarr; " +
+        "<span class='wl'>[[Co-Evolution Loop]]</span></div>" +
+        loopHtml(true, true, false)
+      );
+    }
+    function loopHtml(a, b, c) {
+      function step(label, on) { return "<span class='loop__step" + (on ? " loop__step--on" : "") + "'>" + label + "</span>"; }
+      return "<div class='loop'>" + step("CAPTURE", a) + "<span class='loop__arrow'>&rarr;</span>" +
+        step("EVOLVE", b) + "<span class='loop__arrow'>&rarr;</span>" + step("WRAPUP", c) + "</div>";
+    }
+
+    /* ---- composer ---- */
+    var cmd = $("#cmd");
+    function setComposer(v) { cmd.value = v; cmd.focus(); }
+
+    function runCommand(raw) {
+      var text = raw.trim();
+      if (!text) return;
+      addUser(text);
+      var base = text.replace(/^\//, "").split(/\s+/)[0].toLowerCase();
+      var arg = text.replace(/^\/?[^\s]+\s*/, "");
+      window.setTimeout(function () {
+        if (base === "capture" || base === "braindump") {
+          addAgent("Captured to <strong>00-inbox</strong>" + (arg ? ": <span class='ob-mono'>" + esc(arg) + "</span>" : "") +
+            ". Suggested wikilinks: <span class='wl'>[[Persistent Memory Spec]]</span> &middot; <span class='wl'>[[Vault Hub — MOC]]</span>" +
+            "<div class='route'>" + IC.arrow + " routed &rarr; <span class='ob-mono'>00-inbox/</span></div>");
+        } else if (base === "connect") {
+          addAgent("Knowledge Linker surfaced new edges across <strong>" + esc(active) + "</strong>." + loopHtml(true, true, false));
+        } else if (base === "consolidate") {
+          addAgent("Processed <strong>7</strong> inbox notes &rarr; merged into <span class='ob-mono'>02-areas</span> and <span class='ob-mono'>03-resources</span>.");
+        } else if (base === "distill") {
+          addAgent("Distilled a synthesis note from <strong>11</strong> linked sources into <span class='ob-mono'>03-resources</span>.");
+        } else if (base === "doctor") {
+          addAgent("Vault scan complete &mdash; <strong>0</strong> broken links, <strong>2</strong> orphan notes, inbox backlog <strong>7</strong>. <span class='ob-mono'>onebrain.yml</span> valid.");
+        } else if (base === "daily") {
+          addAgent("Daily briefing: <strong>3</strong> tasks due today, <strong>1</strong> open thread from session #481.");
+        } else if (base === "tasks") {
+          addAgent("Rebuilt <span class='ob-mono'>TASKS.md</span> &mdash; <strong>14</strong> open across <strong>4</strong> projects.");
+        } else {
+          addAgent("Ran <span class='ob-mono'>/" + esc(base) + "</span>" + (arg ? " with <span class='ob-mono'>" + esc(arg) + "</span>" : "") + ". Logged to <span class='ob-mono'>07-logs</span>.");
+        }
+      }, 220);
+    }
+
+    $("#composer").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = cmd.value.trim();
+      if (!v) return;
+      runCommand(v.charAt(0) === "/" ? v : "/" + v);
+      cmd.value = "";
+    });
+
+    /* ---- command palette ---- */
+    var pw = $("#paletteWrap"), pInput = $("#paletteInput"), pList = $("#paletteList");
+    var pIndex = 0, pFiltered = palette.slice();
+
+    function openPalette() {
+      pw.classList.add("open");
+      pInput.value = ""; pIndex = 0; pFiltered = palette.slice();
+      renderPalette();
+      pInput.focus();
+    }
+    function closePalette() { pw.classList.remove("open"); }
+    function renderPalette() {
+      pList.innerHTML = "";
+      if (!pFiltered.length) {
+        pList.innerHTML = "<div class='palette__empty'>No matching command.</div>";
+        return;
+      }
+      pFiltered.forEach(function (c, i) {
+        var item = document.createElement("div");
+        item.className = "palette__item" + (i === pIndex ? " palette__item--active" : "");
+        item.setAttribute("role", "option");
+        item.innerHTML = IC.cmd + "<span class='cmd-name'>" + c.name + "</span><span class='cmd-desc'>" + c.desc + "</span>";
+        item.addEventListener("click", function () { pickPalette(c); });
+        pList.appendChild(item);
+      });
+    }
+    function pickPalette(c) { closePalette(); runCommand(c.name); }
+    pInput.addEventListener("input", function () {
+      var q = pInput.value.replace(/^\//, "").toLowerCase();
+      pFiltered = palette.filter(function (c) { return c.name.indexOf(q) > -1 || c.desc.indexOf(q) > -1; });
+      pIndex = 0; renderPalette();
+    });
+    pInput.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") { e.preventDefault(); pIndex = Math.min(pIndex + 1, pFiltered.length - 1); renderPalette(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); pIndex = Math.max(pIndex - 1, 0); renderPalette(); }
+      else if (e.key === "Enter") { e.preventDefault(); if (pFiltered[pIndex]) pickPalette(pFiltered[pIndex]); }
+      else if (e.key === "Escape") { closePalette(); }
+    });
+    pw.addEventListener("click", function (e) { if (e.target === pw) closePalette(); });
+    $("#paletteBtn").addEventListener("click", openPalette);
+    $("#paletteBtn2").addEventListener("click", openPalette);
+
+    /* ---- global keyboard: Cmd+K / Ctrl+K ---- */
+    document.addEventListener("keydown", function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (pw.classList.contains("open")) { closePalette(); } else { openPalette(); }
+      } else if (e.key === "Escape" && pw.classList.contains("open")) {
+        closePalette();
+      }
+    });
+
+    /* ---- responsive pane toggles ---- */
+    var sidebar = $("#sidebar"), inspector = $("#inspector"), scrim = $("#scrim");
+    function closePanes() {
+      sidebar.classList.remove("open");
+      inspector.classList.remove("open");
+      scrim.classList.remove("show");
+    }
+    $("#navToggle").addEventListener("click", function () {
+      var on = !sidebar.classList.contains("open");
+      closePanes();
+      if (on) { sidebar.classList.add("open"); scrim.classList.add("show"); }
+    });
+    $("#inspToggle").addEventListener("click", function () {
+      var on = !inspector.classList.contains("open");
+      closePanes();
+      if (on) { inspector.classList.add("open"); scrim.classList.add("show"); }
+    });
+    scrim.addEventListener("click", closePanes);
+
+    /* ---- init ---- */
+    renderFolders();
+    renderSkills();
+    renderBacklinks();
+    renderSuggestions();
+    seed();
+  })();
+  </script>
+</body>
+</html>

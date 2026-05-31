@@ -155,6 +155,22 @@
   --color-loop:      #a8d000;  /* co-evolution loop nodes                 */
   --color-loop-2:    #d4ff45;
 
+  /* -- Chart / data-viz tokens ---------------------------------------------
+     Categorical series ALIAS the accents + diagram colors, so they inherit the
+     light re-inking automatically. Use 1–3 series typically; the full 6 only
+     for genuinely categorical data. Gridlines/axes stay low-contrast — the
+     data is the signal, not the chrome. (var() resolves at use-time, so the
+     forward reference to --color-success below is fine.) */
+  --chart-1: var(--color-accent-2);  /* cyan / teal    — primary series   */
+  --chart-2: var(--color-accent);    /* violet / orchid                   */
+  --chart-3: var(--color-accent-3);  /* magenta / rose                    */
+  --chart-4: var(--color-accent-4);  /* amber / ochre                     */
+  --chart-5: var(--color-success);   /* lime / moss                       */
+  --chart-6: var(--color-vault-2);   /* vault light purple                */
+  --chart-grid:  rgba(255, 255, 255, 0.06); /* low-contrast gridline       */
+  --chart-axis:  var(--color-muted);         /* axis labels / ticks        */
+  --chart-track: rgba(255, 255, 255, 0.05); /* bar track / sequential base */
+
   /* -- Semantic states (derived from accent roles) -------------------------- */
   --color-success:  var(--color-loop);     /* #a8d000 lime  */
   --color-info:     var(--color-accent-2); /* #00f3ff cyan  */
@@ -252,6 +268,18 @@
   /* -- HUD grid backdrop (source: .cyber-section-grid 56px lattice) -------- */
   --grid-size: 56px;
   --grid-line: rgba(255, 255, 255, 0.022);
+
+  /* -- Breakpoints (REFERENCE values) --------------------------------------
+     CSS @media cannot read custom properties — author media queries with the
+     literal px below. These vars exist for JS (getComputedStyle / RN) and to
+     document the one canonical scale every surface shares. */
+  --bp-sm:    360px;   /* mobile compact                                    */
+  --bp-md:    600px;   /* large phone / foldable                            */
+  --bp-lg:    768px;   /* tablet portrait                                   */
+  --bp-xl:    1024px;  /* tablet landscape / small laptop (console multi-col) */
+  --bp-2xl:   1280px;  /* laptop / content shell                            */
+  --bp-wide:  1440px;  /* desktop                                           */
+  --bp-ultra: 1920px;  /* wide                                              */
 
   /* -- Z layers ------------------------------------------------------------ */
   --z-bg: -1; --z-grid: 1; --z-content: 10; --z-spine: 30; --z-warp: 45; --z-nav: 50; --z-counter: 1000;
@@ -364,6 +392,12 @@
      vars above, so they inherit the inked values automatically. --color-success
      points at --color-loop (a diagram color we keep neon), so re-ink it here. */
   --color-success:   #5f7d00;  /* lime -> moss ink (states only) */
+
+  /* Chart: categorical c1–c5 inherit the re-inked accents/success above;
+     only the vault purple + low-contrast chrome need a white-ground tune. */
+  --chart-6:     #6d28d9;                /* vault light -> deeper purple    */
+  --chart-grid:  rgba(8, 8, 16, 0.07);
+  --chart-track: rgba(8, 8, 16, 0.05);
 
   /* Elevation on white reads as real drop-shadow, not neon glow. */
   --elev-1: 0 1px 2px rgba(10, 10, 18, 0.06), 0 0 0 1px var(--color-border);

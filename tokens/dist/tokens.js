@@ -36,6 +36,17 @@ const tokens = {
       "warning": "#ffb000",
       "danger": "#ff2d92"
     },
+    "chart": {
+      "c1": "#00f3ff",
+      "c2": "#bc13fe",
+      "c3": "#ff2d92",
+      "c4": "#ffb000",
+      "c5": "#a8d000",
+      "c6": "#a78bfa",
+      "grid": "#ffffff0f",
+      "axis": "#a1a1aa",
+      "track": "#ffffff0d"
+    },
     "intent": {
       "textPrimary": "#f0f0f2",
       "textSecondary": "#a1a1aa",
@@ -136,6 +147,15 @@ const tokens = {
       "proseMax": "640px",
       "gridSize": "56px"
     },
+    "breakpoint": {
+      "sm": "360px",
+      "md": "600px",
+      "lg": "768px",
+      "xl": "1024px",
+      "xxl": "1280px",
+      "wide": "1440px",
+      "ultra": "1920px"
+    },
     "radius": {
       "0": "0px",
       "xs": "2px",
@@ -208,6 +228,17 @@ const tokens = {
       "info": "#007a90",
       "warning": "#9a6400",
       "danger": "#c2186a"
+    },
+    "chart": {
+      "c1": "#007a90",
+      "c2": "#9500c7",
+      "c3": "#c2186a",
+      "c4": "#9a6400",
+      "c5": "#5f7d00",
+      "c6": "#6d28d9",
+      "grid": "#08081012",
+      "axis": "#52525b",
+      "track": "#0808100d"
     },
     "intent": {
       "textPrimary": "#0a0a12",
@@ -308,6 +339,15 @@ const tokens = {
       "contentMax": "1280px",
       "proseMax": "640px",
       "gridSize": "56px"
+    },
+    "breakpoint": {
+      "sm": "360px",
+      "md": "600px",
+      "lg": "768px",
+      "xl": "1024px",
+      "xxl": "1280px",
+      "wide": "1440px",
+      "ultra": "1920px"
     },
     "radius": {
       "0": "0px",
