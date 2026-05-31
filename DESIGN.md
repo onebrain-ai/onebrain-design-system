@@ -193,6 +193,15 @@ The dark-first product surfaces are untouched.
   and small pill text/borders. Bodies stay on the neutral scale.
 - Brand-emphasise literal "OneBrain" mentions in prose with `--color-white` + bold +
   a soft white text-shadow halo (source `.brand`).
+- **User-settable accent (runtime).** Because every component reads the accent *intents*
+  (`--section-accent`, `--action-primary`, `--action-primary-weak`, `--grad-button`) rather
+  than a raw hex, a surface's accent can be exposed as a real product setting: one control
+  rewrites those four variables on the surface root and the whole surface re-keys from a
+  single source of truth — eyebrows, active tabs, the corner-cut `+` tile, chips, composer
+  focus, streak pips, glows. Offer only the four brand accents (cyan / violet / magenta /
+  amber) so any choice stays on-palette, and persist it (e.g. `localStorage`). This is the
+  one legitimate place a solid-accent *fill* appears — the picker swatch, which **is** the
+  color. Reference implementation: `preview/surface-mobile.html` → "You / Appearance".
 
 ---
 

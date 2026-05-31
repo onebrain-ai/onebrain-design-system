@@ -236,6 +236,52 @@
     .scr-toast .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--section-accent); box-shadow: var(--glow-sm); }
     .scr-toast b { color: var(--text-primary); font-weight: 500; }
 
+    /* ---- You / Appearance screen ---- */
+    /* Operator identity block */
+    .you-id { display: flex; align-items: center; gap: 13px; padding: 15px; background: var(--color-surface); border: 1px solid var(--border-default); }
+    .you-id .av { width: 46px; height: 46px; flex: none; display: grid; place-content: center; border: 1px solid var(--section-accent); background: var(--bg-elevated); color: var(--section-accent);
+      clip-path: polygon(18% 0, 100% 0, 100% 82%, 82% 100%, 0 100%, 0 18%); box-shadow: var(--glow-sm); }
+    .you-id .av svg { width: 22px; height: 22px; }
+    .you-id .who { min-width: 0; flex: 1; }
+    .you-id .who .n { font-family: var(--font-display); font-style: italic; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.02em; color: var(--color-white); font-size: 1rem; }
+    .you-id .who .h { margin-top: 3px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-disabled); }
+    .you-id .ver { margin-left: auto; flex: none; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--section-accent); }
+
+    /* Accent picker — the color swatch is the one legitimate solid-accent fill
+       (you're choosing the color). Selecting a swatch re-keys the whole surface
+       from --section-accent / --action-primary / --grad-button (see JS). */
+    .accent-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    .swatch { appearance: none; cursor: pointer; background: var(--color-surface); border: 1px solid var(--border-default);
+      padding: 12px 6px 9px; display: grid; place-items: center; gap: 9px;
+      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-disabled);
+      transition: border-color var(--dur-fast), box-shadow var(--dur-fast), color var(--dur-fast); }
+    .swatch .sw-dot { width: 30px; height: 30px; display: grid; place-content: center; background: var(--sw);
+      clip-path: polygon(24% 0, 100% 0, 100% 76%, 76% 100%, 0 100%, 0 24%);
+      box-shadow: 0 0 14px color-mix(in srgb, var(--sw) 55%, transparent); }
+    .swatch .sw-dot svg { width: 15px; height: 15px; color: #050507; opacity: 0; transform: scale(0.3);
+      transition: opacity var(--dur-fast), transform var(--dur-fast) var(--ease-out-expo); }
+    .swatch:hover { color: var(--text-secondary); border-color: var(--border-strong); }
+    .swatch.is-sel { border-color: var(--sw); color: var(--text-primary); box-shadow: 0 0 0 1px var(--sw), 0 0 16px color-mix(in srgb, var(--sw) 26%, transparent); }
+    .swatch.is-sel .sw-dot svg { opacity: 1; transform: scale(1); }
+
+    /* Live preview — re-tints with the chosen accent so the effect is visible in-place */
+    .accent-preview { display: flex; align-items: center; gap: 10px; padding: 13px 14px; background: var(--color-surface-2); border: 1px solid var(--border-subtle); }
+    .accent-preview .pv-l { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-disabled); flex: none; }
+    .accent-preview .pv-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.02em; color: var(--section-accent);
+      background: color-mix(in srgb, var(--section-accent) 8%, transparent); border: 1px solid color-mix(in srgb, var(--section-accent) 32%, transparent); }
+    .accent-preview .pv-chip svg { width: 12px; height: 12px; }
+    .accent-preview .grow { margin-left: auto; }
+
+    /* Read-only system rows */
+    .set-row { display: flex; align-items: center; gap: 11px; padding: 13px 15px; border-bottom: 1px solid var(--border-subtle); font-family: var(--font-mono); }
+    .set-row:last-child { border-bottom: 0; }
+    .set-row > svg { width: 16px; height: 16px; flex: none; color: var(--section-accent); }
+    .set-row .lbl { min-width: 0; }
+    .set-row .lbl b { color: var(--text-primary); font-weight: 500; font-size: 12px; display: block; }
+    .set-row .lbl small { color: var(--text-disabled); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .set-row .val { margin-left: auto; flex: none; color: var(--text-secondary); font-size: 10.5px; letter-spacing: 0.1em; }
+
     /* ---- Responsive: stack frames; redesign at small widths ---- */
     @media (max-width: 1280px) { .flow { gap: 28px; } }
     @media (max-width: 480px) {
@@ -599,6 +645,117 @@
       <p class="cap"><b>03</b> · Skills</p>
     </div>
 
+    <!-- ============ SCREEN 4 — YOU / APPEARANCE ============ -->
+    <div class="frame">
+      <div class="phone">
+        <div class="screen">
+          <div class="island"><span class="cam"></span></div>
+
+          <div class="statusbar">
+            <span class="time">9:47</span>
+            <span class="sys">
+              <svg width="18" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/></svg>
+              <svg width="17" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M8.5 16.43a6 6 0 0 1 7 0"/><path d="M12 20h.01"/><path d="M2 8.82a16 16 0 0 1 20 0"/></svg>
+              <svg width="24" height="13" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="2.5" width="20" height="9" rx="2"/><path d="M23.5 5.5v3" stroke-width="2"/><rect x="3" y="4.5" width="13" height="5" rx="0.5" fill="currentColor" stroke="none"/></svg>
+            </span>
+          </div>
+
+          <div class="scr-head">
+            <div class="scr-eyebrow">
+              <span class="k">// You</span>
+              <span class="date">Settings</span>
+            </div>
+            <h2 class="scr-title">Appea<em>rance</em></h2>
+          </div>
+
+          <div class="scr-body">
+            <!-- operator identity -->
+            <div class="you-id">
+              <span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+              <span class="who"><span class="n">Keng</span><span class="h">operator · local-first vault</span></span>
+              <span class="ver">v3.1.6</span>
+            </div>
+
+            <!-- accent color picker -->
+            <div class="sec-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2Z"/></svg>
+              Accent Color <span class="count">tap to set</span>
+            </div>
+            <div class="accent-grid" id="accentGrid" role="radiogroup" aria-label="Accent color">
+              <button class="swatch" type="button" role="radio" data-accent="cyan" style="--sw: var(--color-accent-2)" aria-pressed="false" aria-label="Cyan accent">
+                <span class="sw-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Cyan
+              </button>
+              <button class="swatch" type="button" role="radio" data-accent="violet" style="--sw: var(--color-accent)" aria-pressed="false" aria-label="Violet accent">
+                <span class="sw-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Violet
+              </button>
+              <button class="swatch" type="button" role="radio" data-accent="magenta" style="--sw: var(--color-accent-3)" aria-pressed="false" aria-label="Magenta accent">
+                <span class="sw-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Magenta
+              </button>
+              <button class="swatch" type="button" role="radio" data-accent="amber" style="--sw: var(--color-accent-4)" aria-pressed="false" aria-label="Amber accent">
+                <span class="sw-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Amber
+              </button>
+            </div>
+
+            <!-- live preview of the chosen accent -->
+            <div class="accent-preview" style="margin-top:12px;">
+              <span class="pv-l">Preview</span>
+              <span class="pv-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>[[Note]]</span>
+              <span class="grow"></span>
+              <button class="btn-tech btn-sm" type="button"><span class="btn-tech-inner">Capture</span></button>
+            </div>
+
+            <!-- read-only system rows -->
+            <div class="sec-label" style="margin-top:20px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
+              System <span class="count">read-only</span>
+            </div>
+            <div class="tasks">
+              <div class="set-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                <span class="lbl"><b>Theme</b><small>Dark-first console</small></span>
+                <span class="val">Dark</span>
+              </div>
+              <div class="set-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                <span class="lbl"><b>Vault</b><small>Plain Markdown · owned</small></span>
+                <span class="val">Local-first</span>
+              </div>
+              <div class="set-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <span class="lbl"><b>Reduced motion</b><small>Follows OS setting</small></span>
+                <span class="val">System</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB BAR (You active) -->
+          <nav class="tabbar" aria-label="Primary">
+            <button class="tab" data-tab="vault">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><circle cx="12" cy="12" r="3"/><path d="M12 4v5M12 15v5M4 12h5M15 12h5"/></svg>
+              Vault
+            </button>
+            <button class="tab" data-tab="skills">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+              Skills
+            </button>
+            <span class="tab tab-center" data-tab="capture" aria-hidden="true">
+              <span class="plus-btn"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span>
+            </span>
+            <button class="tab" data-tab="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search
+            </button>
+            <button class="tab is-active" data-tab="you" aria-current="page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              You
+            </button>
+          </nav>
+          <div class="home-bar"><i></i></div>
+        </div>
+      </div>
+      <p class="cap"><b>04</b> · You / Appearance</p>
+    </div>
+
   </main>
 
   <script>
@@ -682,6 +839,46 @@
           row.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); }
           });
+        });
+      }
+
+      /* --- Screen 4: accent-color setting ---
+         One control writes the surface's accent intents, so the whole surface
+         (every screen, the + tile, active tabs, chips, composer) re-keys from a
+         single source of truth. Choice persists to localStorage. */
+      var accentGrid = document.getElementById('accentGrid');
+      if (accentGrid) {
+        var SURFACE = document.querySelector('.mobile-surface') || document.body;
+        var ACCENT_KEY = 'ob-mobile-accent';
+        /* Each option stays within the four brand accents; the frame gradient
+           pairs the chosen accent with a sibling brand accent (on-palette). */
+        var ACCENTS = {
+          cyan:    { c: 'var(--color-accent-2)', g: 'linear-gradient(135deg, var(--color-accent-2), var(--color-accent))' },
+          violet:  { c: 'var(--color-accent)',   g: 'linear-gradient(135deg, var(--color-accent), var(--color-accent-2))' },
+          magenta: { c: 'var(--color-accent-3)', g: 'linear-gradient(135deg, var(--color-accent-3), var(--color-accent))' },
+          amber:   { c: 'var(--color-accent-4)', g: 'linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3))' }
+        };
+        var swatches = Array.prototype.slice.call(accentGrid.querySelectorAll('.swatch'));
+        function applyAccent(name) {
+          var a = ACCENTS[name];
+          if (!a) { return; }
+          SURFACE.style.setProperty('--section-accent', a.c);
+          SURFACE.style.setProperty('--action-primary', a.c);
+          SURFACE.style.setProperty('--action-primary-weak', 'color-mix(in srgb, ' + a.c + ' 12%, transparent)');
+          SURFACE.style.setProperty('--grad-button', a.g);
+          swatches.forEach(function (s) {
+            var on = s.getAttribute('data-accent') === name;
+            s.classList.toggle('is-sel', on);
+            s.setAttribute('aria-pressed', on ? 'true' : 'false');
+            s.setAttribute('aria-checked', on ? 'true' : 'false');
+          });
+          try { localStorage.setItem(ACCENT_KEY, name); } catch (e) {}
+        }
+        var saved = null;
+        try { saved = localStorage.getItem(ACCENT_KEY); } catch (e) {}
+        applyAccent(ACCENTS[saved] ? saved : 'magenta');  /* default = current surface accent */
+        swatches.forEach(function (s) {
+          s.addEventListener('click', function () { applyAccent(s.getAttribute('data-accent')); });
         });
       }
     })();
