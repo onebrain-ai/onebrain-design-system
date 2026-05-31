@@ -4,6 +4,8 @@
 > Source of truth for color, type, spacing, layout, components, motion, voice.
 > Tokens live in [`colors_and_type.css`](colors_and_type.css) (primitives + a semantic
 > intent layer). Reusable component classes live in [`components.css`](components.css).
+> For non-web surfaces (desktop / iOS / Android / RN), the same values are exported from a
+> single DTCG source in [`tokens/`](tokens/) → CSS / JS / TS / Tailwind / Swift / Android XML.
 > Provenance in [`PROVENANCE.md`](PROVENANCE.md).
 
 This system is **extracted from real source**, not invented. Every color, font, and

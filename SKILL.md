@@ -32,6 +32,10 @@ surfaces, decks, or diagrams so the output instantly reads as "futuristic, AI, O
   `colors_and_type.css`; every class reads the semantic intents and ships accessible
   focus/validation/disabled + reduced-motion states. Compose surfaces from this, don't
   re-derive component CSS.
+- **`tokens/`** — cross-platform token export. `tokens.json` (W3C DTCG) is the single
+  source of truth; `node tokens/build.js` regenerates `tokens/dist/` → `tokens.css`,
+  `tokens.js`/`.d.ts`, a Tailwind preset, iOS `*.swift`, and Android `*.xml`. Use these for
+  desktop / mobile / RN surfaces; web stays on `colors_and_type.css`. See `tokens/README.md`.
 - **`PROVENANCE.md`** — exactly where every token/asset/rule came from + honest gaps.
 - **`preview/`** — focused, reviewable HTML cards (color, type, spacing, components,
   brand assets) for the Design System tab.
@@ -87,7 +91,8 @@ light-first, or rounded "friendly SaaS" briefs — it is intentionally dark, sha
    no rounding everything, one accent per surface, always include reduced-motion).
 
 Before generating, an agent should read: `README.md`, `DESIGN.md`, `colors_and_type.css`,
-`components.css`, `preview/`, `assets/`, `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/`.
+`components.css`, `tokens/` (DTCG source + `tokens/dist/` for non-web surfaces), `preview/`,
+`assets/`, `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/`.
 
 ## Design system highlights
 

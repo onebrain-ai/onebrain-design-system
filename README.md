@@ -69,6 +69,10 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ├── PROVENANCE.md              Where every token/asset/rule came from
 ├── colors_and_type.css        Primitives + semantic intent tokens + @font-face bindings
 ├── components.css             Reusable component layer (buttons, forms, nav, data, feedback, overlays)
+├── tokens/                    Cross-platform token export (DTCG source + generated outputs)
+│   ├── tokens.json            Single source of truth (W3C DTCG)
+│   ├── build.js               Zero-dependency generator (node tokens/build.js)
+│   └── dist/                  Generated: tokens.css · tokens.js · tokens.d.ts · onebrain.tailwind.js · ios/*.swift · android/*.xml
 ├── assets/                    Preserved brand marks
 │   ├── brain.svg              Logo (gradient neural-network mark)
 │   ├── apple-touch-icon.png   App icon (180px)
@@ -132,6 +136,29 @@ blurred section **orb** (DESIGN.md §1) and a one-shot **boot reveal** (§7), bo
 
 The applied screen lives separately at [`ui_kits/app/index.html`](ui_kits/app/index.html)
 (runnable React console) — see [`ui_kits/app/README.md`](ui_kits/app/README.md).
+
+---
+
+## Cross-platform tokens (`tokens/`)
+
+`colors_and_type.css` is the canonical web sheet; for **non-web surfaces** (desktop app,
+iOS, Android, React Native) the same values are exported from a single machine-readable
+source. [`tokens/tokens.json`](tokens/tokens.json) (**W3C DTCG**) is the source of truth;
+[`tokens/build.js`](tokens/build.js) (zero-dependency — `node tokens/build.js`) generates
+[`tokens/dist/`](tokens/dist/):
+
+| Output | For |
+|---|---|
+| `dist/tokens.css` | namespaced `--ob-*` vars + `[data-theme="light"]` — web / deck / Electron renderer |
+| `dist/tokens.js` + `.d.ts` | typed `{ dark, light }` value object — Electron / React Native / any JS |
+| `dist/onebrain.tailwind.js` | Tailwind preset (theme-aware via the `--ob-*` vars) — web-app / dashboard |
+| `dist/ios/OneBrainTokens.swift` | SwiftUI `Color` / `CGFloat` constants (dark + light) — iOS app |
+| `dist/android/*.xml` | `colors.xml` · `colors-light.xml` · `dimens.xml` — Android app |
+
+Dark-first: each token's light/spec value lives in `$extensions["com.onebrain.light"]`;
+semantic tokens are DTCG aliases so they inherit the light re-inking automatically. See
+[`tokens/README.md`](tokens/README.md) for the per-surface consumption guide and theme
+switching. Edit values in `tokens.json` **only**, then rebuild.
 
 ---
 
