@@ -29,3 +29,13 @@ mpt*-*.jpeg
 mp*-image.png
 mp*-image.jpg
 mp*-image.jpeg
+
+# --- GitHub connector intake evidence (raw snapshots of already-public source) ---
+# Re-pullable; kept LOCAL to satisfy the Open Design publish gate ("connector
+# evidence"), but out of the repo so it stays lean (the GitHub repo was pruned of
+# context/ post-build). Restore both repos with the bounded intake:
+#   "$OD_NODE_BIN" "$OD_BIN" tools connectors github-design-context \
+#     --repo 'https://github.com/onebrain-ai/website'  --output context/github/onebrain-ai-website.md
+#   "$OD_NODE_BIN" "$OD_BIN" tools connectors github-design-context \
+#     --repo 'https://github.com/onebrain-ai/onebrain' --output context/github/onebrain-ai-onebrain.md
+context/
