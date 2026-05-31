@@ -26,11 +26,14 @@
   .stage-wrap{ position:absolute; top:50%; left:50%; transform-origin:center center; }
   .slide{
     position:absolute; top:0; left:0; width:1920px; height:1080px;
-    display:none; overflow:hidden;
+    --slide-display:block; display:none; overflow:hidden;
     background:var(--color-bg); color:var(--color-text);
     padding:120px 140px;
   }
-  .slide.is-active{ display:block; }
+  /* Only the active slide is shown, and it renders with its OWN layout mode
+     (flex/grid) via --slide-display — so per-slide layout rules below can set
+     that variable without fighting the hide/show specificity. */
+  .slide.is-active{ display:var(--slide-display); }
 
   /* Shared HUD grid backdrop (reuses the system lattice tokens). */
   .slide::after{
@@ -64,7 +67,7 @@
     color:var(--section-accent); }
 
   /* ---- Slide 01 · Title ------------------------------------------------- */
-  .s-title{ display:flex; flex-direction:column; justify-content:center; height:100%;
+  .s-title{ --slide-display:flex; flex-direction:column; justify-content:center; height:100%;
     gap:34px; --section-accent:var(--color-accent-2); }
   .s-title .brand-row{ display:flex; align-items:center; gap:22px; }
   .s-title .logo{ width:64px; height:64px; filter:var(--glow-brand); }
@@ -75,7 +78,7 @@
   .title-meta{ display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; }
 
   /* ---- Slide 02 · Problem ---------------------------------------------- */
-  .s-problem{ display:grid; grid-template-columns:1.05fr 0.95fr; align-items:center; height:100%;
+  .s-problem{ --slide-display:grid; grid-template-columns:1.05fr 0.95fr; align-items:center; height:100%;
     gap:90px; --section-accent:var(--color-accent-3); }
   .s-problem h2{ margin:0; font-size:104px; }
   .s-problem .lead{ margin-top:30px; max-width:30ch; font-size:28px; }
@@ -94,7 +97,7 @@
   .sess.live .sx{ color:var(--color-loop); }
 
   /* ---- Slide 03 · Harness OS stack ------------------------------------- */
-  .s-stack{ display:grid; grid-template-columns:0.78fr 1.22fr; gap:80px; align-items:center; height:100%;
+  .s-stack{ --slide-display:grid; grid-template-columns:0.78fr 1.22fr; gap:80px; align-items:center; height:100%;
     --section-accent:var(--color-harness); }
   .s-stack h2{ margin:0; font-size:80px; }
   .s-stack .lead{ margin-top:26px; max-width:30ch; }
@@ -113,7 +116,7 @@
   .flow-arrow svg{ color:var(--text-disabled); width:24px; height:24px; }
 
   /* ---- Slide 04 · Co-evolution loop ------------------------------------ */
-  .s-loop{ display:flex; flex-direction:column; justify-content:center; height:100%; gap:50px;
+  .s-loop{ --slide-display:flex; flex-direction:column; justify-content:center; height:100%; gap:50px;
     --section-accent:var(--color-loop); }
   .s-loop h2{ margin:0; font-size:88px; }
   .loop-row{ display:flex; align-items:center; justify-content:center; gap:0; margin-top:10px; }
@@ -135,7 +138,7 @@
   .loop-foot b{ color:var(--section-accent); font-weight:500; }
 
   /* ---- Slide 05 · Skills grid ------------------------------------------ */
-  .s-skills{ display:flex; flex-direction:column; height:100%; gap:46px; --section-accent:var(--color-accent-2); }
+  .s-skills{ --slide-display:flex; flex-direction:column; height:100%; gap:46px; --section-accent:var(--color-accent-2); }
   .s-skills .head{ display:flex; align-items:flex-end; justify-content:space-between; gap:40px; }
   .s-skills h2{ margin:0; font-size:84px; }
   .skill-grid{ display:grid; grid-template-columns:repeat(6, 1fr); gap:18px; }
@@ -148,7 +151,7 @@
   .skill svg{ width:20px; height:20px; color:var(--section-accent); flex:none; }
 
   /* ---- Slide 06 · Plain Markdown --------------------------------------- */
-  .s-markdown{ display:grid; grid-template-columns:1fr 1fr; gap:90px; align-items:center; height:100%;
+  .s-markdown{ --slide-display:grid; grid-template-columns:1fr 1fr; gap:90px; align-items:center; height:100%;
     --section-accent:var(--color-vault); }
   .s-markdown h2{ margin:0; font-size:84px; }
   .s-markdown .lead{ margin-top:28px; max-width:32ch; }
@@ -171,7 +174,7 @@
   .vrow .cnt{ margin-left:auto; font-size:14px; letter-spacing:0.2em; color:var(--text-disabled); }
 
   /* ---- Slide 07 · CTA -------------------------------------------------- */
-  .s-cta{ display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;
+  .s-cta{ --slide-display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;
     gap:42px; text-align:center; --section-accent:var(--color-accent-2); }
   .s-cta h2{ margin:0; font-size:120px; }
   .s-cta .lead{ max-width:44ch; font-size:28px; }
@@ -220,7 +223,7 @@
     .deck{ position:static; }
     .deck-bar{ display:none !important; }
     .stage-wrap{ position:static; transform:none !important; top:auto; left:auto; }
-    .slide{ position:relative !important; display:block !important;
+    .slide{ position:relative !important; display:var(--slide-display) !important;
       width:1920px; height:1080px; page-break-after:always; break-after:page; }
     .slide::after{ -webkit-mask-image:none; mask-image:none; }
   }
