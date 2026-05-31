@@ -52,6 +52,10 @@ surfaces, decks, or diagrams so the output instantly reads as "futuristic, AI, O
   component CSS), `agents/*.md`, and the Astro build-time libs.
 - **`ui_kits/app/`** — a runnable operator-console interface kit (React + Babel) that
   composes modular role components into one product surface.
+- **`index.html`** — a HUD launcher that links every preview card + surface (open it first
+  to review the whole system). Governance lives in `CONTRIBUTING.md` (how to extend in
+  sync), `ACCESSIBILITY.md` (a11y commitments + verify checklist), `CHANGELOG.md`, and
+  `LICENSE` (AGPL-3.0 + OFL font notices); `package.json` exposes `build:tokens` + `start`.
 
 ## Source context
 
@@ -92,8 +96,9 @@ light-first, or rounded "friendly SaaS" briefs — it is intentionally dark, sha
    no rounding everything, one accent per surface, always include reduced-motion).
 
 Before generating, an agent should read: `README.md`, `DESIGN.md`, `colors_and_type.css`,
-`components.css`, `tokens/` (DTCG source + `tokens/dist/` for non-web surfaces), `preview/`,
-`assets/`, `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/`.
+`components.css`, `tokens/` (DTCG source + `tokens/dist/` for non-web surfaces), `preview/`
+(or open `index.html` to browse them all), `assets/`, `build/`, `fonts/`, `source_examples/`,
+and `ui_kits/app/`. To extend the system, follow `CONTRIBUTING.md` + `ACCESSIBILITY.md`.
 
 ## Design system highlights
 

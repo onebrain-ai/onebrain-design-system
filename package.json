@@ -1,0 +1,49 @@
+{
+  "name": "@onebrain/design-system",
+  "version": "1.0.0",
+  "description": "OneBrain — a cyberpunk / Tron \"operator console\" design system. Source-extracted tokens, a reusable component layer, cross-platform token exports, and six surface scaffolds for the OneBrain AI product.",
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "dtcg",
+    "css",
+    "tailwind",
+    "cyberpunk",
+    "operator-console",
+    "dark-theme",
+    "onebrain"
+  ],
+  "private": true,
+  "license": "AGPL-3.0",
+  "homepage": "https://github.com/onebrain-ai/onebrain-design-system#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/onebrain-ai/onebrain-design-system.git"
+  },
+  "type": "module",
+  "style": "colors_and_type.css",
+  "files": [
+    "DESIGN.md",
+    "README.md",
+    "SKILL.md",
+    "PROVENANCE.md",
+    "ACCESSIBILITY.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "index.html",
+    "colors_and_type.css",
+    "components.css",
+    "tokens/",
+    "assets/",
+    "build/",
+    "fonts/",
+    "preview/",
+    "ui_kits/",
+    "source_examples/"
+  ],
+  "scripts": {
+    "build:tokens": "node tokens/build.js",
+    "start": "npx --yes serve ."
+  }
+}

@@ -63,10 +63,16 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 
 ```
 .
+├── index.html                 Launcher — HUD index linking every preview + surface (open first)
 ├── DESIGN.md                  Canonical rules (read first)
 ├── README.md                  This guide
 ├── SKILL.md                   Agent-usable skill entry (YAML frontmatter)
 ├── PROVENANCE.md              Where every token/asset/rule came from
+├── ACCESSIBILITY.md           Consolidated a11y commitments + verify checklist
+├── CONTRIBUTING.md            How to extend tokens / components / surfaces in sync
+├── CHANGELOG.md               Versioned change history (Keep a Changelog)
+├── LICENSE                    AGPL-3.0 + third-party (OFL fonts) notices
+├── package.json               Package manifest (v1.0.0 · build:tokens · start)
 ├── colors_and_type.css        Primitives + semantic intent tokens + @font-face bindings
 ├── components.css             Reusable component layer (buttons, forms, nav, data, feedback, overlays, accent picker)
 ├── tokens/                    Cross-platform token export (DTCG source + generated outputs)

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain is an AI Design System — Index</title>
+<meta name="description" content="Launcher for the OneBrain design system: foundations, components, heroes, surfaces, and the applied operator-console UI kit." />
+<link rel="icon" href="assets/favicon.ico" sizes="any" />
+<link rel="stylesheet" href="colors_and_type.css" />
+<link rel="stylesheet" href="components.css" />
+<style>
+  *{ box-sizing:border-box; }
+  body{ margin:0; min-height:100dvh; overflow-x:hidden; }
+
+  /* HUD atmosphere — faint 56px lattice + a single blurred accent orb. */
+  .bg-grid{ position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);
+    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 35%,transparent 100%);
+            mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 35%,transparent 100%); }
+  .bg-orb{ position:fixed; z-index:-1; top:-220px; left:50%; width:760px; height:520px; transform:translateX(-50%);
+    pointer-events:none; opacity:.12; filter:blur(60px);
+    background:radial-gradient(circle at 50% 50%, var(--section-accent), transparent 62%); }
+
+  .shell{ max-width:var(--content-max); margin:0 auto; padding:34px clamp(18px,5vw,56px) 90px; }
+
+  /* ---- Header / chrome ---- */
+  header.top{ display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    padding-bottom:22px; border-bottom:1px solid var(--color-border); }
+  .brand{ display:flex; align-items:center; gap:14px; margin-right:auto; }
+  .brand img{ width:44px; height:44px; filter:var(--glow-brand); }
+  .brand .wm{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:var(--tracking-tight); font-size:1.55rem; line-height:1; color:var(--color-white);
+    text-shadow:0 0 22px rgba(255,255,255,.18); }
+  .brand .sub{ display:block; font-family:var(--font-mono); font-size:9.5px; letter-spacing:.42em;
+    text-transform:uppercase; color:var(--color-muted); margin-top:6px; }
+  .chrome{ display:flex; align-items:center; gap:18px; }
+  .ver{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--color-faint); }
+  .ver b{ color:var(--section-accent); font-weight:500; }
+
+  /* ---- Hero block ---- */
+  .pill{ display:inline-flex; align-items:center; gap:9px; padding:7px 13px; margin:40px 0 22px;
+    font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase;
+    color:var(--section-accent); background:var(--action-primary-weak);
+    border:1px solid color-mix(in srgb,var(--section-accent) 38%,transparent); position:relative; }
+  .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
+  .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
+  .pdot{ width:6px;height:6px;border-radius:50%;background:currentColor; box-shadow:0 0 8px currentColor; animation:pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+  h1.title{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:var(--tracking-tight); line-height:.92; font-size:clamp(2.6rem,7vw,5.5rem); margin:0 0 18px; color:var(--color-white); max-width:18ch; }
+  h1.title em{ font-style:italic; color:transparent; -webkit-text-stroke:1.6px var(--section-accent);
+    text-shadow:0 0 26px color-mix(in srgb,var(--section-accent) 45%,transparent); }
+  p.lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:62ch; line-height:1.7; font-size:.95rem; margin:0 0 26px; }
+
+  /* ---- Stat strip ---- */
+  .stats{ display:flex; flex-wrap:wrap; gap:1px; background:var(--color-border-2);
+    border:1px solid var(--color-border); margin-bottom:8px; }
+  .stat-c{ flex:1 1 140px; background:var(--color-surface-2); padding:16px 18px; }
+  .stat-c .n{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:1.7rem; color:var(--color-white); line-height:1; }
+  .stat-c .l{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--color-muted); margin-top:8px; }
+
+  /* ---- Sections ---- */
+  section.grp{ margin-top:48px; }
+  .grp-h{ display:flex; align-items:baseline; gap:14px; margin-bottom:18px; }
+  .grp-h .gi{ font-family:var(--font-mono); font-size:11px; letter-spacing:.2em; color:var(--sec); }
+  .grp-h .gt{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:.02em; font-size:1.15rem; color:var(--color-text); }
+  .grp-h .gl{ flex:1; height:1px; background:linear-gradient(90deg,color-mix(in srgb,var(--sec) 50%,transparent),transparent); }
+  .grp-h .gc{ font-family:var(--font-mono); font-size:10px; letter-spacing:.2em; color:var(--color-ghost); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(258px,1fr)); gap:16px; }
+
+  /* ---- Card ---- */
+  a.card{ position:relative; display:flex; flex-direction:column; gap:9px; text-decoration:none;
+    background:var(--color-surface-2); border:1px solid var(--color-border-2); padding:18px 18px 16px;
+    overflow:hidden; transition:border-color var(--dur-base) ease, transform var(--dur-base) ease, background var(--dur-base) ease; }
+  a.card::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--sec);
+    transform:scaleY(0); transform-origin:top; transition:transform var(--dur-base) var(--ease-out-expo); }
+  a.card:hover{ border-color:color-mix(in srgb,var(--sec) 55%,transparent); transform:translateY(-2px);
+    background:color-mix(in srgb,var(--sec) 5%,var(--color-surface-2)); }
+  a.card:hover::before{ transform:scaleY(1); }
+  a.card:focus-visible{ outline:2px solid var(--sec); outline-offset:3px; }
+  .card .crow{ display:flex; align-items:center; justify-content:space-between; }
+  .card .cix{ font-family:var(--font-mono); font-size:10px; letter-spacing:.22em; color:var(--color-ghost); transition:color var(--dur-base) ease; }
+  a.card:hover .cix{ color:var(--sec); }
+  .card .ctag{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--sec); border:1px solid color-mix(in srgb,var(--sec) 34%,transparent); padding:2px 6px; }
+  .card .ct{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:.02em; font-size:1.02rem; color:var(--color-text); }
+  .card .cd{ font-family:var(--font-mono); font-size:11px; line-height:1.55; color:var(--color-faint); }
+  .card .arr{ margin-top:2px; font-family:var(--font-mono); font-size:11px; color:var(--sec); opacity:0; transform:translateX(-4px);
+    transition:opacity var(--dur-base) ease, transform var(--dur-base) ease; }
+  a.card:hover .arr{ opacity:1; transform:translateX(0); }
+
+  /* ---- Docs chips ---- */
+  .docs{ display:flex; flex-wrap:wrap; gap:10px; }
+  a.doc{ display:inline-flex; align-items:center; gap:9px; text-decoration:none; padding:11px 15px;
+    background:var(--color-surface); border:1px solid var(--color-border); transition:border-color var(--dur-base) ease, color var(--dur-base) ease; }
+  a.doc:hover{ border-color:var(--section-accent); }
+  a.doc:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:3px; }
+  a.doc .di{ color:var(--section-accent); display:grid; place-content:center; }
+  a.doc .dn{ font-family:var(--font-mono); font-size:12px; color:var(--color-text); }
+  a.doc .dx{ font-family:var(--font-mono); font-size:10px; color:var(--color-ghost); }
+
+  footer.foot{ margin-top:64px; padding-top:22px; border-top:1px solid var(--color-border);
+    display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--color-muted); }
+  footer.foot .b{ color:var(--color-faint); }
+  footer.foot .dotsep{ color:var(--color-ghost); }
+
+  /* ---- Boot reveal ---- */
+  .reveal{ opacity:0; transform:translateY(16px); animation:rise .7s var(--ease-out-expo) forwards; animation-delay:var(--d,0s); }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+
+  @media (max-width:560px){
+    header.top{ gap:12px; } .chrome{ width:100%; justify-content:space-between; }
+    .brand .wm{ font-size:1.3rem; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{ animation:none; opacity:1; transform:none; }
+    .pdot{ animation:none; }
+  }
+</style>
+</head>
+<body class="ob-root">
+  <div class="bg-grid"></div>
+  <div class="bg-orb"></div>
+
+  <div class="shell">
+    <!-- Chrome -->
+    <header class="top">
+      <div class="brand">
+        <img src="assets/brain.svg" alt="OneBrain logo" />
+        <div>
+          <span class="wm">OneBrain</span>
+          <span class="sub">Design System</span>
+        </div>
+      </div>
+      <div class="chrome">
+        <span class="ver">v<b>1.0.0</b> · AGPL-3.0</span>
+        <div class="accent-dots" role="radiogroup" aria-label="Accent color" data-accent-key="ob-accent" data-accent-default="cyan">
+          <span class="accent-lbl">Accent</span>
+          <button class="accent-dot" type="button" role="radio" data-accent="cyan" style="--sw:var(--color-accent-2)" aria-label="Cyan accent" title="Cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <button class="accent-dot" type="button" role="radio" data-accent="violet" style="--sw:var(--color-accent)" aria-label="Violet accent" title="Violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <button class="accent-dot" type="button" role="radio" data-accent="magenta" style="--sw:var(--color-accent-3)" aria-label="Magenta accent" title="Magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <button class="accent-dot" type="button" role="radio" data-accent="amber" style="--sw:var(--color-accent-4)" aria-label="Amber accent" title="Amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <span class="pill reveal" style="--d:.05s"><span class="pdot"></span> System Online · Operator Console</span>
+    <h1 class="title reveal" style="--d:.12s">Unified <em>Intelligence</em>, one system.</h1>
+    <p class="lede reveal" style="--d:.2s">A cyberpunk / Tron operator-console design system, extracted from the real OneBrain
+      product — tokens, a reusable component layer, cross-platform exports, and six built surfaces.
+      Pick a card to inspect; pick an accent to re-key the chrome.</p>
+
+    <div class="stats reveal" style="--d:.28s">
+      <div class="stat-c"><div class="n">131</div><div class="l">Design tokens</div></div>
+      <div class="stat-c"><div class="n">21</div><div class="l">Preview cards</div></div>
+      <div class="stat-c"><div class="n">6</div><div class="l">Surfaces</div></div>
+      <div class="stat-c"><div class="n">6</div><div class="l">Export targets</div></div>
+      <div class="stat-c"><div class="n">2</div><div class="l">Themes (dark · light)</div></div>
+    </div>
+
+    <!-- FOUNDATIONS -->
+    <section class="grp reveal" style="--sec:var(--color-accent-2); --d:.34s">
+      <div class="grp-h"><span class="gi">// 01</span><span class="gt">Foundations</span><span class="gl"></span><span class="gc">8 cards</span></div>
+      <div class="grid">
+        <a class="card" href="preview/colors-primary.html"><div class="crow"><span class="cix">01</span><span class="ctag">color</span></div><span class="ct">Palette</span><span class="cd">The four neon signals, both brand gradients, surface + text neutrals.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/colors-theme-dark.html"><div class="crow"><span class="cix">02</span><span class="ctag">color</span></div><span class="ct">Dark theme</span><span class="cd">Default dark scale on a real console panel + token map.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/colors-theme-light.html"><div class="crow"><span class="cix">03</span><span class="ctag">color</span></div><span class="ct">Light theme</span><span class="cd">Re-inked spec / print scale — accents AA ≥4.5:1 on white.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/typography-specimens.html"><div class="crow"><span class="cix">04</span><span class="ctag">type</span></div><span class="ct">Typography</span><span class="cd">Chakra Petch · Inter · JetBrains Mono from bound fonts + the scale.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/spacing-tokens.html"><div class="crow"><span class="cix">05</span><span class="ctag">space</span></div><span class="ct">Spacing</span><span class="cd">The 4px scale + layout constants applied to cards.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/spacing-radius.html"><div class="crow"><span class="cix">06</span><span class="ctag">space</span></div><span class="ct">Radius &amp; clip</span><span class="cd">Why corners are sharp; the width-independent corner-cut CTA.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/spacing-shadows.html"><div class="crow"><span class="cix">07</span><span class="ctag">space</span></div><span class="ct">Elevation</span><span class="cd">Neon-glow "elevation" vs. the single overlay shadow.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/brand-assets.html"><div class="crow"><span class="cix">08</span><span class="ctag">asset</span></div><span class="ct">Brand assets</span><span class="cd">Real logo, app icon, favicon, the 3 live diagrams + font specimens.</span><span class="arr">inspect →</span></a>
+      </div>
+    </section>
+
+    <!-- COMPONENTS -->
+    <section class="grp reveal" style="--sec:var(--color-accent); --d:.4s">
+      <div class="grp-h"><span class="gi">// 02</span><span class="gt">Components</span><span class="gl"></span><span class="gc">6 cards · components.css</span></div>
+      <div class="grid">
+        <a class="card" href="preview/components-buttons.html"><div class="crow"><span class="cix">09</span><span class="ctag">ui</span></div><span class="ct">Buttons</span><span class="cd">btn-tech family, nav bracket reveal, state + eyebrow pills.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/components-inputs.html"><div class="crow"><span class="cix">10</span><span class="ctag">ui</span></div><span class="ct">Inputs</span><span class="cd">Text fields, error state, the command composer + focus rings.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/components-cards.html"><div class="crow"><span class="cix">11</span><span class="ctag">ui</span></div><span class="ct">Cards</span><span class="cd">cyber-card hover, stat modules, the five sub-agents.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/components-forms.html"><div class="crow"><span class="cix">12</span><span class="ctag">kit</span></div><span class="ct">Form kit</span><span class="cd">Full controls + on-blur validation. Consumes components.css.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/components-feedback.html"><div class="crow"><span class="cix">13</span><span class="ctag">kit</span></div><span class="ct">Feedback</span><span class="cd">Alerts, toasts, progress, skeleton, live modal / dropdown.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/components-data.html"><div class="crow"><span class="cix">14</span><span class="ctag">kit</span></div><span class="ct">Data display</span><span class="cd">cyber-table, tabs, breadcrumb, pagination, density toggle.</span><span class="arr">inspect →</span></a>
+      </div>
+    </section>
+
+    <!-- HEROES -->
+    <section class="grp reveal" style="--sec:var(--color-accent-3); --d:.46s">
+      <div class="grp-h"><span class="gi">// 03</span><span class="gt">Heroes</span><span class="gl"></span><span class="gc">2 variants · .ob-synthwave</span></div>
+      <div class="grid">
+        <a class="card" href="preview/hero-split.html"><div class="crow"><span class="cix">15</span><span class="ctag">v1</span></div><span class="ct">Hero · split</span><span class="cd">Recessed 3D grid + frosted-glass terminal floating on the right.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/hero-centered.html"><div class="crow"><span class="cix">16</span><span class="ctag">v2</span></div><span class="ct">Hero · centered</span><span class="cd">Same grid, centered, with a pointer-reactive 3D tilt.</span><span class="arr">inspect →</span></a>
+      </div>
+    </section>
+
+    <!-- SURFACES -->
+    <section class="grp reveal" style="--sec:var(--color-accent-4); --d:.52s">
+      <div class="grp-h"><span class="gi">// 04</span><span class="gt">Surfaces</span><span class="gl"></span><span class="gc">5 scaffolds</span></div>
+      <div class="grid">
+        <a class="card" href="preview/surface-dashboard.html"><div class="crow"><span class="cix">17</span><span class="ctag">app</span></div><span class="ct">Dashboard</span><span class="cd">Inline-SVG charts, sortable table, stats, co-evolution feed.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/surface-deck.html"><div class="crow"><span class="cix">18</span><span class="ctag">deck</span></div><span class="ct">Pitch deck</span><span class="cd">1920×1080 fit-to-viewport, 7 slides, keyboard nav, print.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/surface-mobile.html"><div class="crow"><span class="cix">19</span><span class="ctag">ios</span></div><span class="ct">Mobile app</span><span class="cd">iOS flow (Vault · Capture · Skills · You) + live accent setting.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/surface-desktop.html"><div class="crow"><span class="cix">20</span><span class="ctag">desktop</span></div><span class="ct">Desktop console</span><span class="cd">Three panes (sidebar · session · inspector) + ⌘K palette.</span><span class="arr">inspect →</span></a>
+        <a class="card" href="preview/surface-landing.html"><div class="crow"><span class="cix">21</span><span class="ctag">web</span></div><span class="ct">Landing</span><span class="cd">Marketing site — hero, feature grid, harness-OS stack, waitlist.</span><span class="arr">inspect →</span></a>
+      </div>
+    </section>
+
+    <!-- APPLIED KIT -->
+    <section class="grp reveal" style="--sec:var(--color-success); --d:.58s">
+      <div class="grp-h"><span class="gi">// 05</span><span class="gt">Applied kit</span><span class="gl"></span><span class="gc">React + Babel</span></div>
+      <div class="grid">
+        <a class="card" href="ui_kits/app/index.html"><div class="crow"><span class="cix">→</span><span class="ctag">runnable</span></div><span class="ct">Operator console</span><span class="cd">Sidebar · AssistantsList · ChatArea · MessageBubble · InputBar, composed by App.</span><span class="arr">launch →</span></a>
+      </div>
+    </section>
+
+    <!-- DOCS -->
+    <section class="grp reveal" style="--d:.64s">
+      <div class="grp-h"><span class="gi">// 06</span><span class="gt">Docs &amp; source</span><span class="gl" style="background:linear-gradient(90deg,var(--color-border),transparent)"></span></div>
+      <div class="docs">
+        <a class="doc" href="DESIGN.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="dn">DESIGN.md</span><span class="dx">rules</span></a>
+        <a class="doc" href="README.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span class="dn">README.md</span><span class="dx">guide</span></a>
+        <a class="doc" href="CONTRIBUTING.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><span class="dn">CONTRIBUTING.md</span><span class="dx">extend</span></a>
+        <a class="doc" href="ACCESSIBILITY.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="1"/><path d="m18 6-6 1-6-1"/><path d="m9 21 3-7 3 7"/><path d="M12 7v6"/></svg></span><span class="dn">ACCESSIBILITY.md</span><span class="dx">a11y</span></a>
+        <a class="doc" href="PROVENANCE.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><span class="dn">PROVENANCE.md</span><span class="dx">source trail</span></a>
+        <a class="doc" href="CHANGELOG.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg></span><span class="dn">CHANGELOG.md</span><span class="dx">history</span></a>
+        <a class="doc" href="tokens/README.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></span><span class="dn">tokens/README.md</span><span class="dx">cross-platform</span></a>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span class="b">OneBrain is an AI Design System</span>
+      <span class="dotsep">·</span>
+      <span>extracted from <span class="b">onebrain-ai/website</span> + <span class="b">onebrain-ai/onebrain</span></span>
+      <span class="dotsep">·</span>
+      <span>v1.0.0 · AGPL-3.0 · dark-first</span>
+    </footer>
+  </div>
+
+  <script src="preview/accent-picker.js"></script>
+</body>
+</html>
