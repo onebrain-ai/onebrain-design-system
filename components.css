@@ -409,6 +409,54 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
 .accent-dots .accent-lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-disabled); margin-right: 3px; }
 
 /* ---------------------------------------------------------------------------
+   7.6 FROSTED GLASS — iOS-style translucency + backdrop blur for depth.
+   Re-skins PANEL + OVERLAY surfaces so the HUD grid / orb behind them shows
+   through faintly. Behind @supports so the opaque fills above stay the
+   fallback; geometry stays cyber-sharp (only the hero terminal rounds).
+   Tokens: --glass-* in colors_and_type.css (re-inked for the light theme).
+   Data-entry + dense-data surfaces (inputs, tables) intentionally stay solid.
+   --------------------------------------------------------------------------- */
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  /* Panels — cards, stat modules, list / log panels */
+  .cyber-card, .stat, .cyber-list {
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-highlight);
+  }
+  /* Sticky nav / tab bar — frosted like an iOS bar (was solid by name only) */
+  .nav-glass {
+    background: var(--glass-fill-nav);
+    -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-highlight);
+  }
+  /* Overlays over arbitrary content — stronger blur, more opaque for legibility */
+  .modal, .drawer, .dropdown, .toast {
+    background: var(--glass-fill-elevated);
+    -webkit-backdrop-filter: var(--glass-blur-strong); backdrop-filter: var(--glass-blur-strong);
+    box-shadow: var(--glass-highlight), var(--elev-3);
+  }
+  .tooltip .tip {
+    background: var(--glass-fill-elevated);
+    -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  }
+  /* The scrim softly blurs the page behind an open modal / drawer (iOS sheet). */
+  .scrim { -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+}
+
+/* a11y — users who request reduced transparency get the solid fills back. */
+@media (prefers-reduced-transparency: reduce) {
+  .cyber-card, .stat, .cyber-list, .nav-glass,
+  .modal, .drawer, .dropdown, .toast, .tooltip .tip, .scrim {
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  .cyber-card { background: var(--color-surface-2); }
+  .stat, .cyber-list { background: var(--bg-surface); }
+  .nav-glass { background: var(--bg-sunken); }
+  .modal, .drawer, .dropdown, .toast { background: var(--bg-elevated); }
+  .tooltip .tip { background: var(--bg-sunken); }
+}
+
+/* ---------------------------------------------------------------------------
    8. REDUCED MOTION — honor the user preference everywhere.
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {

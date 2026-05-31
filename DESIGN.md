@@ -296,6 +296,16 @@ border or a neon glow:
 - `--glow-cta` `0 0 14px rgba(255,45,146,.5)` (button hover),
 - `--glow-accent` (active dots/markers), `--glow-brand` (logo halo).
 - The only true shadow is `--shadow-overlay` for dropdowns/modals.
+- **Frosted glass (iOS-style depth, opt-in).** Panel + overlay surfaces — `.cyber-card`,
+  `.stat`, `.cyber-list`, `.nav-glass`, `.modal`/`.drawer`/`.dropdown`/`.toast`, tooltips — carry
+  a translucent fill + `backdrop-filter` blur (the `--glass-*` tokens) so the HUD grid/orb behind
+  them shows through faintly, adding depth without abandoning the dark-first, glow-not-shadow
+  language. Shipped in `components.css` behind `@supports` with the opaque fills as fallback,
+  opted out under `prefers-reduced-transparency`, and re-inked to translucent white on the light
+  theme. Geometry stays cyber-sharp and data-entry / dense-data surfaces (inputs, tables) stay
+  solid for legibility — only the hero terminal rounds (§1). Note: the **source** marketing nav
+  used an opaque tint (above) to dodge a Safari sticky-scroll repaint, so for a long sticky nav
+  override `.nav-glass` back to the solid `--bg-sunken` fill if Safari perf matters.
 
 ---
 
