@@ -26,4 +26,22 @@
     <color name="ob_state_info">#00F3FF</color>
     <color name="ob_state_warning">#FFB000</color>
     <color name="ob_state_danger">#FF2D92</color>
+    <color name="ob_intent_textPrimary">#F0F0F2</color>
+    <color name="ob_intent_textSecondary">#A1A1AA</color>
+    <color name="ob_intent_textTertiary">#9EFFFFFF</color>
+    <color name="ob_intent_textDisabled">#2EFFFFFF</color>
+    <color name="ob_intent_textOnAccent">#050507</color>
+    <color name="ob_intent_textLink">#00F3FF</color>
+    <color name="ob_intent_textLinkHover">#FFFFFF</color>
+    <color name="ob_intent_bgBase">#050507</color>
+    <color name="ob_intent_bgSurface">#0A0A12</color>
+    <color name="ob_intent_bgElevated">#08080E</color>
+    <color name="ob_intent_bgSunken">#020204</color>
+    <color name="ob_intent_borderDefault">#14FFFFFF</color>
+    <color name="ob_intent_borderSubtle">#0FFFFFFF</color>
+    <color name="ob_intent_borderStrong">#3DF0F0F2</color>
+    <color name="ob_intent_borderFocus">#00F3FF</color>
+    <color name="ob_intent_actionPrimary">#00F3FF</color>
+    <color name="ob_intent_actionSecondary">#BC13FE</color>
+    <color name="ob_intent_focusRing">#00F3FF</color>
 </resources>

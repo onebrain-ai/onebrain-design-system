@@ -112,6 +112,31 @@
   background: var(--action-primary-weak); border: 1px solid var(--border-subtle);
 }
 
+/* Chip — INTERACTIVE accent token (wikilink / filter / multi-select). Unlike the
+   static .tag, it carries hover glow + an .is-used spent state. Section-accent
+   keyed, so it re-tints with the surface accent. (promoted from surface-mobile) */
+.chip {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  padding: 7px 11px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em;
+  color: var(--section-accent); background: color-mix(in srgb, var(--section-accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--section-accent) 32%, transparent);
+  transition: background var(--dur-fast), color var(--dur-fast), box-shadow var(--dur-fast), opacity var(--dur-fast);
+}
+.chip svg { width: 13px; height: 13px; }
+.chip:hover { background: color-mix(in srgb, var(--section-accent) 14%, transparent); box-shadow: 0 0 12px color-mix(in srgb, var(--section-accent) 28%, transparent); }
+.chip.is-used { opacity: var(--disabled-opacity); pointer-events: none; }
+
+/* Kbd — keyboard-key / shortcut badge (palettes, decks, tooltips, docs).
+   (promoted from surface-desktop) */
+.kbd {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  padding: 4px var(--space-2); font-family: var(--font-mono); font-size: var(--text-xs);
+  color: var(--text-secondary); background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.kbd:hover { color: var(--section-accent); border-color: var(--section-accent); }
+.kbd svg { width: 16px; height: 16px; }
+
 /* ---------------------------------------------------------------------------
    3. FORMS  (real, accessible controls — labels, validation, helper, states)
    --------------------------------------------------------------------------- */
@@ -227,9 +252,17 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
 .breadcrumb [aria-current="page"] { color: var(--color-white); }
 
 .pagination { display: flex; gap: 4px; align-items: center; }
-.pagination a, .pagination button { display: inline-grid; place-content: center; min-width: 36px; height: 36px; padding: 0 10px; background: var(--bg-surface); border: 1px solid var(--border-default); color: var(--text-secondary); font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; cursor: pointer; text-decoration: none; transition: color var(--dur-fast), border-color var(--dur-fast); }
+/* min-width/height = --control-h (44px touch target; 36px under compact density). */
+.pagination a, .pagination button { display: inline-grid; place-content: center; min-width: var(--control-h); height: var(--control-h); padding: 0 12px; background: var(--bg-surface); border: 1px solid var(--border-default); color: var(--text-secondary); font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; cursor: pointer; text-decoration: none; transition: color var(--dur-fast), border-color var(--dur-fast); }
 .pagination a:hover, .pagination button:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.pagination a:focus-visible, .pagination button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .pagination [aria-current="page"] { color: var(--text-on-accent); background: var(--action-primary); border-color: var(--action-primary); }
+
+/* Inline text link — gives links an accent signal (the audit gap) via --text-link,
+   with an accent underline that brightens on hover. Use on prose <a>. */
+.cyber-link { color: var(--text-link); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--text-link) 40%, transparent); transition: color var(--dur-fast), border-color var(--dur-fast); }
+.cyber-link:hover { color: var(--text-link-hover); border-bottom-color: var(--text-link); }
+.cyber-link:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* ---------------------------------------------------------------------------
    5. CARDS · STATS · TABLE · LIST · AVATAR · EMPTY-STATE
@@ -325,7 +358,10 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
 .scrim.is-open .modal { transform: none; }
 .modal .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--border-default); }
 .modal .modal-title { font-family: var(--font-display); font-style: italic; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-white); font-size: var(--text-md); }
-.modal .modal-x { background: transparent; border: 0; color: var(--text-secondary); font-family: var(--font-mono); font-size: 18px; cursor: pointer; line-height: 1; }
+/* Icon-only close — the glyph is not a label, so the button MUST carry
+   aria-label="Close" (and ideally a 44px tap area) in markup. */
+.modal .modal-x { display: grid; place-content: center; width: var(--control-h-sm); height: var(--control-h-sm); margin: -6px -6px -6px 0; background: transparent; border: 0; color: var(--text-secondary); font-family: var(--font-mono); font-size: 18px; cursor: pointer; line-height: 1; }
+.modal .modal-x:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .modal .modal-x:hover { color: var(--text-primary); }
 .modal .modal-body { padding: 18px; font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; color: var(--text-tertiary); }
 .modal .modal-foot { display: flex; gap: 12px; justify-content: flex-end; padding: 14px 18px; border-top: 1px solid var(--border-default); }

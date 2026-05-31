@@ -307,6 +307,11 @@
   --text-tertiary:  var(--color-faint);
   --text-disabled:  var(--color-ghost);
   --text-on-accent: var(--color-bg);    /* dark ink reads on a filled neon accent */
+  /* Inline text links — follow the action accent so a link reads as a link.
+     Cyan default on dark; inherits the re-inked deep-teal #007a90 (AA 5:1) on
+     light. Override --action-primary per region and links re-key with it. */
+  --text-link:       var(--action-primary);
+  --text-link-hover: var(--color-white);
 
   /* Surface intents */
   --bg-base:     var(--color-bg);
@@ -374,7 +379,7 @@
   --color-bg-deep:   #ffffff;
   --color-surface:   #ffffff;
   --color-surface-2: #fafafe;
-  --color-border:    rgba(8, 8, 16, 0.12);
+  --color-border:    rgba(8, 8, 16, 0.18);  /* bumped from .12 — clearer hairline / input outline on white, still subtle */
   --color-border-2:  rgba(8, 8, 16, 0.08);
   --color-text:      #0a0a12;
   --color-muted:     #52525b;

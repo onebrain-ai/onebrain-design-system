@@ -35,6 +35,14 @@ tokens (`state.info`, `intent.actionPrimary`, …) are **aliases** (`{color.acce
 they inherit the light re-inking automatically. The build resolves aliases and light
 overrides for every platform.
 
+**Coverage parity.** The **intent layer** (`intent.actionPrimary`, `bgElevated`, `textLink`,
+`borderStrong`, …) exports to every target, not just web — so native + Tailwind consumers
+theme against intents, never raw palette: Swift `OneBrain.ColorsDark.actionPrimary`, Android
+`@color/ob_intent_actionPrimary`, Tailwind `text-actionPrimary`. **Breakpoints** ship as
+Tailwind `screens` (`sm`…`ultra`), `OneBrain.Breakpoint`, and `@dimen/ob_bp_*`; **brand
+gradients** as Tailwind `bg-ob-brand` / `bg-ob-button`; **font weights** as
+`OneBrain.FontWeight`.
+
 ## Which file do I use per surface?
 
 | Surface | Use | How |

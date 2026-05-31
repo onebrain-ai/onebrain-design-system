@@ -29,13 +29,31 @@ public enum OneBrain {
         static let info = Color(hex: "#00f3ff")
         static let warning = Color(hex: "#ffb000")
         static let danger = Color(hex: "#ff2d92")
+        static let textPrimary = Color(hex: "#f0f0f2")
+        static let textSecondary = Color(hex: "#a1a1aa")
+        static let textTertiary = Color(hex: "#ffffff9e")
+        static let textDisabled = Color(hex: "#ffffff2e")
+        static let textOnAccent = Color(hex: "#050507")
+        static let textLink = Color(hex: "#00f3ff")
+        static let textLinkHover = Color(hex: "#ffffff")
+        static let bgBase = Color(hex: "#050507")
+        static let bgSurface = Color(hex: "#0a0a12")
+        static let bgElevated = Color(hex: "#08080e")
+        static let bgSunken = Color(hex: "#020204")
+        static let borderDefault = Color(hex: "#ffffff14")
+        static let borderSubtle = Color(hex: "#ffffff0f")
+        static let borderStrong = Color(hex: "#f0f0f23d")
+        static let borderFocus = Color(hex: "#00f3ff")
+        static let actionPrimary = Color(hex: "#00f3ff")
+        static let actionSecondary = Color(hex: "#bc13fe")
+        static let focusRing = Color(hex: "#00f3ff")
     }
     public enum ColorsLight {
         static let bg = Color(hex: "#f4f4f7")
         static let bgDeep = Color(hex: "#ffffff")
         static let surface = Color(hex: "#ffffff")
         static let surface2 = Color(hex: "#fafafe")
-        static let border = Color(hex: "#0808101f")
+        static let border = Color(hex: "#0808102e")
         static let border2 = Color(hex: "#08081014")
         static let text = Color(hex: "#0a0a12")
         static let muted = Color(hex: "#52525b")
@@ -56,6 +74,24 @@ public enum OneBrain {
         static let info = Color(hex: "#007a90")
         static let warning = Color(hex: "#9a6400")
         static let danger = Color(hex: "#c2186a")
+        static let textPrimary = Color(hex: "#0a0a12")
+        static let textSecondary = Color(hex: "#52525b")
+        static let textTertiary = Color(hex: "#0a0a1299")
+        static let textDisabled = Color(hex: "#0a0a1259")
+        static let textOnAccent = Color(hex: "#f4f4f7")
+        static let textLink = Color(hex: "#007a90")
+        static let textLinkHover = Color(hex: "#0a0a12")
+        static let bgBase = Color(hex: "#f4f4f7")
+        static let bgSurface = Color(hex: "#ffffff")
+        static let bgElevated = Color(hex: "#fafafe")
+        static let bgSunken = Color(hex: "#ffffff")
+        static let borderDefault = Color(hex: "#0808102e")
+        static let borderSubtle = Color(hex: "#08081014")
+        static let borderStrong = Color(hex: "#0a0a123d")
+        static let borderFocus = Color(hex: "#007a90")
+        static let actionPrimary = Color(hex: "#007a90")
+        static let actionSecondary = Color(hex: "#9500c7")
+        static let focusRing = Color(hex: "#007a90")
     }
     public enum Space {
         static let s0: CGFloat = 0
@@ -86,6 +122,22 @@ public enum OneBrain {
         static let xxl: CGFloat = 32
         static let h2: CGFloat = 56
         static let hero: CGFloat = 72
+    }
+    public enum FontWeight {
+        static let light = Font.Weight.light
+        static let regular = Font.Weight.regular
+        static let medium = Font.Weight.medium
+        static let semibold = Font.Weight.semibold
+        static let bold = Font.Weight.bold
+    }
+    public enum Breakpoint {
+        static let sm: CGFloat = 360
+        static let md: CGFloat = 600
+        static let lg: CGFloat = 768
+        static let xl: CGFloat = 1024
+        static let xxl: CGFloat = 1280
+        static let wide: CGFloat = 1440
+        static let ultra: CGFloat = 1920
     }
 }
 

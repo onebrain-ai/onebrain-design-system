@@ -328,13 +328,17 @@ real surfaces: **forms** (input, textarea, select, checkbox, radio, switch, rang
 + helper + disabled states, the command composer), **navigation** (`.nav-glass`, `.cyber-tabs`,
 `.breadcrumb`, `.pagination`), **data display** (`.cyber-table` with tabular numerics + sticky
 header, `.cyber-list`, `.avatar`, `.stat`, `.empty-state`), **feedback** (`.alert`, `.toast`,
-`.progress`, `.skeleton`, `.spinner`), and **overlays** (`.modal` + `.scrim`, `.drawer`,
-`.tooltip`, `.dropdown`). Every class references the **semantic intent tokens** in
+`.progress`, `.skeleton`, `.spinner`), **overlays** (`.modal` + `.scrim`, `.drawer`,
+`.tooltip`, `.dropdown`), and small reusable **primitives** (`.badge`, `.tag`, `.chip` —
+interactive accent token with an `.is-used` spent state, `.kbd` shortcut badge, `.cyber-link`
+inline link keyed to `--text-link`). Every class references the **semantic intent tokens** in
 `colors_and_type.css` (`--action-primary`, `--fb-danger`, `--bg-elevated`, `--elev-2`,
-`--text-on-accent`, …) rather than raw palette hexes, so a re-skin or light/dark flip flows
-through automatically; controls honor focus-visible, `[disabled]`/`aria-invalid`, the
-`data-density` contract (comfortable ↔ compact), and `prefers-reduced-motion`. See
-`preview/components-forms.html`, `components-feedback.html`, `components-data.html`.
+`--text-on-accent`, `--text-link`, `--border-strong`, …) rather than raw palette hexes, so a
+re-skin or light/dark flip flows through automatically; controls honor focus-visible,
+`[disabled]`/`aria-invalid`, ≥44px touch targets (pagination, inputs, controls all read
+`--control-h`; tighten under `[data-density="compact"]`), and `prefers-reduced-motion`. Icon-only
+controls (e.g. `.modal-x`) carry an `aria-label` in markup. See `preview/components-forms.html`,
+`components-feedback.html`, `components-data.html`.
 
 The canonical classes below all exist in the source `global.css`; `components.css`, the
 previews, and the UI kit reproduce them.

@@ -140,16 +140,8 @@
 
     /* Suggested wikilink chips */
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
-      display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
-      padding: 7px 11px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em;
-      color: var(--section-accent); background: color-mix(in srgb, var(--section-accent) 6%, transparent);
-      border: 1px solid color-mix(in srgb, var(--section-accent) 32%, transparent);
-      transition: background var(--dur-fast), color var(--dur-fast), box-shadow var(--dur-fast), opacity var(--dur-fast);
-    }
-    .chip svg { width: 13px; height: 13px; }
-    .chip:hover { background: color-mix(in srgb, var(--section-accent) 14%, transparent); box-shadow: 0 0 12px color-mix(in srgb, var(--section-accent) 28%, transparent); }
-    .chip.is-used { opacity: 0.42; pointer-events: none; }
+    /* .chip base + states now live in components.css (shared primitive); only the
+       mobile-specific .plus child override stays here. */
     .chip.is-used .plus { display: none; }
 
     /* Capture target select */
