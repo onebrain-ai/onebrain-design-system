@@ -12,7 +12,7 @@ description: >-
 user-invocable: true
 ---
 
-# OneBrain is an AI Design System
+# OneBrain Design System
 
 A reusable, source-backed design-system package. Everything here is extracted from real
 OneBrain code — apply it whenever you build OneBrain landing pages, product/console

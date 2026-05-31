@@ -4,7 +4,7 @@ This file is generated during setup and should be treated as source evidence for
 
 ## Company / Product
 
-Canonical design-system title: OneBrain is an AI Design System
+Canonical design-system title: OneBrain Design System
 
 OneBrain is an AI operating system layer built on top of Obsidian. It gives your AI agent persistent memory, a structured knowledge vault, and 29+ pre-built skills — so every session picks up exactly where the last one left off.
 

@@ -1,5 +1,5 @@
 /* ============================================================================
-   OneBrain is an AI Design System — accent-picker.js
+   OneBrain Design System — accent-picker.js
    Shared, dependency-free runtime accent picker for any surface.
 
    Drop a `.accent-dots` group anywhere in a surface's chrome, then load this

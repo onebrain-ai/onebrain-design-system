@@ -1,6 +1,6 @@
 # OneBrain — Operator Console UI Kit
 
-An applied, runnable interface example for the **OneBrain is an AI Design System**.
+An applied, runnable interface example for the **OneBrain Design System**.
 It composes modular React components into one product-like surface — the OneBrain
 *operator console*: a vault-navigation sidebar, a rail of the 29+ skills, a live
 session/activity stream, and a command composer.

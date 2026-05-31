@@ -1,7 +1,7 @@
 {
   "name": "@onebrain/tokens",
   "version": "1.0.0",
-  "description": "OneBrain is an AI Design System — cross-platform design tokens (W3C DTCG source + generated CSS / JS / TS / Tailwind / iOS / Android).",
+  "description": "OneBrain Design System — cross-platform design tokens (W3C DTCG source + generated CSS / JS / TS / Tailwind / iOS / Android).",
   "license": "AGPL-3.0",
   "main": "dist/tokens.js",
   "types": "dist/tokens.d.ts",

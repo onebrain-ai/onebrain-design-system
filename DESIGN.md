@@ -1,4 +1,4 @@
-# OneBrain is an AI Design System
+# OneBrain Design System
 
 > Category: Custom · Surface: web (dark-first) · Aesthetic: cyberpunk / Tron "operator console"
 > Source of truth for color, type, spacing, layout, components, motion, voice.

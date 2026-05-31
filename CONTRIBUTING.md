@@ -1,6 +1,6 @@
 # Contributing
 
-How to extend **OneBrain is an AI Design System** without drifting off-system.
+How to extend **OneBrain Design System** without drifting off-system.
 Read `DESIGN.md` (rules) and `PROVENANCE.md` (what's real vs. derived) first.
 
 Golden rule: **derive, don't invent.** New colors come from `oklch()` / `color-mix()` on

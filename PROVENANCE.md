@@ -1,4 +1,4 @@
-# Provenance — OneBrain is an AI Design System
+# Provenance — OneBrain Design System
 
 This package was extracted from real OneBrain source code, not authored from a brief.
 This file records exactly where each token, asset, and rule came from so future agents

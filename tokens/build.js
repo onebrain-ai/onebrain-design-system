@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* ============================================================================
-   OneBrain is an AI Design System — token build
+   OneBrain Design System — token build
    Zero-dependency generator. Reads tokens.json (W3C DTCG, the single source of
    truth) and emits per-platform outputs into tokens/dist/:
 

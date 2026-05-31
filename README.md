@@ -1,4 +1,4 @@
-# OneBrain is an AI Design System
+# OneBrain Design System
 
 A reusable Open Design **design-system package**, extracted from the real OneBrain
 product code. It captures the futuristic, minimal, professional **cyberpunk / Tron

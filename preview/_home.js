@@ -1,5 +1,5 @@
 /* ============================================================================
-   OneBrain is an AI Design System — _home.js
+   OneBrain Design System — _home.js
    Shared, dependency-free "back to Index" affordance for every preview sub-page.
 
    Load once per sub-page (anywhere before </body>):
