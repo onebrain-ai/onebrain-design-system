@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain Design System — Docs</title>
+<meta name="description" content="In-system reader for the OneBrain design-system docs — rendered on the operator-console canvas so the text is always legible." />
+<link rel="icon" href="assets/favicon.ico" sizes="any" />
+<link rel="stylesheet" href="colors_and_type.css" />
+<link rel="stylesheet" href="components.css" />
+<style>
+  *{ box-sizing:border-box; }
+  body{ margin:0; min-height:100dvh; overflow-x:hidden; }
+
+  /* HUD atmosphere — same faint lattice + orb as the launcher, for cohesion. */
+  .bg-grid{ position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);
+    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 35%,transparent 100%);
+            mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 35%,transparent 100%); }
+  .bg-orb{ position:fixed; z-index:-1; top:-240px; left:50%; width:760px; height:520px; transform:translateX(-50%);
+    pointer-events:none; opacity:.1; filter:blur(64px);
+    background:radial-gradient(circle at 50% 50%, var(--section-accent), transparent 62%); }
+
+  /* ---- Sticky top bar ---- */
+  header.bar{ position:sticky; top:0; z-index:var(--z-nav); display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    padding:14px clamp(16px,4vw,40px); background:var(--color-bg-deep); border-bottom:1px solid var(--color-border); }
+  .back{ display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:8px 12px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--color-muted);
+    border:1px solid var(--color-border); transition:border-color var(--dur-base) ease, color var(--dur-base) ease; }
+  .back:hover{ border-color:var(--section-accent); color:var(--color-text); }
+  .back:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:3px; }
+  .bar .brand{ display:flex; align-items:center; gap:11px; margin-right:auto; }
+  .bar .brand img{ width:30px; height:30px; filter:var(--glow-brand); }
+  .bar .wm{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:var(--tracking-tight); font-size:1.12rem; line-height:1; color:var(--color-white); }
+  .bar .wm small{ display:block; font-family:var(--font-mono); font-style:normal; font-weight:400; font-size:8.5px;
+    letter-spacing:.4em; color:var(--color-muted); margin-top:5px; }
+
+  /* ---- Layout ---- */
+  .wrap{ display:grid; grid-template-columns:236px minmax(0,1fr); gap:0;
+    max-width:1180px; margin:0 auto; }
+
+  /* ---- Doc rail ---- */
+  nav.rail{ position:sticky; top:73px; align-self:start; height:max-content;
+    padding:26px 14px 26px clamp(16px,4vw,40px); display:flex; flex-direction:column; gap:4px; }
+  .rail .rh{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--color-ghost); padding:0 12px 10px; }
+  a.rl{ position:relative; display:flex; align-items:baseline; justify-content:space-between; gap:10px; text-decoration:none;
+    padding:9px 12px; border:1px solid transparent; transition:background var(--dur-base) ease, border-color var(--dur-base) ease; }
+  a.rl .rn{ font-family:var(--font-mono); font-size:12px; color:var(--color-muted); }
+  a.rl .rx{ font-family:var(--font-mono); font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--color-ghost); }
+  a.rl::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--section-accent); transform:scaleY(0); transform-origin:top; transition:transform var(--dur-base) var(--ease-out-expo); }
+  a.rl:hover{ background:color-mix(in srgb,var(--section-accent) 6%,transparent); }
+  a.rl:hover .rn{ color:var(--color-text); }
+  a.rl:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:-2px; }
+  a.rl.is-active{ background:var(--action-primary-weak); border-color:color-mix(in srgb,var(--section-accent) 30%,transparent); }
+  a.rl.is-active::before{ transform:scaleY(1); }
+  a.rl.is-active .rn{ color:var(--color-white); }
+  a.rl.is-active .rx{ color:var(--section-accent); }
+
+  /* ---- Article ---- */
+  main.doc{ min-width:0; padding:30px clamp(16px,4vw,48px) 96px; border-left:1px solid var(--color-border-2); }
+  .loading{ font-family:var(--font-mono); font-size:13px; color:var(--color-muted); letter-spacing:.04em; padding:20px 0; }
+  .loading::after{ content:'_'; animation:cb .7s steps(2) infinite; }
+  @keyframes cb{ 50%{ opacity:0; } }
+
+  /* fetch fallback — guarantees a visible escape hatch even if inlining fails */
+  .fallback{ border:1px solid var(--fb-warning-bd); background:var(--fb-warning-bg); padding:20px 22px; }
+  .fallback h3{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    color:var(--color-white); margin:0 0 8px; font-size:1.1rem; }
+  .fallback p{ font-family:var(--font-mono); font-size:12.5px; line-height:1.7; color:var(--color-faint); margin:0 0 14px; }
+  .fallback a.raw{ display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:10px 16px;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--color-bg); background:var(--section-accent); }
+
+  /* ---- Prose (the legibility core: high-contrast light text on near-black) ---- */
+  .prose{ max-width:780px; color:var(--color-text); font-family:var(--font-sans); font-size:15px; line-height:1.72; }
+  .prose > :first-child{ margin-top:0; }
+  .prose h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:-.01em; line-height:1.05; color:var(--color-white); font-size:clamp(1.9rem,4vw,2.4rem); margin:.1em 0 .55em;
+    text-shadow:0 0 26px color-mix(in srgb,var(--section-accent) 22%,transparent); }
+  .prose h2{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:-.01em; line-height:1.1; color:var(--color-white); font-size:1.5rem; margin:1.8em 0 .55em;
+    padding-top:1.1em; border-top:1px solid var(--color-border-2); }
+  .prose h3{ font-family:var(--font-display); font-style:italic; font-weight:600; color:var(--color-text);
+    font-size:1.2rem; margin:1.5em 0 .4em; }
+  .prose h4,.prose h5,.prose h6{ font-family:var(--font-mono); font-weight:500; text-transform:uppercase;
+    letter-spacing:.14em; font-size:.78rem; color:var(--section-accent); margin:1.4em 0 .3em; }
+  .prose p{ margin:0 0 1.05em; }
+  .prose strong{ color:var(--color-white); font-weight:600; }
+  .prose em{ font-style:italic; }
+  .prose a{ color:var(--text-link); text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--text-link) 38%,transparent); transition:color var(--dur-base) ease, border-color var(--dur-base) ease; }
+  .prose a:hover{ color:var(--text-link-hover); border-bottom-color:currentColor; }
+  .prose a:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:2px; }
+  .prose code{ font-family:var(--font-mono); font-size:.86em; color:var(--color-accent-2);
+    background:rgba(0,243,255,.08); padding:.1em .42em; border-radius:var(--radius-xs); }
+  .prose pre.cb{ position:relative; background:#08080e; border:1px solid var(--color-border); padding:15px 16px;
+    overflow:auto; margin:0 0 1.2em; }
+  .prose pre.cb code{ color:#c9c9d2; background:none; padding:0; font-size:12.5px; line-height:1.62; }
+  .prose pre.cb[data-lang]::before{ content:attr(data-lang); position:absolute; top:0; right:0; padding:3px 9px;
+    font-family:var(--font-mono); font-size:8.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--color-ghost); border-left:1px solid var(--color-border); border-bottom:1px solid var(--color-border); }
+  .prose blockquote{ margin:0 0 1.1em; padding:10px 16px; border-left:2px solid var(--section-accent);
+    background:color-mix(in srgb,var(--section-accent) 5%,transparent); color:var(--color-muted); }
+  .prose blockquote p:last-child{ margin-bottom:0; }
+  .prose ul,.prose ol{ margin:0 0 1.05em; padding-left:1.45em; }
+  .prose li{ margin:.32em 0; }
+  .prose li::marker{ color:var(--section-accent); }
+  .prose hr{ border:0; border-top:1px solid var(--color-border); margin:1.7em 0; }
+  .prose img{ max-width:100%; height:auto; }
+  .prose table{ width:100%; border-collapse:collapse; margin:0 0 1.3em; font-family:var(--font-mono);
+    font-size:12px; display:block; overflow-x:auto; }
+  .prose th{ text-align:left; padding:9px 13px; white-space:nowrap;
+    border-bottom:2px solid color-mix(in srgb,var(--section-accent) 42%,transparent);
+    color:var(--color-white); text-transform:uppercase; letter-spacing:.05em; font-size:10px; }
+  .prose td{ padding:8px 13px; border-bottom:1px solid var(--color-border-2); color:var(--color-muted); vertical-align:top; }
+  .prose tbody tr:hover td{ background:rgba(255,255,255,.022); }
+  .prose td code,.prose th code{ font-size:11px; }
+
+  @media (max-width:860px){
+    .wrap{ grid-template-columns:1fr; }
+    nav.rail{ position:static; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; gap:8px;
+      padding:14px clamp(16px,4vw,40px); border-bottom:1px solid var(--color-border-2); }
+    .rail .rh{ display:none; }
+    a.rl{ flex:0 0 auto; flex-direction:column; gap:2px; border:1px solid var(--color-border-2); }
+    a.rl::before{ display:none; }
+    main.doc{ border-left:0; }
+  }
+  @media (prefers-reduced-motion:reduce){ .loading::after{ animation:none; } }
+</style>
+</head>
+<body class="ob-root">
+  <div class="bg-grid"></div>
+  <div class="bg-orb"></div>
+
+  <header class="bar">
+    <a class="back" href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Index</a>
+    <div class="brand">
+      <img src="assets/brain.svg" alt="OneBrain logo" />
+      <span class="wm">Docs<small>OneBrain Design System</small></span>
+    </div>
+    <div class="accent-dots" role="radiogroup" aria-label="Accent color" data-accent-key="ob-accent" data-accent-default="cyan">
+      <span class="accent-lbl">Accent</span>
+      <button class="accent-dot" type="button" role="radio" data-accent="cyan" style="--sw:var(--color-accent-2)" aria-label="Cyan accent" title="Cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      <button class="accent-dot" type="button" role="radio" data-accent="violet" style="--sw:var(--color-accent)" aria-label="Violet accent" title="Violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      <button class="accent-dot" type="button" role="radio" data-accent="magenta" style="--sw:var(--color-accent-3)" aria-label="Magenta accent" title="Magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      <button class="accent-dot" type="button" role="radio" data-accent="amber" style="--sw:var(--color-accent-4)" aria-label="Amber accent" title="Amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <nav class="rail" aria-label="Documents">
+      <span class="rh">// Docs &amp; source</span>
+      <a class="rl" data-doc="DESIGN.md" href="?doc=DESIGN.md"><span class="rn">DESIGN.md</span><span class="rx">rules</span></a>
+      <a class="rl" data-doc="README.md" href="?doc=README.md"><span class="rn">README.md</span><span class="rx">guide</span></a>
+      <a class="rl" data-doc="CONTRIBUTING.md" href="?doc=CONTRIBUTING.md"><span class="rn">CONTRIBUTING.md</span><span class="rx">extend</span></a>
+      <a class="rl" data-doc="ACCESSIBILITY.md" href="?doc=ACCESSIBILITY.md"><span class="rn">ACCESSIBILITY.md</span><span class="rx">a11y</span></a>
+      <a class="rl" data-doc="PROVENANCE.md" href="?doc=PROVENANCE.md"><span class="rn">PROVENANCE.md</span><span class="rx">source</span></a>
+      <a class="rl" data-doc="CHANGELOG.md" href="?doc=CHANGELOG.md"><span class="rn">CHANGELOG.md</span><span class="rx">history</span></a>
+      <a class="rl" data-doc="SKILL.md" href="?doc=SKILL.md"><span class="rn">SKILL.md</span><span class="rx">skill</span></a>
+      <a class="rl" data-doc="tokens/README.md" href="?doc=tokens/README.md"><span class="rn">tokens/README.md</span><span class="rx">tokens</span></a>
+    </nav>
+
+    <main class="doc" id="doc"><div class="loading">Loading</div></main>
+  </div>
+
+  <script src="preview/accent-picker.js"></script>
+  <script>
+  (function () {
+    "use strict";
+    var KNOWN = ["DESIGN.md","README.md","CONTRIBUTING.md","ACCESSIBILITY.md","PROVENANCE.md","CHANGELOG.md","SKILL.md","tokens/README.md"];
+    var DEFAULT = "DESIGN.md";
+    var docEl = document.getElementById("doc");
+    var rails = Array.prototype.slice.call(document.querySelectorAll("a.rl"));
+
+    function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+    /* ---- Inline spans: code, bold, italic, links (escape-first, code-protected) ---- */
+    function inline(s){
+      var out = esc(s);
+      out = out.replace(/`([^`]+)`/g, function(_, c){ return "<code>" + c + "</code>"; });
+      out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      out = out.replace(/(^|[^*\w])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
+      out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function(_, t, u){ return '<a href="' + u + '">' + t + "</a>"; });
+      return out;
+    }
+
+    function splitRow(line){
+      return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(function (c){ return c.trim(); });
+    }
+
+    /* ---- Nested list builder (indent-based; merges continuation lines) ---- */
+    function buildList(lines){
+      var flat = [];
+      lines.forEach(function (raw){
+        var m = raw.match(/^(\s*)([-*+]|\d+\.)\s+(.*)$/);
+        if (m){ flat.push({ indent: m[1].replace(/\t/g, "  ").length, ordered: /\d+\./.test(m[2]), text: m[3], children: [] }); }
+        else if (flat.length){ flat[flat.length - 1].text += " " + raw.trim(); }
+      });
+      var roots = [], stack = [];
+      flat.forEach(function (it){
+        while (stack.length && it.indent <= stack[stack.length - 1].indent){ stack.pop(); }
+        if (stack.length){ stack[stack.length - 1].children.push(it); } else { roots.push(it); }
+        stack.push(it);
+      });
+      function emit(items){
+        if (!items.length){ return ""; }
+        var tag = items[0].ordered ? "ol" : "ul", s = "<" + tag + ">";
+        items.forEach(function (it){ s += "<li>" + inline(it.text) + emit(it.children) + "</li>"; });
+        return s + "</" + tag + ">";
+      }
+      return emit(roots);
+    }
+
+    function isTableSep(l){ return /\|/.test(l) && /^\s*\|?[\s:]*-{2,}[-\s:|]*\|?\s*$/.test(l); }
+
+    /* ---- Block renderer ---- */
+    function render(src){
+      var lines = src.replace(/\r\n?/g, "\n").split("\n");
+      var html = [], i = 0;
+      while (i < lines.length){
+        var line = lines[i];
+        var fence = line.match(/^```(.*)$/);
+        if (fence){
+          var lang = fence[1].trim(), buf = []; i++;
+          while (i < lines.length && !/^```/.test(lines[i])){ buf.push(lines[i]); i++; }
+          i++;
+          html.push('<pre class="cb"' + (lang ? ' data-lang="' + esc(lang) + '"' : "") + "><code>" + esc(buf.join("\n")) + "</code></pre>");
+          continue;
+        }
+        if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(line)){ html.push("<hr>"); i++; continue; }
+        var h = line.match(/^(#{1,6})\s+(.*)$/);
+        if (h){ var n = h[1].length; html.push("<h" + n + ">" + inline(h[2].replace(/\s+#+\s*$/, "")) + "</h" + n + ">"); i++; continue; }
+        if (/\|/.test(line) && i + 1 < lines.length && isTableSep(lines[i + 1])){
+          var header = splitRow(line);
+          var aligns = splitRow(lines[i + 1]).map(function (c){
+            var l = /^:/.test(c), r = /:$/.test(c);
+            return l && r ? "center" : r ? "right" : l ? "left" : "";
+          });
+          i += 2; var rows = [];
+          while (i < lines.length && /\|/.test(lines[i]) && lines[i].trim() !== "" && !isTableSep(lines[i])){ rows.push(splitRow(lines[i])); i++; }
+          var t = "<table><thead><tr>";
+          header.forEach(function (c, x){ t += "<th" + (aligns[x] ? ' style="text-align:' + aligns[x] + '"' : "") + ">" + inline(c) + "</th>"; });
+          t += "</tr></thead><tbody>";
+          rows.forEach(function (r){ t += "<tr>"; for (var x = 0; x < header.length; x++){ t += "<td" + (aligns[x] ? ' style="text-align:' + aligns[x] + '"' : "") + ">" + inline(r[x] || "") + "</td>"; } t += "</tr>"; });
+          html.push(t + "</tbody></table>");
+          continue;
+        }
+        if (/^\s*>\s?/.test(line)){
+          var bq = [];
+          while (i < lines.length && /^\s*>\s?/.test(lines[i])){ bq.push(lines[i].replace(/^\s*>\s?/, "")); i++; }
+          html.push("<blockquote>" + render(bq.join("\n")) + "</blockquote>");
+          continue;
+        }
+        if (/^\s*([-*+]|\d+\.)\s+/.test(line)){
+          var li = [];
+          while (i < lines.length && lines[i].trim() !== "" && (/^\s*([-*+]|\d+\.)\s+/.test(lines[i]) || /^\s{2,}\S/.test(lines[i]))){ li.push(lines[i]); i++; }
+          html.push(buildList(li));
+          continue;
+        }
+        if (line.trim() === ""){ i++; continue; }
+        var para = [];
+        while (i < lines.length && lines[i].trim() !== "" && !/^```/.test(lines[i]) && !/^#{1,6}\s/.test(lines[i]) &&
+               !/^\s*([-*+]|\d+\.)\s+/.test(lines[i]) && !/^\s*>\s?/.test(lines[i]) &&
+               !/^\s*([-*_])(\s*\1){2,}\s*$/.test(lines[i]) &&
+               !(/\|/.test(lines[i]) && i + 1 < lines.length && isTableSep(lines[i + 1]))){
+          para.push(lines[i]); i++;
+        }
+        html.push("<p>" + inline(para.join(" ")) + "</p>");
+      }
+      return html.join("\n");
+    }
+
+    /* ---- Rendered-link behavior: keep .md inside the viewer, open the rest raw ---- */
+    function enhanceLinks(base){
+      Array.prototype.slice.call(docEl.querySelectorAll("a[href]")).forEach(function (a){
+        var href = a.getAttribute("href") || "";
+        if (/^https?:|^mailto:/.test(href)){ a.target = "_blank"; a.rel = "noopener noreferrer"; return; }
+        if (/^#/.test(href)){ return; }
+        var resolved = base && href.indexOf("/") === -1 && base.indexOf("/") > -1
+          ? base.replace(/[^/]+$/, "") + href : href;
+        if (/\.md$/i.test(resolved.split("#")[0]) && KNOWN.indexOf(resolved.split("#")[0]) > -1){
+          a.addEventListener("click", function (e){ e.preventDefault(); go(resolved.split("#")[0]); });
+        } else {
+          a.target = "_blank"; a.rel = "noopener";
+        }
+      });
+    }
+
+    function setActive(file){
+      rails.forEach(function (r){
+        var on = r.getAttribute("data-doc") === file;
+        r.classList.toggle("is-active", on);
+        if (on){ r.setAttribute("aria-current", "page"); } else { r.removeAttribute("aria-current"); }
+      });
+    }
+
+    function fallback(file, reason){
+      return '<div class="fallback"><h3>Open ' + esc(file) + " directly</h3>" +
+        "<p>This reader couldn't inline the file in the current preview (" + esc(reason) +
+        "). Open the raw Markdown in a new tab instead — it stays fully readable there.</p>" +
+        '<a class="raw" href="' + file + '" target="_blank" rel="noopener">Open ' + esc(file) + " &nbsp;↗</a></div>";
+    }
+
+    function load(file){
+      setActive(file);
+      docEl.innerHTML = '<div class="loading">Loading ' + esc(file) + "</div>";
+      document.title = "OneBrain Docs — " + file;
+      fetch(file, { cache: "no-cache" })
+        .then(function (res){ if (!res.ok){ throw new Error("HTTP " + res.status); } return res.text(); })
+        .then(function (text){ docEl.innerHTML = '<article class="prose">' + render(text) + "</article>"; enhanceLinks(file); window.scrollTo(0, 0); })
+        .catch(function (err){ docEl.innerHTML = fallback(file, String(err && err.message || err)); });
+    }
+
+    function go(file, replace){
+      var url = "?doc=" + encodeURIComponent(file);
+      try { history[replace ? "replaceState" : "pushState"]({ doc: file }, "", url); } catch (e) { /* file:// */ }
+      load(file);
+    }
+
+    function fromUrl(){
+      var p = new URLSearchParams(location.search).get("doc");
+      return (p && KNOWN.indexOf(p) > -1) ? p : DEFAULT;
+    }
+
+    rails.forEach(function (r){
+      r.addEventListener("click", function (e){
+        if (e.metaKey || e.ctrlKey || e.shiftKey){ return; }
+        e.preventDefault(); go(r.getAttribute("data-doc"));
+      });
+    });
+    window.addEventListener("popstate", function (){ load(fromUrl()); });
+
+    go(fromUrl(), true);
+  })();
+  </script>
+</body>
+</html>

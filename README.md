@@ -64,6 +64,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ```
 .
 ├── index.html                 Launcher — HUD index linking every preview + surface (open first)
+├── docs.html                  In-system Markdown reader (renders the docs below on the dark canvas, legibly)
 ├── DESIGN.md                  Canonical rules (read first)
 ├── README.md                  This guide
 ├── SKILL.md                   Agent-usable skill entry (YAML frontmatter)
