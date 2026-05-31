@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Cards &amp; Modules</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  .eb{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent-2); background:color-mix(in srgb,var(--color-accent-2) 4%,transparent); border:1px solid color-mix(in srgb,var(--color-accent-2) 30%,transparent); position:relative; }
+  .eb::before,.eb::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
+  .eb::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .eb::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; }
+
+  /* source .cyber-card, each accent set per-card via --section-accent */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+  .card{ position:relative; background:rgba(8,8,14,.78); border:1px solid rgba(255,255,255,.06); padding:1.4rem 1.5rem;
+    transition:border-color .25s ease,background .25s ease; overflow:hidden; }
+  .card:hover{ border-color:color-mix(in srgb,var(--section-accent) 35%,transparent); background:rgba(8,8,14,.7); }
+  .card::before{ content:''; position:absolute; top:-1px; bottom:-1px; left:-1px; width:2px; background:var(--section-accent); opacity:0; transition:opacity .25s ease; }
+  .card:hover::before{ opacity:.85; }
+  .card .meta{ position:absolute; top:12px; right:14px; font-family:var(--font-mono); font-size:9px; letter-spacing:.3em; color:var(--color-ghost); text-transform:uppercase; transition:color .25s; }
+  .card:hover .meta{ color:var(--section-accent); }
+  .card .t{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:1.05rem; letter-spacing:.04em; text-transform:uppercase; color:#fff; margin:0; }
+  .card .d{ margin-top:10px; font-family:var(--font-mono); font-size:11.5px; line-height:1.65; color:rgba(255,255,255,.55); }
+  .card .d code{ color:#00f3ff; background:rgba(0,243,255,.08); padding:0 4px; border-radius:2px; }
+
+  /* stat module */
+  .stat{ background:var(--color-surface); border:1px solid var(--color-border); padding:24px; }
+  .stat .n{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:3rem; line-height:1; color:#fff; }
+  .stat .n em{ color:var(--color-accent-2); font-style:italic; }
+  .stat .l{ font-family:var(--font-mono); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-muted); margin-top:10px; }
+
+  /* skill module — list item with agent color tag */
+  .panel{ background:var(--color-surface); border:1px solid var(--color-border); }
+  .panel .h{ display:flex; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--color-border); font-family:var(--font-mono); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); }
+  .agentrow{ display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid var(--color-border-2); font-family:var(--font-mono); font-size:12.5px; color:var(--color-muted); }
+  .agentrow:last-child{ border-bottom:0; }
+  .agentrow .sw{ width:9px; height:9px; border-radius:50%; flex:none; box-shadow:0 0 8px currentColor; }
+  .agentrow b{ color:var(--color-text); font-weight:500; }
+  .agentrow .r{ margin-left:auto; color:var(--color-ghost); font-size:10px; letter-spacing:.2em; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="eb"><span class="dot"></span> COMPONENTS · CARDS &amp; MODULES</span>
+  <h1>Cards &amp; Modules</h1>
+  <p class="lede">The <code>.cyber-card</code> is the workhorse. Hover any card: the border lights to its
+    section accent and a 2px accent bar slides in on the left, while the top-right meta label turns accent.</p>
+
+  <div class="sec">// Feature cards — one accent per card via --section-accent</div>
+  <div class="grid">
+    <div class="card" style="--section-accent:var(--color-accent-2)"><span class="meta">01</span>
+      <p class="t">Persistent Memory</p><p class="d">Every session resumes from <code>MEMORY.md</code> — your agent never forgets who you are.</p></div>
+    <div class="card" style="--section-accent:var(--color-accent)"><span class="meta">02</span>
+      <p class="t">29+ Skills</p><p class="d">Pre-built workflows: <code>/capture</code>, <code>/distill</code>, <code>/connect</code>, <code>/doctor</code>.</p></div>
+    <div class="card" style="--section-accent:var(--color-accent-3)"><span class="meta">03</span>
+      <p class="t">Plain Markdown</p><p class="d">No cloud, no lock-in. Your vault is <code>.md</code> files you own forever.</p></div>
+    <div class="card" style="--section-accent:var(--color-loop)"><span class="meta">04</span>
+      <p class="t">Co-Evolution</p><p class="d">The loop: <code>CAPTURE → EVOLVE → WRAPUP</code> on every session.</p></div>
+  </div>
+
+  <div class="sec">// Stat modules</div>
+  <div class="grid">
+    <div class="stat"><div class="n"><em>29</em>+</div><div class="l">Pre-built skills</div></div>
+    <div class="stat"><div class="n"><em>4</em></div><div class="l">Harness OS layers</div></div>
+    <div class="stat"><div class="n">v<em>3.1.6</em></div><div class="l">Plugin · requires CLI ≥3.1.0</div></div>
+  </div>
+
+  <div class="sec">// Sub-agents (with source colors)</div>
+  <div class="panel">
+    <div class="h"><span>05-AGENT</span><span>STATUS</span></div>
+    <div class="agentrow"><span class="sw" style="background:#ff8c00;color:#ff8c00"></span><b>Inbox Classifier</b><span class="r">ORANGE</span></div>
+    <div class="agentrow"><span class="sw" style="background:#3b82f6;color:#3b82f6"></span><b>Knowledge Linker</b><span class="r">BLUE</span></div>
+    <div class="agentrow"><span class="sw" style="background:#22c55e;color:#22c55e"></span><b>Link Suggester</b><span class="r">GREEN</span></div>
+    <div class="agentrow"><span class="sw" style="background:#eab308;color:#eab308"></span><b>Tag Suggester</b><span class="r">YELLOW</span></div>
+    <div class="agentrow"><span class="sw" style="background:#ef4444;color:#ef4444"></span><b>Task Extractor</b><span class="r">RED</span></div>
+  </div>
+
+  <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--color-ghost);margin:36px 0 0;line-height:1.8;border-top:1px solid var(--color-border-2);padding-top:14px;max-width:74ch">
+    Source basis — <code>.cyber-card</code> reproduced from onebrain-ai/website <code>global.css</code>;
+    sub-agent names/colors from <code>inbox-classifier</code> / <code>task-extractor</code> agents.
+    Build-time libs <code>gh-stars.ts</code>, <code>version.ts</code>, <code>brain-id.ts</code>,
+    <code>middleware.ts</code>, <code>waitlist.ts</code> preserved in <code>source_examples/</code>.</p>
+</body>
+</html>

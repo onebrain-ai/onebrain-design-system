@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Typography Specimens</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);
+    -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);
+            mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono);
+    font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase;
+    color:var(--color-accent-3); background:color-mix(in srgb,var(--color-accent-3) 4%,transparent);
+    border:1px solid color-mix(in srgb,var(--color-accent-3) 30%,transparent); position:relative; }
+  .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
+  .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 40px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:40px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .spec{ background:var(--color-surface); border:1px solid var(--color-border); padding:26px clamp(18px,3vw,32px); margin-bottom:18px; }
+  .spec .fam{ font-family:var(--font-mono); font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--color-accent-2); }
+  .spec .role{ font-family:var(--font-mono); font-size:11px; color:var(--color-muted); margin-bottom:18px; }
+  .display-big{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; line-height:.92; letter-spacing:-.02em; font-size:clamp(2.6rem,7vw,5rem); color:#fff; margin:0; }
+  .glyphs{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:2rem; color:var(--color-muted); margin-top:14px; letter-spacing:.02em; }
+  .weights{ display:flex; flex-wrap:wrap; gap:22px; margin-top:16px; }
+  .weights span{ font-family:var(--font-display); font-size:1.4rem; color:var(--color-text); }
+  .sans-sample{ font-family:var(--font-sans); font-size:1.15rem; line-height:1.5; color:var(--color-text); max-width:62ch; margin:0; }
+  .sans-sample .muted{ color:var(--color-muted); }
+  .mono-sample{ font-family:var(--font-mono); font-size:.95rem; line-height:1.65; color:var(--color-faint); max-width:64ch; }
+  .mono-sample .c{ color:var(--color-accent-2); background:rgba(0,243,255,.08); padding:0 4px; border-radius:2px; }
+  .scale{ display:grid; gap:0; border:1px solid var(--color-border-2); }
+  .srow{ display:flex; align-items:baseline; gap:20px; padding:14px 18px; border-bottom:1px solid var(--color-border-2); }
+  .srow:last-child{ border-bottom:0; }
+  .srow .k{ font-family:var(--font-mono); font-size:11px; color:var(--color-muted); width:150px; flex:none; letter-spacing:.05em; }
+  .srow .v{ color:var(--color-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .stroke{ display:inline-block; color:transparent; -webkit-text-stroke:1.5px var(--color-accent-2);
+    text-shadow:0 0 40px color-mix(in srgb,var(--color-accent-2) 35%,transparent); }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-3)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="pill"><span class="dot"></span> TYPE · CHAKRA PETCH · INTER · JETBRAINS MONO</span>
+  <h1>Typography</h1>
+  <p class="lede">Three voices: an italic-uppercase display face, a quiet body sans, and a monospace HUD/code
+    face. Chakra Petch &amp; JetBrains Mono are shipped in <code>fonts/</code> and bound via <code>@font-face</code>.</p>
+
+  <div class="sec">// Display — Chakra Petch (italic, uppercase)</div>
+  <div class="spec">
+    <div class="fam">--font-display · "Chakra Petch"</div>
+    <div class="role">Headlines · section titles · card titles · brand wordmark</div>
+    <p class="display-big">Unified<br>Intelligence <span class="stroke">OS</span></p>
+    <div class="weights">
+      <span style="font-weight:300">Light 300</span>
+      <span style="font-weight:400">Regular 400</span>
+      <span style="font-weight:500">Medium 500</span>
+      <span style="font-weight:600">SemiBold 600</span>
+      <span style="font-weight:700">Bold 700</span>
+    </div>
+    <div class="glyphs">OneBrain · AaBbCc 0123456789 / — →</div>
+  </div>
+
+  <div class="sec">// Body — Inter (system / Google fallback)</div>
+  <div class="spec">
+    <div class="fam">--font-sans · "Inter"</div>
+    <div class="role">Body copy · UI labels · long-form prose</div>
+    <p class="sans-sample">OneBrain is an AI operating system layer built on top of Obsidian. It gives your
+      agent persistent memory, a structured knowledge vault, and 29+ pre-built skills —
+      <span class="muted">so every session picks up exactly where the last one left off.</span></p>
+  </div>
+
+  <div class="sec">// Mono — JetBrains Mono</div>
+  <div class="spec">
+    <div class="fam">--font-mono · "JetBrains Mono" · variable 100–800</div>
+    <div class="role">Eyebrows · status lines · metadata · code · IDs · dense console body</div>
+    <p class="mono-sample">$ onebrain doctor --fix<br>
+      → vault healthy · <span class="c">memory/</span> indexed · 29 skills loaded<br>
+      task: <span class="c">- [ ] Review release notes 📅 2026-06-02</span><br>
+      link: <span class="c">[[Co-Evolution Loop]]</span> · folder: <span class="c">03-knowledge/</span></p>
+  </div>
+
+  <div class="sec">// Type scale</div>
+  <div class="scale">
+    <div class="srow"><span class="k">--text-hero</span><span class="v" style="font-family:var(--font-display);font-style:italic;font-weight:700;text-transform:uppercase;font-size:3rem;line-height:1">Hero</span></div>
+    <div class="srow"><span class="k">--text-h2 · clamp→5rem</span><span class="v" style="font-family:var(--font-display);font-style:italic;font-weight:700;text-transform:uppercase;font-size:2.4rem">Section</span></div>
+    <div class="srow"><span class="k">--text-2xl · 32px</span><span class="v" style="font-family:var(--font-display);font-size:2rem">32 / stat</span></div>
+    <div class="srow"><span class="k">--text-xl · 24px</span><span class="v" style="font-size:1.5rem">24 / subsection</span></div>
+    <div class="srow"><span class="k">--text-md · 17px</span><span class="v" style="font-family:var(--font-display);font-style:italic;font-weight:700;text-transform:uppercase;font-size:1.0625rem">17 / card title</span></div>
+    <div class="srow"><span class="k">--text-base · 16px</span><span class="v" style="font-family:var(--font-sans);font-size:1rem">16 / body copy</span></div>
+    <div class="srow"><span class="k">--text-sm · 13px</span><span class="v" style="font-family:var(--font-mono);font-size:.8125rem">13 / mono metadata</span></div>
+    <div class="srow"><span class="k">--text-xs · 11px</span><span class="v" style="font-family:var(--font-mono);font-size:.6875rem">11 / card description</span></div>
+    <div class="srow"><span class="k">--eyebrow · 10px</span><span class="v" style="font-family:var(--font-mono);font-size:.625rem;letter-spacing:.4em;text-transform:uppercase;color:var(--color-accent-2)">EYEBROW · TRACKING .4EM</span></div>
+  </div>
+</body>
+</html>

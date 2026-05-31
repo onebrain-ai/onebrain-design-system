@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Hero / Split (.ob-synthwave grid + floating glass terminal)</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  /* ==========================================================================
+     OneBrain · hero VARIANT 1 (split) — ".ob-synthwave" backdrop + ONE floating terminal
+     Sibling: hero-centered.html (variant 2). Same backdrop + glass material, different layout.
+     A perspective "outrun" grid receding to a vanishing point, DIALED BACK so
+     it reads as recessed atmosphere — a single product window floats out of it
+     in 3D and owns the foreground. Modelled on the onebrain.run hero (the real
+     `brew install …` console + `NODE · NETWORK :: ONLINE · LAT` status line).
+
+     Hero accent = brand PINK (hot magenta); violet is the single secondary.
+     The terminal is iOS-style FROSTED GLASS — translucent + heavily blurred so
+     the pink grid glows through it, with a bright inset highlight and a soft
+     ambient + brand-glow shadow that sells the float. (Deliberate hero
+     exception to the system's sharp-corner rule: glass panels read as iOS
+     glass only when softly rounded — see DESIGN.md §1.) Reuse: lift the
+     `.ob-synthwave` block as a backdrop, drop content on top. All motion
+     collapses under prefers-reduced-motion.
+     ========================================================================== */
+  *{ box-sizing:border-box; }
+  html{ height:100%; }
+  body{ margin:0; min-height:100%; overflow-x:hidden;
+    --ha: var(--color-accent-3);                                            /* #ff2d92 pink */
+    --grad-hero-btn: linear-gradient(135deg, var(--color-accent-3), var(--color-accent)); /* pink → violet */
+  }
+
+  /* --- The reusable backdrop (recessed) --------------------------------- */
+  .ob-synthwave{
+    position:fixed; inset:0; overflow:hidden; z-index:0;
+    background:
+      radial-gradient(120% 80% at 50% 60%,
+        color-mix(in srgb, var(--color-accent) 8%, transparent) 0%,
+        transparent 58%),
+      linear-gradient(to bottom,
+        var(--color-bg-deep) 0%,
+        var(--color-bg) 36%,
+        #07060d 54%,
+        #050507 100%);
+    --sw-horizon: 60%;
+    --sw-line: color-mix(in srgb, var(--ha) 26%, transparent);
+  }
+
+  .sw-stars{
+    position:absolute; left:0; right:0; top:0; height:var(--sw-horizon);
+    background-image:
+      radial-gradient(1.4px 1.4px at 12% 22%, rgba(255,255,255,.45), transparent 60%),
+      radial-gradient(1.3px 1.3px at 78% 14%, rgba(255,255,255,.34), transparent 60%),
+      radial-gradient(1.1px 1.1px at 34% 38%, color-mix(in srgb,var(--ha) 60%,white), transparent 60%),
+      radial-gradient(1.1px 1.1px at 62% 30%, rgba(255,255,255,.30), transparent 60%),
+      radial-gradient(1.3px 1.3px at 89% 40%, color-mix(in srgb,var(--color-accent) 55%,white), transparent 60%),
+      radial-gradient(1px 1px at 22% 9%, rgba(255,255,255,.26), transparent 60%);
+    -webkit-mask-image:linear-gradient(to bottom,#000 0%, #000 52%, transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 0%, #000 52%, transparent 100%);
+    opacity:.38;
+  }
+
+  .sw-mtns{
+    position:absolute; left:0; right:0; top:var(--sw-horizon);
+    transform:translateY(-100%);
+    width:100%; height:clamp(110px,20vh,190px); display:block;
+  }
+  .sw-mtns .ridge-back{ fill:#09090f; stroke:color-mix(in srgb,var(--ha) 20%,transparent); stroke-width:1.25; }
+  .sw-mtns .ridge-front{ fill:#050509; stroke:color-mix(in srgb,var(--ha) 42%,transparent); stroke-width:1.4; }
+
+  .sw-bloom{
+    position:absolute; left:50%; top:var(--sw-horizon);
+    transform:translate(-50%,-50%);
+    width:min(56vw,560px); height:min(24vh,210px);
+    background:radial-gradient(ellipse at center,
+      color-mix(in srgb,var(--color-accent-3) 40%,transparent) 0%,
+      color-mix(in srgb,var(--color-accent) 24%,transparent) 36%,
+      color-mix(in srgb,var(--color-accent-2) 12%,transparent) 58%,
+      transparent 76%);
+    filter:blur(26px);
+    opacity:.4; pointer-events:none;
+  }
+  .sw-horizon-line{
+    position:absolute; left:0; right:0; top:var(--sw-horizon); height:1px;
+    background:linear-gradient(90deg, transparent 4%,
+      color-mix(in srgb,var(--ha) 70%,transparent) 30%,
+      #ffd6ec 50%,
+      color-mix(in srgb,var(--ha) 70%,transparent) 70%, transparent 96%);
+    opacity:.6;
+    box-shadow:0 0 10px 1px color-mix(in srgb,var(--ha) 45%,transparent);
+  }
+
+  .sw-floor{
+    position:absolute; left:50%; top:var(--sw-horizon); bottom:0;
+    width:320%;
+    transform:translateX(-50%) perspective(360px) rotateX(79deg);
+    transform-origin:top center;
+    background-image:
+      linear-gradient(to bottom, var(--sw-line) 1.5px, transparent 1.5px),
+      linear-gradient(to right,  var(--sw-line) 1.5px, transparent 1.5px);
+    background-size:100% 64px, 64px 100%;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 16%, #000 100%);
+            mask-image:linear-gradient(to bottom, transparent 0%, #000 16%, #000 100%);
+    opacity:.7;
+    animation:sw-scroll 8s linear infinite;
+  }
+  @keyframes sw-scroll{ from{ background-position:0 0, 0 0; } to{ background-position:0 64px, 0 0; } }
+
+  .sw-scrim{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(115% 90% at 38% 50%,
+        color-mix(in srgb,var(--color-bg) 70%,transparent) 0%,
+        transparent 46%),
+      linear-gradient(to right,
+        color-mix(in srgb,var(--color-bg) 55%,transparent) 0%,
+        transparent 55%),
+      color-mix(in srgb,var(--color-bg) 22%,transparent);
+  }
+  .sw-vignette{
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(125% 105% at 50% 44%, transparent 38%,
+      color-mix(in srgb,var(--color-bg) 96%,transparent) 100%);
+  }
+
+  /* ====================== HERO (foreground, owns the eye) ================ */
+  .hero{
+    position:relative; z-index:10; min-height:100dvh;
+    max-width:var(--content-max); margin:0 auto;
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);
+    align-items:center; gap:clamp(24px,5vw,72px);
+    padding:clamp(80px,11vh,128px) clamp(20px,5vw,56px) 92px;
+  }
+
+  /* --- Left: product copy ----------------------------------------------- */
+  .hero-copy{ display:flex; flex-direction:column; align-items:flex-start; gap:20px; }
+  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono);
+    font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase;
+    color:var(--ha); background:color-mix(in srgb,var(--ha) 10%,transparent);
+    border:1px solid color-mix(in srgb,var(--ha) 40%,transparent); position:relative; }
+  .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
+  .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
+  .dot{ width:6px;height:6px;border-radius:50%;background:currentColor;
+    box-shadow:0 0 8px currentColor; animation:sw-pulse 1.6s ease-in-out infinite; }
+  @keyframes sw-pulse{ 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+  h1{ margin:2px 0 0; font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
+    letter-spacing:var(--tracking-tight); line-height:.9; font-size:clamp(2.6rem,7vw,5.4rem); color:#fff;
+    text-shadow:0 0 24px color-mix(in srgb,var(--ha) 32%,transparent); }
+  h1 .stroke{ color:transparent; -webkit-text-stroke:1.5px var(--ha);
+    text-stroke:1.5px var(--ha);
+    text-shadow:0 0 26px color-mix(in srgb,var(--ha) 42%,transparent); }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:46ch;
+    line-height:1.66; font-size:clamp(.84rem,1.5vw,.96rem); margin:2px 0 4px; }
+  .lede b{ color:var(--color-text); font-weight:500; }
+
+  .cta-row{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+  .cta{ display:inline-flex; align-items:center; gap:10px; padding:13px 26px;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.26em; text-transform:uppercase; font-weight:600;
+    color:#040406; background:var(--grad-hero-btn); clip-path:var(--clip-tech); border:0; cursor:pointer;
+    box-shadow:0 0 22px color-mix(in srgb,var(--color-accent-3) 40%,transparent); transition:background var(--dur-base) ease; }
+  .cta:hover{ background:#fff; }
+  .ghost{ display:inline-flex; align-items:center; gap:8px; padding:12px 20px; cursor:pointer;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--color-muted); background:transparent; border:1px solid var(--color-border);
+    transition:border-color var(--dur-base) ease, color var(--dur-base) ease; }
+  .ghost:hover{ color:var(--color-text); border-color:color-mix(in srgb,var(--ha) 55%,transparent); }
+  .ghost .b{ color:var(--ha); }
+  .meta{ margin-top:6px; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--color-ghost); }
+  .meta b{ color:var(--color-muted); font-weight:500; }
+
+  /* --- Right: 3D stage with the single floating terminal ---------------- */
+  .stage{ position:relative; perspective:1700px; perspective-origin:60% 42%;
+    display:flex; align-items:center; justify-content:center;
+    min-height:clamp(400px,56vh,560px); }
+
+  /* Cast glow beneath the window — implies it hovers ABOVE the grid. */
+  .term-glow{ position:absolute; z-index:0; left:50%; top:62%; transform:translateX(-50%);
+    width:80%; height:42%; pointer-events:none;
+    background:radial-gradient(ellipse at center,
+      color-mix(in srgb,var(--ha) 34%,transparent) 0%,
+      color-mix(in srgb,var(--color-accent) 16%,transparent) 42%, transparent 72%);
+    filter:blur(34px); opacity:.55; }
+
+  /* THE floating frosted-glass terminal window (iOS glass material). */
+  .term{
+    position:relative; z-index:1; width:min(100%,452px);
+    transform-style:preserve-3d;
+    transform:rotateY(-15deg) rotateX(8deg);
+    border-radius:18px; overflow:hidden;
+    background:linear-gradient(158deg,
+      color-mix(in srgb,#171326 62%, transparent) 0%,
+      color-mix(in srgb,var(--color-surface) 50%, transparent) 60%,
+      color-mix(in srgb,#06060d 56%, transparent) 100%);
+    -webkit-backdrop-filter:blur(26px) saturate(1.7);
+            backdrop-filter:blur(26px) saturate(1.7);
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:
+      0 44px 92px -34px rgba(0,0,0,.78),
+      0 0 64px -24px color-mix(in srgb,var(--ha) 60%,transparent),
+      inset 0 1px 0 rgba(255,255,255,.16),
+      inset 0 0 0 .5px rgba(255,255,255,.05);
+    animation:term-in .9s var(--ease-out-expo) .5s both, term-bob 7.5s ease-in-out 1.4s infinite;
+  }
+  /* Top sheen — the glass catching light. */
+  .term::before{ content:''; position:absolute; left:0; right:0; top:0; height:46%;
+    background:linear-gradient(to bottom, rgba(255,255,255,.08), transparent);
+    pointer-events:none; }
+  @keyframes term-in{ from{ opacity:0; transform:rotateY(-15deg) rotateX(8deg) translateY(26px); }
+                      to{ opacity:1; transform:rotateY(-15deg) rotateX(8deg) translateY(0); } }
+  @keyframes term-bob{ 0%,100%{ transform:rotateY(-15deg) rotateX(8deg) translateY(0); }
+                       50%{ transform:rotateY(-15deg) rotateX(8deg) translateY(-12px); } }
+
+  /* Window bar — lighter frosted strip with brand-tinted window lights. */
+  .term-bar{ display:flex; align-items:center; gap:12px; padding:12px 15px;
+    background:linear-gradient(to bottom, rgba(255,255,255,.05), transparent);
+    border-bottom:1px solid rgba(255,255,255,.07); position:relative; }
+  .lights{ display:inline-flex; gap:7px; }
+  .lights i{ width:11px; height:11px; border-radius:50%; display:block; }
+  .l-r{ background:var(--color-danger);  box-shadow:0 0 8px color-mix(in srgb,var(--color-danger) 70%,transparent); }
+  .l-a{ background:var(--color-warning); box-shadow:0 0 8px color-mix(in srgb,var(--color-warning) 70%,transparent); }
+  .l-g{ background:var(--color-success); box-shadow:0 0 8px color-mix(in srgb,var(--color-success) 70%,transparent); }
+  .term-title{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:lowercase;
+    color:var(--color-muted); flex:1; text-align:center; }
+  .term-title b{ color:var(--color-text); font-weight:500; }
+  .term-node{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--color-ghost); }
+
+  /* Terminal body — the live session transcript. */
+  .term-body{ padding:15px 17px 13px; font-family:var(--font-mono); font-size:12.5px; line-height:1.85; }
+  .ln{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ln .pr{ color:var(--ha); font-weight:600; margin-right:7px; }
+  .ln .cmd{ color:var(--color-text); }
+  .ln .arg{ color:var(--color-muted); }
+  .ln.out{ color:var(--color-faint); }
+  .ln.out .ok{ color:var(--color-success); margin-right:6px; }
+  .ln.out .arrow{ color:var(--color-accent-2); margin-right:6px; }
+  .ln.out b{ color:var(--color-text); font-weight:500; }
+  .ln.out .lk{ color:var(--color-accent); }
+  .ln.loop{ color:var(--ha); letter-spacing:.14em; font-size:11px; text-transform:uppercase;
+    margin:5px 0 3px; opacity:.92; }
+  .caret{ display:inline-block; width:8px; height:15px; vertical-align:-3px;
+    background:var(--ha); box-shadow:0 0 8px color-mix(in srgb,var(--ha) 70%,transparent);
+    animation:blink .9s steps(2) infinite; }
+  @keyframes blink{ 0%,50%{opacity:1;} 51%,100%{opacity:0;} }
+
+  /* Footer — frosted iOS input pill + the real NODE/network status line. */
+  .term-foot{ padding:11px 14px 14px; border-top:1px solid rgba(255,255,255,.07);
+    background:linear-gradient(to top, rgba(255,255,255,.04), transparent); }
+  .composer{ display:flex; align-items:center; gap:9px; padding:9px 11px; border-radius:12px;
+    background:color-mix(in srgb,#0b0b16 46%, transparent);
+    -webkit-backdrop-filter:blur(10px) saturate(1.3);
+            backdrop-filter:blur(10px) saturate(1.3);
+    border:1px solid color-mix(in srgb,var(--ha) 30%, rgba(255,255,255,.08));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08); }
+  .composer .slash{ font-family:var(--font-mono); color:var(--ha); font-weight:600; font-size:13px; }
+  .composer .ph{ font-family:var(--font-mono); font-size:11.5px; color:var(--color-muted); flex:1;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .composer .run{ font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+    color:#040406; background:var(--grad-hero-btn); border:0; border-radius:8px; padding:7px 13px; cursor:pointer;
+    box-shadow:0 0 16px -4px color-mix(in srgb,var(--ha) 60%,transparent); white-space:nowrap; }
+  .term-status{ margin-top:11px; display:flex; flex-wrap:wrap; gap:4px 12px; align-items:center;
+    font-family:var(--font-mono); font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--color-ghost); }
+  .term-status .net{ color:var(--color-success); display:inline-flex; align-items:center; gap:6px; }
+  .term-status .net i{ width:5px; height:5px; border-radius:50%; background:var(--color-success);
+    box-shadow:0 0 7px var(--color-success); animation:sw-pulse 1.6s ease-in-out infinite; }
+  .term-status b{ color:var(--color-muted); font-weight:500; }
+
+  /* Reviewer caption (slim — this is a Design-System preview card). */
+  .sw-cap{ position:fixed; left:0; right:0; bottom:0; z-index:20;
+    display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:center;
+    padding:9px 16px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--color-ghost); background:linear-gradient(to top, var(--color-bg-deep), transparent);
+    border-top:1px solid var(--color-border-2); }
+  .sw-cap b{ color:var(--ha); font-weight:500; }
+
+  /* --- Responsive: stack copy over the window, ease the 3D tilt --------- */
+  @media (max-width:980px){
+    .hero{ grid-template-columns:1fr; text-align:center; gap:48px; padding-top:92px; }
+    .hero-copy{ align-items:center; }
+    .lede{ margin-inline:auto; }
+    .stage{ min-height:clamp(380px,48vh,460px); }
+    .term{ transform:rotateY(-9deg) rotateX(5deg); }
+    @keyframes term-in{ from{ opacity:0; transform:rotateY(-9deg) rotateX(5deg) translateY(26px); }
+                        to{ opacity:1; transform:rotateY(-9deg) rotateX(5deg) translateY(0); } }
+    @keyframes term-bob{ 0%,100%{ transform:rotateY(-9deg) rotateX(5deg) translateY(0); }
+                         50%{ transform:rotateY(-9deg) rotateX(5deg) translateY(-10px); } }
+    .sw-scrim{ background:linear-gradient(to bottom,
+        color-mix(in srgb,var(--color-bg) 62%,transparent) 0%, transparent 42%),
+        color-mix(in srgb,var(--color-bg) 26%,transparent); }
+  }
+  @media (max-width:560px){
+    .stage{ perspective:none; min-height:auto; }
+    .term{ transform:none; width:100%; animation:term-in-flat .8s var(--ease-out-expo) .45s both; }
+    @keyframes term-in-flat{ from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+    .term-glow{ top:58%; opacity:.4; }
+    .term-body{ font-size:11.5px; }
+    .term-title{ display:none; }
+    .sw-cap{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .sw-floor,.dot,.caret,.term,.term-status .net i{ animation:none !important; }
+    .term{ opacity:1 !important; }
+  }
+</style>
+</head>
+<body class="ob-root pv-boot">
+
+  <!-- ===== Reusable backdrop (recessed) ===== -->
+  <div class="ob-synthwave">
+    <div class="sw-stars"></div>
+    <svg class="sw-mtns" viewBox="0 0 1440 190" preserveAspectRatio="none" aria-hidden="true">
+      <polyline class="ridge-back"  points="0,190 120,116 240,152 360,86 520,136 660,76 820,126 980,64 1140,120 1280,90 1440,136 1440,190" />
+      <polyline class="ridge-front" points="0,190 90,146 210,178 330,126 470,170 600,116 740,162 900,106 1050,160 1220,136 1360,166 1440,150 1440,190" />
+    </svg>
+    <div class="sw-bloom"></div>
+    <div class="sw-horizon-line"></div>
+    <div class="sw-floor"></div>
+    <div class="sw-scrim"></div>
+    <div class="sw-vignette"></div>
+  </div>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+
+    <div class="hero-copy">
+      <span class="pill"><span class="dot"></span> System Online · Harness OS</span>
+      <h1>Unified<br><span class="stroke">Intelligence</span></h1>
+      <p class="lede">Persistent memory, a structured vault, and 29+ skills layered onto your
+        AI harness — so every session <b>picks up exactly where the last one left off</b>.
+        Plain Markdown, owned forever.</p>
+      <div class="cta-row">
+        <button class="cta" type="button">Request Access</button>
+        <button class="ghost" type="button"><span class="b">⌘</span> Explore Skills</button>
+      </div>
+      <p class="meta">// plugin <b>v3.1.6</b> · AGPL-3.0 · local-first · vault-native</p>
+    </div>
+
+    <!-- ONE OneBrain terminal window, floating (iOS frosted glass) out of the grid -->
+    <div class="stage" aria-label="Floating OneBrain operator console">
+      <div class="term-glow"></div>
+      <div class="term" role="img" aria-label="OneBrain operator console terminal">
+
+        <div class="term-bar">
+          <span class="lights"><i class="l-r"></i><i class="l-a"></i><i class="l-g"></i></span>
+          <span class="term-title"><b>onebrain</b> · operator console</span>
+          <span class="term-node">NODE 0x4F2A</span>
+        </div>
+
+        <div class="term-body">
+          <div class="ln"><span class="pr">$</span><span class="cmd">brew install onebrain-ai/onebrain/onebrain</span></div>
+          <div class="ln out"><span class="ok">✓</span> installed <b>onebrain</b> v3.1.6 · plugin&nbsp;+&nbsp;CLI</div>
+          <div class="ln"><span class="pr">$</span><span class="cmd">onebrain capture</span> <span class="arg">"operator console idea"</span></div>
+          <div class="ln out"><span class="arrow">→</span> routing to vault…</div>
+          <div class="ln out"><span class="ok">✓</span> filed <b>00-inbox/operator-console.md</b></div>
+          <div class="ln out"><span class="ok">✓</span> linked <span class="lk">[[Harness&nbsp;OS]]</span> · <span class="lk">[[Persistent&nbsp;Memory]]</span></div>
+          <div class="ln loop">capture → evolve → wrapup</div>
+          <div class="ln"><span class="pr">$</span><span class="caret"></span></div>
+        </div>
+
+        <div class="term-foot">
+          <div class="composer">
+            <span class="slash">/</span>
+            <span class="ph">capture a thought, link it to a note…</span>
+            <button class="run" type="button">⏎ Run</button>
+          </div>
+          <div class="term-status">
+            <span class="net"><i></i> Network :: Online</span>
+            <span>· <b>v3.1.6</b></span>
+            <span>· Lat 12ms</span>
+            <span>· Vault-native</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <div class="sw-cap">
+    <span>// .ob-synthwave hero</span>
+    <span>accent <b>--color-accent-3</b> · pink</span>
+    <span>single frosted-glass terminal · grid shows through</span>
+  </div>
+
+</body>
+</html>

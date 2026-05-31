@@ -1,0 +1,23 @@
+# --- OS / editor junk ---
+.DS_Store
+**/.DS_Store
+Thumbs.db
+*.swp
+
+# --- Uploaded reference media (not part of the design-system package) ---
+# Stock synthwave imagery + feedback screenshots used during iteration.
+# Excluded to keep the repo lean; the package does not reference these.
+uploads/
+
+# --- Local verification artifacts (regenerated on demand) ---
+*.screenshot.png
+.playwright/
+
+# --- Open Design host machinery (not part of the portable package) ---
+.od-skills/
+*.artifact.json
+
+# --- Stray reference images dropped at project root (not referenced) ---
+mpt*-*.jpg
+mpt*-*.png
+mpt*-*.jpeg

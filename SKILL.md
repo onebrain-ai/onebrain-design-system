@@ -1,0 +1,93 @@
+---
+name: onebrain-is-an-ai-design-system
+description: >-
+  Futuristic cyberpunk / Tron "operator console" design system extracted from the
+  OneBrain product (onebrain-ai/website + onebrain-ai/onebrain). Use when generating
+  any artifact for OneBrain — an AI operating-system layer on Obsidian (persistent
+  memory, 29+ skills, local AI stack). Dark-first near-black canvas, four neon accents
+  (violet/cyan/magenta/amber), Chakra Petch display + JetBrains Mono + Inter, corner-cut
+  geometry, HUD grid, neon-glow elevation. Provides tokens (colors_and_type.css),
+  rules (DESIGN.md), preview cards, preserved brand assets/fonts, source examples, and a
+  runnable operator-console UI kit.
+user-invocable: true
+---
+
+# OneBrain is an AI Design System
+
+A reusable, source-backed design-system package. Everything here is extracted from real
+OneBrain code — apply it whenever you build OneBrain landing pages, product/console
+surfaces, decks, or diagrams so the output instantly reads as "futuristic, AI, OneBrain."
+
+## What's inside
+
+- **`DESIGN.md`** — canonical rules: product context, visual foundations, color, type,
+  spacing, layout, components, motion, voice, anti-patterns. Read this first.
+- **`colors_and_type.css`** — all design tokens + `@font-face` bindings to the preserved
+  brand fonts. Paste its `:root` into a new artifact's first `<style>`, or `<link>` it.
+- **`PROVENANCE.md`** — exactly where every token/asset/rule came from + honest gaps.
+- **`preview/`** — focused, reviewable HTML cards (color, type, spacing, components,
+  brand assets) for the Design System tab.
+- **`assets/`** — preserved brand marks: `brain.svg` logo, `apple-touch-icon.png`,
+  `favicon.ico` (rebuilt from `brain.svg` — see below), and three live architecture
+  diagrams under `assets/diagrams/`.
+- **`build/`** — runtime icons (`icon.png`, `logo.svg` byte-for-byte; `favicon.ico`
+  rebuilt from the brand logo as a multi-size 16·32·48 ICO so the tab mark is the
+  brand brain, not the source's leftover framework default) with runtime filenames.
+- **`fonts/`** — the 12 brand font files (Chakra Petch ×10, JetBrains Mono ×2), bound
+  in `colors_and_type.css`.
+- **`source_examples/`** — high-signal originals: `styles/global.css` (the real theme +
+  component CSS), `agents/*.md`, and the Astro build-time libs.
+- **`ui_kits/app/`** — a runnable operator-console interface kit (React + Babel) that
+  composes modular role components into one product surface.
+
+## Source context
+
+- **Product:** OneBrain — "Your AI Thinking Partner." An AI OS layer on Obsidian:
+  persistent memory, 29+ skills, a local stack (Claude Code + Obsidian + tmux + Telegram).
+  Plain Markdown, owned forever; extends harnesses rather than replacing them.
+- **Visual evidence:** `onebrain-ai/website` `src/styles/global.css` (the "Cyber Palette —
+  Operator Console" tokens + component classes), brand SVGs, and uploaded fonts.
+- **Domain evidence:** `onebrain-ai/onebrain` plugin — vault structure (`00-inbox` …
+  `07-logs`), skill names, 5 sub-agents, the Harness OS stack, the co-evolution loop.
+- Both repos read via the bounded `github-design-context` intake (this-device git-clone);
+  snapshots in `context/github/`.
+
+## When to use this skill
+
+Use it for any OneBrain-branded surface: marketing/landing pages, the vault operator
+console / dashboards, onboarding flows, pitch decks, architecture diagrams, docs. Also
+use it as a reference for the broader aesthetic: a futuristic, minimal, professional
+cyberpunk look for an AI developer-tool product. Do **not** use it for warm/editorial,
+light-first, or rounded "friendly SaaS" briefs — it is intentionally dark, sharp, neon.
+
+## How to use
+
+1. **Read `DESIGN.md`** for the rules, then skim `PROVENANCE.md` for what's real vs. derived.
+2. **Bind tokens:** `<link rel="stylesheet" href="colors_and_type.css">` (adjust the
+   relative path), or paste its `:root` into your first `<style>`. This also binds the
+   brand fonts — don't substitute fonts.
+3. **Match component shapes** from `preview/components-*.html` and the source classes in
+   `source_examples/styles/global.css` (`.btn-tech`, `.cyber-card`, `.cyber-pill`,
+   `.cyber-h2-stroke`).
+4. **Use real assets** from `assets/` / `build/` — never redraw the logo or icons.
+5. **Model real screens** on `ui_kits/app/` (sidebar · skill rail · console · composer)
+   and its `components/`.
+6. **Use real product vocabulary** (vault, skills, harness, memory, wikilinks, PARA
+   folders, CAPTURE→EVOLVE→WRAPUP) and the real version (`3.1.6`). Don't invent stats.
+7. **Honor the anti-patterns** in `DESIGN.md` §9 (no beige washes, no big AI gradients,
+   no rounding everything, one accent per surface, always include reduced-motion).
+
+Before generating, an agent should read: `README.md`, `DESIGN.md`, `colors_and_type.css`,
+`preview/`, `assets/`, `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/`.
+
+## Design system highlights
+
+- **Palette:** near-black canvas `#050507` + 4 neon accents — violet `#bc13fe`, cyan
+  `#00f3ff` (default), magenta `#ff2d92`, amber `#ffb000`. One per surface, twice max.
+- **Type:** Chakra Petch (italic-uppercase display) · Inter (body) · JetBrains Mono (HUD/code).
+- **Geometry:** sharp — radius 0 on panels; CTAs use the angled `--clip-tech` corner cut.
+- **Elevation:** neon glow, not drop-shadow. 56px HUD grid + blurred accent orb as atmosphere.
+- **Motion:** cinematic section "boot" (scanline → pill → headline drain → cards), always
+  with a `prefers-reduced-motion` fallback.
+- **Voice:** confident, technical, minimal — a "personal chief of staff." Mono uppercase
+  HUD eyebrows; italic uppercase headlines.

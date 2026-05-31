@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Brand Assets</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 20%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 85% 70% at 50% 20%,#000 30%,transparent 100%); }
+  .eb{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent-3); background:color-mix(in srgb,var(--color-accent-3) 5%,transparent); border:1px solid color-mix(in srgb,var(--color-accent-3) 30%,transparent); position:relative; }
+  .eb::before,.eb::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
+  .eb::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .eb::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 38px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:38px 0 18px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+
+  .hero-logo{ display:flex; align-items:center; gap:28px; flex-wrap:wrap; background:var(--color-surface); border:1px solid var(--color-border); padding:34px clamp(20px,4vw,44px); }
+  .hero-logo img{ width:120px; height:auto; filter:var(--glow-brand); }
+  .wordmark{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:.01em; font-size:clamp(2rem,6vw,3.4rem); color:#fff; }
+  .wordmark .b{ background:var(--grad-brand); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .tagline{ font-family:var(--font-mono); font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--color-muted); margin-top:8px; }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; }
+  .acard{ background:var(--color-surface-2); border:1px solid var(--color-border-2); padding:18px; text-align:center; }
+  .acard .frame{ height:120px; display:flex; align-items:center; justify-content:center; background:var(--color-bg);
+    border:1px solid var(--color-border-2); margin-bottom:12px; overflow:hidden; }
+  .acard img{ max-width:100%; max-height:100%; image-rendering:auto; }
+  .acard .nm{ font-family:var(--font-mono); font-size:11.5px; color:var(--color-text); letter-spacing:.04em; }
+  .acard .pth{ font-family:var(--font-mono); font-size:10px; color:var(--color-muted); margin-top:4px; word-break:break-all; }
+
+  .diagrams{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+  .dcard{ background:var(--color-surface); border:1px solid var(--color-border); padding:16px; }
+  .dcard object{ width:100%; height:240px; display:block; }
+  .dcard .cap{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--color-muted); margin-top:12px; }
+  .dcard .cap b{ color:var(--color-text); display:block; letter-spacing:.04em; margin-bottom:2px; }
+
+  .fonts{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+  .fcard{ background:var(--color-surface); border:1px solid var(--color-border); padding:20px; }
+  .fcard .big{ font-size:2.2rem; color:#fff; margin:0 0 10px; }
+  .fcard .files{ font-family:var(--font-mono); font-size:10.5px; color:var(--color-muted); line-height:1.7; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-3)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="eb"><span class="dot"></span> BRAND ASSETS · PRESERVED SOURCE FILES</span>
+  <h1>Brand Assets</h1>
+  <p class="lede">Every mark below is a <b style="color:var(--color-text)">real preserved file</b> from
+    <code>assets/</code> and <code>build/</code>, copied byte-for-byte from the OneBrain source — not redrawn.
+    The one exception: <code>favicon.ico</code> is rebuilt from <code>brain.svg</code> so the browser-tab
+    mark is the brand brain, not the framework's default starter favicon the source had shipped.</p>
+
+  <div class="sec">// Logo &amp; wordmark — assets/brain.svg</div>
+  <div class="hero-logo">
+    <img src="../assets/brain.svg" alt="OneBrain neural-network logo" />
+    <div>
+      <div class="wordmark">One<span class="b">Brain</span></div>
+      <div class="tagline">Your AI Thinking Partner · onebrain.run</div>
+    </div>
+  </div>
+
+  <div class="sec">// App &amp; runtime icons — build/ + assets/</div>
+  <div class="grid">
+    <div class="acard"><div class="frame"><img src="../build/logo.svg" alt="brand logo svg" style="width:84px;filter:var(--glow-brand)" /></div>
+      <div class="nm">Brand logo (SVG)</div><div class="pth">build/logo.svg · assets/brain.svg</div></div>
+    <div class="acard"><div class="frame"><img src="../build/icon.png" alt="app icon 180px" style="width:90px" /></div>
+      <div class="nm">App icon (PNG)</div><div class="pth">build/icon.png · assets/apple-touch-icon.png</div></div>
+    <div class="acard"><div class="frame"><img src="../assets/favicon.ico" alt="OneBrain favicon — gradient brain mark" style="width:52px" /></div>
+      <div class="nm">Favicon (ICO)</div><div class="pth">build/favicon.ico · assets/favicon.ico<br>16·32·48 · synced from brain.svg</div></div>
+  </div>
+
+  <div class="sec">// Architecture diagrams — assets/diagrams/*.svg (live)</div>
+  <div class="diagrams">
+    <div class="dcard"><object data="../assets/diagrams/harness-os-stack.svg" type="image/svg+xml" aria-label="Harness OS 4-layer stack"></object>
+      <div class="cap"><b>Harness OS Stack</b>4 layers · harness teal #00cce0</div></div>
+    <div class="dcard"><object data="../assets/diagrams/coevo-loop.svg" type="image/svg+xml" aria-label="Co-evolution loop"></object>
+      <div class="cap"><b>Co-Evolution Loop</b>capture → evolve → wrapup · lime #a8d000</div></div>
+    <div class="dcard"><object data="../assets/diagrams/vault-hub.svg" type="image/svg+xml" aria-label="Obsidian vault hub and spoke"></object>
+      <div class="cap"><b>Vault Hub</b>hub-and-spoke · Obsidian purple #7c3aed</div></div>
+  </div>
+
+  <div class="sec">// Typefaces — bound from fonts/*.ttf</div>
+  <div class="fonts">
+    <div class="fcard"><p class="big" style="font-family:var(--font-display);font-style:italic;font-weight:700;text-transform:uppercase">Chakra Petch</p>
+      <div class="files">fonts/ChakraPetch-{Light,Regular,Medium,SemiBold,Bold}.ttf<br>+ italics · 10 files · display</div></div>
+    <div class="fcard"><p class="big" style="font-family:var(--font-mono)">JetBrains Mono</p>
+      <div class="files">fonts/JetBrainsMono-VariableFont_wght.ttf<br>fonts/JetBrainsMono-Italic-VariableFont_wght.ttf · mono</div></div>
+    <div class="fcard"><p class="big" style="font-family:var(--font-sans)">Inter</p>
+      <div class="files">system / Google fallback<br>(not shipped as a file) · body</div></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Spacing Scale</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);
+    -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent-2); background:color-mix(in srgb,var(--color-accent-2) 4%,transparent); border:1px solid color-mix(in srgb,var(--color-accent-2) 30%,transparent); position:relative; }
+  .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
+  .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 38px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 14px; }
+  .scale{ display:grid; gap:12px; }
+  .srow{ display:flex; align-items:center; gap:18px; font-family:var(--font-mono); font-size:12.5px; color:var(--color-muted); }
+  .srow .k{ width:200px; flex:none; color:var(--color-text); }
+  .srow .px{ width:54px; flex:none; color:var(--color-accent-2); }
+  .bar{ height:18px; background:color-mix(in srgb,var(--color-accent) 60%,transparent); border-left:2px solid var(--color-accent); }
+  .applied{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-top:8px; }
+  .card{ background:var(--color-surface-2); border:1px solid var(--color-border-2); }
+  .card .h{ padding:14px 16px; border-bottom:1px solid var(--color-border-2); font-family:var(--font-mono); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); }
+  .card .b{ padding:var(--card-pad); }
+  .card .t{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:.04em; font-size:1.05rem; color:#fff; }
+  .card .d{ font-family:var(--font-mono); font-size:11.5px; line-height:1.65; color:var(--color-faint); margin-top:10px; }
+  .ruler{ font-family:var(--font-mono); font-size:10px; color:var(--color-muted); margin-top:10px; letter-spacing:.1em; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="pill"><span class="dot"></span> SPACING · 4PX BASE · 56PX HUD LATTICE</span>
+  <h1>Spacing Scale</h1>
+  <p class="lede">A 4px base scale. Density is comfortable-dense — generous around headlines, tight inside
+    data cards. The background HUD lattice is fixed at a 56px grid.</p>
+
+  <div class="sec">// Scale (--space-1 … --space-9)</div>
+  <div class="scale">
+    <div class="srow"><span class="k">--space-1</span><span class="px">4px</span><div class="bar" style="width:4px"></div></div>
+    <div class="srow"><span class="k">--space-2</span><span class="px">8px</span><div class="bar" style="width:8px"></div></div>
+    <div class="srow"><span class="k">--space-3</span><span class="px">12px</span><div class="bar" style="width:12px"></div></div>
+    <div class="srow"><span class="k">--space-4</span><span class="px">16px</span><div class="bar" style="width:16px"></div></div>
+    <div class="srow"><span class="k">--space-5 · card pad-x</span><span class="px">24px</span><div class="bar" style="width:24px"></div></div>
+    <div class="srow"><span class="k">--space-6</span><span class="px">32px</span><div class="bar" style="width:32px"></div></div>
+    <div class="srow"><span class="k">--space-7 · section pad-y</span><span class="px">40px</span><div class="bar" style="width:40px"></div></div>
+    <div class="srow"><span class="k">--space-8 · nav / section</span><span class="px">64px</span><div class="bar" style="width:64px"></div></div>
+    <div class="srow"><span class="k">--space-9</span><span class="px">96px</span><div class="bar" style="width:96px"></div></div>
+  </div>
+
+  <div class="sec">// Layout constants</div>
+  <div class="scale">
+    <div class="srow"><span class="k">--nav-height</span><span class="px">64px</span><span>sticky nav + scroll-padding-top</span></div>
+    <div class="srow"><span class="k">--content-max</span><span class="px">1280</span><span>section content shell max-width</span></div>
+    <div class="srow"><span class="k">--prose-max</span><span class="px">640</span><span>sub-paragraph max-width</span></div>
+    <div class="srow"><span class="k">--grid-size</span><span class="px">56px</span><span>HUD lattice cell</span></div>
+    <div class="srow"><span class="k">--card-pad</span><span class="px">—</span><span>1.4rem 1.5rem (22px / 24px)</span></div>
+    <div class="srow"><span class="k">--section-pad</span><span class="px">—</span><span>2.5/1.5/2rem → 4/4/3rem ≥1024px</span></div>
+  </div>
+
+  <div class="sec">// Applied — card uses --card-pad</div>
+  <div class="applied">
+    <div class="card"><div class="h">PERSISTENT MEMORY</div><div class="b">
+      <div class="t">Read once</div><div class="d">Agent context lives in one place, never re-explained.</div>
+      <div class="ruler">padding 1.4rem 1.5rem · gap 10px</div></div></div>
+    <div class="card"><div class="h">VAULT HUB</div><div class="b">
+      <div class="t">Dispatch here</div><div class="d">Code in repos, orchestration in the vault — Markdown, yours forever.</div>
+      <div class="ruler">padding 1.4rem 1.5rem · gap 10px</div></div></div>
+  </div>
+
+  <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--color-ghost);margin:40px 0 0;line-height:1.8;border-top:1px solid var(--color-border-2);padding-top:14px;max-width:74ch">
+    Source basis — spacing &amp; the 56px grid observed in onebrain-ai/website <code>global.css</code>;
+    build-time libs <code>gh-stars.ts</code>, <code>version.ts</code>, <code>brain-id.ts</code>,
+    <code>middleware.ts</code>, <code>waitlist.ts</code> preserved in <code>source_examples/</code>.</p>
+</body>
+</html>

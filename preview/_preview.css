@@ -1,0 +1,66 @@
+/* ============================================================================
+   OneBrain is an AI Design System — shared preview atmosphere + boot layer.
+
+   Linked by every preview/*.html card AFTER colors_and_type.css. It adds the
+   two things DESIGN.md specifies but the static spec cards were missing:
+     · §1  the blurred section "orb" — soft accent depth behind the grid lattice
+     · §7  one orchestrated boot reveal — pill → headline → lede → section labels
+
+   Purely additive: it never restyles a card's own chrome, it only layers depth
+   and a single entrance on top. All motion collapses under prefers-reduced-motion.
+   Each card sets --pv-orb-accent to its dominant accent (defaults to cyan).
+   ============================================================================ */
+
+/* --- Atmospheric orb -------------------------------------------------------
+   One soft, heavily-blurred accent glow seated behind the content shell. Sits
+   at z-index -2 (the grid lattice is -1), so it reads as atmosphere, never as a
+   foreground fill — accents stay strokes/glows, per the system's color rules. */
+.pv-orb {
+  position: fixed;
+  z-index: -2;
+  top: 0;
+  left: 50%;
+  width: min(72vw, 860px);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -40%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--pv-orb-accent, var(--color-accent-2)) 62%, transparent) 0%,
+    transparent 68%);
+  opacity: 0.11;
+  filter: blur(64px);
+}
+
+/* On the light spec sheet a neon orb muddies the white ground, so keep it a
+   barely-there tint — the page must stay clean and easy to read. */
+[data-theme="light"] .pv-orb { opacity: 0.05; filter: blur(80px); }
+
+/* --- Boot reveal -----------------------------------------------------------
+   A single orchestrated page-load: the shared landmarks rise + fade in sequence
+   over a soft global fade. Keyed to class names every card already uses
+   (.pill / .eb / h1 / .lede / .sec) so no per-card markup has to change. */
+@keyframes pv-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pv-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+body.pv-boot              { animation: pv-fade 0.6s ease both; }
+body.pv-boot .pill,
+body.pv-boot .eb          { animation: pv-rise 0.5s var(--ease-boot) both 0.06s; }
+body.pv-boot h1           { animation: pv-rise 0.55s var(--ease-boot) both 0.18s; }
+body.pv-boot .lede        { animation: pv-rise 0.5s var(--ease-boot) both 0.32s; }
+body.pv-boot .sec         { animation: pv-rise 0.5s var(--ease-boot) both 0.44s; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.pv-boot,
+  body.pv-boot .pill,
+  body.pv-boot .eb,
+  body.pv-boot h1,
+  body.pv-boot .lede,
+  body.pv-boot .sec { animation: none !important; }
+}

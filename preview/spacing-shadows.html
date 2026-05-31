@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Glow &amp; Elevation</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent-3); background:color-mix(in srgb,var(--color-accent-3) 5%,transparent); border:1px solid color-mix(in srgb,var(--color-accent-3) 30%,transparent); position:relative; }
+  .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
+  .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 40px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 22px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px 22px; }
+  .tile{ text-align:center; }
+  .demo{ height:120px; display:flex; align-items:center; justify-content:center; }
+  .chip{ width:118px; height:64px; background:var(--color-surface); border:1px solid var(--color-border); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:10px; color:var(--color-muted); letter-spacing:.2em; }
+  .cap{ font-family:var(--font-mono); font-size:11px; color:var(--color-muted); margin-top:4px; line-height:1.5; }
+  .cap b{ color:var(--color-text); display:block; font-weight:500; letter-spacing:.03em; margin-bottom:2px; }
+  .ddot{ width:14px; height:14px; border-radius:50%; background:var(--color-accent-3); box-shadow:0 0 8px rgba(255,45,146,.85),0 0 22px rgba(255,45,146,.5); }
+  .cdot{ width:14px; height:14px; border-radius:50%; background:var(--color-accent-2); box-shadow:var(--glow-accent); }
+  .note{ font-family:var(--font-mono); font-size:12px; color:var(--color-faint); line-height:1.7; max-width:66ch; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-3)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="pill"><span class="dot"></span> ELEVATION · NEON GLOW, NOT DROP-SHADOW</span>
+  <h1>Glow &amp; Elevation</h1>
+  <p class="lede">There is almost no soft drop-shadow in this system. "Raised" reads as a hairline border or a
+    neon glow keyed to the accent. The only true shadow is for overlays (dropdowns / modals).</p>
+
+  <div class="sec">// Glow tokens</div>
+  <div class="grid">
+    <div class="tile"><div class="demo"><div class="cdot"></div></div><div class="cap"><b>--glow-accent</b>active dot / spine head · 0 0 10px + 22px accent</div></div>
+    <div class="tile"><div class="demo"><div class="ddot"></div></div><div class="cap"><b>--glow-cta</b>magenta CTA glow · 0 0 14px rgba(255,45,146,.5)</div></div>
+    <div class="tile"><div class="demo"><span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--color-accent-2);text-shadow:0 0 12px currentColor">SYSTEM ONLINE</span></div><div class="cap"><b>--glow-sm</b>0 0 12px currentColor · status text/dots</div></div>
+    <div class="tile"><div class="demo"><div class="chip" style="box-shadow:var(--glow-cyan)">CYAN</div></div><div class="cap"><b>--glow-cyan</b>0 0 22px cyan · focus / hover emphasis</div></div>
+  </div>
+
+  <div class="sec">// Brand halo &amp; the one real shadow</div>
+  <div class="grid">
+    <div class="tile"><div class="demo"><span style="font-family:var(--font-display);font-style:italic;font-weight:700;font-size:2rem;color:#fff;filter:var(--glow-brand)">◢◤</span></div>
+      <div class="cap"><b>--glow-brand</b>logo halo · magenta 32px + cyan 70px drop-shadow</div></div>
+    <div class="tile"><div class="demo"><div class="chip" style="border-color:var(--color-border-2);box-shadow:var(--shadow-overlay)">OVERLAY</div></div>
+      <div class="cap"><b>--shadow-overlay</b>0 24px 60px rgba(0,0,0,.55) · dropdowns / modals only</div></div>
+  </div>
+
+  <div class="sec">// Rule</div>
+  <p class="note">Cards and panels never carry a drop-shadow at rest. On hover, a <b style="color:var(--color-text)">card</b>
+    brightens its border to the section accent and slides a 2px accent bar in on the left — see
+    <code>components-cards.html</code>. Reserve glow for the one element that should pull the eye.</p>
+
+  <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--color-ghost);margin:40px 0 0;line-height:1.8;border-top:1px solid var(--color-border-2);padding-top:14px;max-width:74ch">
+    Source basis — glow values from onebrain-ai/website <code>global.css</code> (<code>.btn-tech</code>,
+    <code>.page-spine-dots</code>, <code>.warp-mark</code>); build-time libs <code>gh-stars.ts</code>,
+    <code>version.ts</code>, <code>brain-id.ts</code>, <code>middleware.ts</code>, <code>waitlist.ts</code>
+    preserved in <code>source_examples/</code>.</p>
+</body>
+</html>

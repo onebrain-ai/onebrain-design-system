@@ -1,0 +1,13 @@
+{
+  "name": "onebrain",
+  "owner": {
+    "name": "OneBrain Contributors"
+  },
+  "plugins": [
+    {
+      "name": "onebrain",
+      "source": "./.claude/plugins/onebrain",
+      "description": "OneBrain — Your AI Thinking Partner"
+    }
+  ]
+}
