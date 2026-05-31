@@ -32,7 +32,7 @@
 .btn-tech {
   position: relative; display: inline-block; border: 0; cursor: pointer;
   clip-path: var(--clip-tech); background: var(--grad-button); padding: 1.5px;
-  transition: box-shadow var(--dur-fast) ease;
+  text-decoration: none; transition: box-shadow var(--dur-fast) ease;
 }
 .btn-tech-inner {
   display: block; clip-path: var(--clip-tech); background: var(--bg-base);
@@ -49,7 +49,7 @@
 /* Secondary outline + tertiary quiet + destructive — share one mono shape. */
 .btn-ghost, .btn-quiet, .btn-danger {
   font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.18em;
-  text-transform: uppercase; cursor: pointer; padding: 12px 22px;
+  text-transform: uppercase; cursor: pointer; padding: 12px 22px; text-decoration: none;
   min-height: var(--control-h); background: transparent; border: 1px solid;
   transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast);
 }

@@ -25,3 +25,7 @@ mpt*-*.jpeg
 *-drawing-*.png
 *-drawing-*.jpg
 *-drawing-*.jpeg
+# Attached reference frames dropped at root as mp<id>-image.<ext>
+mp*-image.png
+mp*-image.jpg
+mp*-image.jpeg
