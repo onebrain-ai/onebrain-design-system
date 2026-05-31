@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Data Display &amp; Navigation</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 30px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .rowwrap{ display:flex; flex-wrap:wrap; gap:16px 22px; align-items:center; }
+  .grid3{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; }
+  .grid-cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+  .tablewrap{ border:1px solid var(--border-default); max-height:none; overflow:auto; }
+  .density-row{ display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> COMPONENTS · DATA &amp; NAVIGATION</span>
+  <h1>Data &amp; Navigation</h1>
+  <p class="lede">Tables, lists, and navigation from <code>components.css</code> — tabular numerics, hairline
+    borders, hover rows, and a real density switch. These are the dashboard/admin building blocks. Toggle
+    <code>data-density</code> to see comfortable ↔ compact.</p>
+
+  <nav><ol class="breadcrumb" style="padding:0;margin:0 0 18px">
+    <li><a href="#" onclick="return false">Vault</a></li>
+    <li><a href="#" onclick="return false">07-logs</a></li>
+    <li aria-current="page">Sessions</li>
+  </ol></nav>
+
+  <div class="cyber-tabs" role="tablist" style="margin-bottom:22px">
+    <button role="tab" aria-selected="true" class="is-active">Sessions</button>
+    <button role="tab" aria-selected="false">Skills</button>
+    <button role="tab" aria-selected="false">Memory</button>
+    <button role="tab" aria-selected="false">Tasks</button>
+  </div>
+
+  <div class="sec">// Data table (tabular nums · sticky header · hover rows)</div>
+  <div class="density-row">
+    <label class="cyber-switch"><input type="checkbox" id="dense" /> Compact density</label>
+  </div>
+  <div class="tablewrap" id="tblwrap">
+    <table class="cyber-table">
+      <thead><tr><th>Session</th><th>Skill</th><th>Status</th><th class="num">Notes</th><th class="num">Links</th><th class="num">Time</th></tr></thead>
+      <tbody>
+        <tr><td><b>2026-05-31 · AM</b></td><td>/capture</td><td><span class="badge badge-success">Synced</span></td><td class="num">12</td><td class="num">+8</td><td class="num">09:24</td></tr>
+        <tr><td><b>2026-05-31 · AM</b></td><td>/consolidate</td><td><span class="badge badge-info">Indexing</span></td><td class="num">142</td><td class="num">+31</td><td class="num">09:31</td></tr>
+        <tr><td><b>2026-05-30 · PM</b></td><td>/connect</td><td><span class="badge badge-success">Synced</span></td><td class="num">2</td><td class="num">+2</td><td class="num">17:40</td></tr>
+        <tr><td><b>2026-05-30 · PM</b></td><td>/distill</td><td><span class="badge badge-warning">Stale</span></td><td class="num">7</td><td class="num">+0</td><td class="num">16:02</td></tr>
+        <tr><td><b>2026-05-29 · AM</b></td><td>/research</td><td><span class="badge badge-danger">Conflict</span></td><td class="num">5</td><td class="num">+1</td><td class="num">10:18</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination" style="margin-top:14px">
+    <button>‹</button>
+    <a href="#" onclick="return false" aria-current="page">1</a>
+    <a href="#" onclick="return false">2</a>
+    <a href="#" onclick="return false">3</a>
+    <button>›</button>
+  </div>
+
+  <div class="sec">// Session log (list rows · active state)</div>
+  <div class="cyber-list" style="max-width:560px">
+    <div class="row is-active"><span style="color:var(--color-accent-2)">›</span><b>/capture</b> idea — vault routing<span class="stamp">09:24</span></div>
+    <div class="row"><span style="color:var(--color-accent-2)">›</span><b>/consolidate</b> inbox · 4 notes<span class="stamp">09:31</span></div>
+    <div class="row"><span style="color:var(--color-accent-2)">›</span><b>/connect</b> 2 wikilinks added<span class="stamp">09:40</span></div>
+    <div class="row"><span style="color:var(--color-accent-2)">›</span><b>/wrapup</b> session saved<span class="stamp">10:02</span></div>
+  </div>
+
+  <div class="sec">// Stat modules</div>
+  <div class="grid3">
+    <div class="stat"><div class="stat-n"><em>29</em>+</div><div class="stat-l">Pre-built skills</div></div>
+    <div class="stat"><div class="stat-n"><em>142</em></div><div class="stat-l">Notes indexed</div></div>
+    <div class="stat"><div class="stat-n">v<em>3.1.6</em></div><div class="stat-l">Plugin · CLI ≥3.1.0</div></div>
+  </div>
+
+  <div class="sec">// Avatars (sub-agents)</div>
+  <div class="rowwrap">
+    <span class="avatar avatar-lg" style="color:#ff8c00;border-color:color-mix(in srgb,#ff8c00 45%,transparent);background:color-mix(in srgb,#ff8c00 12%,transparent)">IC</span>
+    <span class="avatar" style="color:#3b82f6;border-color:color-mix(in srgb,#3b82f6 45%,transparent);background:color-mix(in srgb,#3b82f6 12%,transparent)">KL</span>
+    <span class="avatar" style="color:#22c55e;border-color:color-mix(in srgb,#22c55e 45%,transparent);background:color-mix(in srgb,#22c55e 12%,transparent)">LS</span>
+    <span class="avatar" style="color:#eab308;border-color:color-mix(in srgb,#eab308 45%,transparent);background:color-mix(in srgb,#eab308 12%,transparent)">TS</span>
+    <span class="avatar" style="color:#ef4444;border-color:color-mix(in srgb,#ef4444 45%,transparent);background:color-mix(in srgb,#ef4444 12%,transparent)">TE</span>
+  </div>
+
+  <div class="sec">// Feature cards (one accent per card via --section-accent)</div>
+  <div class="grid-cards">
+    <div class="cyber-card" style="--section-accent:var(--color-accent-2)"><span class="card-meta">01</span><p class="card-title">Persistent Memory</p><p class="card-desc">Every session resumes from <code>MEMORY.md</code> — your agent never forgets.</p></div>
+    <div class="cyber-card" style="--section-accent:var(--color-accent)"><span class="card-meta">02</span><p class="card-title">29+ Skills</p><p class="card-desc"><code>/capture</code> · <code>/distill</code> · <code>/connect</code> · <code>/doctor</code>.</p></div>
+    <div class="cyber-card" style="--section-accent:var(--color-loop)"><span class="card-meta">03</span><p class="card-title">Co-Evolution</p><p class="card-desc">The loop: <code>CAPTURE → EVOLVE → WRAPUP</code> on every session.</p></div>
+  </div>
+
+  <p class="srcnote">Source basis — <code>.cyber-card</code> + table/list shapes reproduced from onebrain-ai/website
+    <code>global.css</code>, consolidated in <code>components.css</code>. Density switch reads the
+    <code>data-density</code> token contract in <code>colors_and_type.css</code>. Sub-agent initials/colors
+    from the <code>inbox-classifier</code> / <code>task-extractor</code> agents in <code>source_examples/</code>.</p>
+
+<script>
+  // Real density toggle — flips the data-density token contract on the table wrap.
+  document.getElementById('dense').addEventListener('change', function (e) {
+    document.getElementById('tblwrap').setAttribute('data-density', e.target.checked ? 'compact' : 'comfortable');
+  });
+</script>
+</body>
+</html>

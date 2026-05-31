@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Feedback &amp; Overlays</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .rowwrap{ display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
+  .grid2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+  .skelcard{ background:var(--bg-surface); border:1px solid var(--border-default); padding:18px; display:grid; gap:12px; max-width:320px; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-3)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="cyber-pill" style="--section-accent:var(--color-accent-3)"><span class="cyber-dot is-pulse"></span> COMPONENTS · FEEDBACK &amp; OVERLAYS</span>
+  <h1>Feedback &amp; Overlays</h1>
+  <p class="lede">Status, alerts, and overlays from <code>components.css</code> — built on the four semantic
+    states (success lime · info cyan · warning amber · danger magenta). Open the modal and dropdown below;
+    hover for the tooltip. All motion honors <code>prefers-reduced-motion</code>.</p>
+
+  <div class="sec">// Alerts (semantic states · color + icon, never color alone)</div>
+  <div class="grid2">
+    <div class="alert alert-success"><div><div class="alert-title">● Session saved</div><div class="alert-body">Wrapup written to <code>07-logs/</code>. Memory updated.</div></div></div>
+    <div class="alert alert-info"><div><div class="alert-title">◐ Indexing vault</div><div class="alert-body">qmd is embedding 142 notes — search stays available.</div></div></div>
+    <div class="alert alert-warning"><div><div class="alert-title">▲ Stale task</div><div class="alert-body">3 tasks past their <code>📅</code> date. Run <code>/daily</code>.</div></div></div>
+    <div class="alert alert-danger"><div><div class="alert-title">■ Link conflict</div><div class="alert-body">Two notes resolve to <code>[[Operator Console]]</code>. Pick one.</div></div></div>
+  </div>
+
+  <div class="sec">// Toasts (aria-live · auto-dismiss 3–5s)</div>
+  <div class="rowwrap">
+    <div class="toast is-success"><span class="toast-dot"></span><span><b>Captured.</b> Routed to 00-inbox · +2 wikilinks.</span></div>
+    <div class="toast"><span class="toast-dot"></span><span><b>/connect</b> found 4 related notes.</span></div>
+    <div class="toast is-danger"><span class="toast-dot"></span><span><b>Sync failed.</b> Retry?</span></div>
+  </div>
+
+  <div class="sec">// Badges · tags · counts</div>
+  <div class="rowwrap">
+    <span class="badge badge-success">Synced</span>
+    <span class="badge badge-info">Indexing</span>
+    <span class="badge badge-warning">Stale</span>
+    <span class="badge badge-danger">Conflict</span>
+    <span class="badge">v3.1.6</span>
+    <span class="badge badge-info badge-count">29</span>
+    <span class="tag">#para/00-inbox</span>
+    <span class="tag">[[Co-Evolution Loop]]</span>
+  </div>
+
+  <div class="sec">// Progress · skeleton · spinner</div>
+  <div class="grid2" style="align-items:center">
+    <div>
+      <div class="progress"><div class="bar" style="width:64%"></div></div>
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--color-muted);margin:8px 0 0;letter-spacing:.1em">CONSOLIDATE · 64%</p>
+    </div>
+    <div class="skelcard">
+      <div class="skeleton" style="height:12px;width:42%"></div>
+      <div class="skeleton" style="height:10px"></div>
+      <div class="skeleton" style="height:10px;width:80%"></div>
+    </div>
+    <div class="rowwrap"><span class="spinner"></span><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-muted);letter-spacing:.12em">EMBEDDING…</span></div>
+  </div>
+
+  <div class="sec">// Empty state</div>
+  <div class="empty-state" style="max-width:520px">
+    <span class="cyber-dot" style="color:var(--color-accent-2);width:10px;height:10px"></span>
+    <div class="es-title">Inbox clear</div>
+    <div class="es-desc">Nothing to consolidate. New captures land in <code>00-inbox</code> — run <code>/capture</code> to add one.</div>
+    <button class="btn-ghost btn-sm">Run /capture</button>
+  </div>
+
+  <div class="sec">// Overlays — modal · tooltip · dropdown</div>
+  <div class="rowwrap">
+    <button class="btn-ghost" id="open-modal">Open Modal</button>
+    <span class="tooltip"><button class="btn-quiet">Hover me</button><span class="tip">Persisted to MEMORY.md</span></span>
+    <button class="btn-quiet" id="open-dd">Toggle Dropdown ▾</button>
+  </div>
+  <div class="dropdown" id="dd" style="display:none;margin-top:10px">
+    <a class="item" href="#" onclick="return false">↻ Resume session</a>
+    <a class="item" href="#" onclick="return false">⤵ Export vault</a>
+    <div class="sep"></div>
+    <a class="item is-danger" href="#" onclick="return false">⨯ Reset memory</a>
+  </div>
+
+  <div class="scrim" id="scrim">
+    <div style="position:fixed;inset:0;display:grid;place-items:center;padding:16px">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+        <div class="modal-head"><span class="modal-title" id="m-t">Confirm wrapup</span><button class="modal-x" id="close-modal" aria-label="Close">✕</button></div>
+        <div class="modal-body">This saves the session summary to <code>07-logs/</code> and promotes recurring insights to <code>memory/</code>. You can undo from the next toast.</div>
+        <div class="modal-foot"><button class="btn-quiet" id="cancel-modal">Cancel</button><button class="btn-tech"><span class="btn-tech-inner">Wrap up</span></button></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="srcnote">Source basis — semantic states map to <code>--color-success/-info/-warning/-danger</code> in
+    <code>colors_and_type.css</code> (lime/cyan/amber/magenta from onebrain-ai/website <code>global.css</code>);
+    overlay + feedback shapes live in <code>components.css</code>. Vocabulary (inbox, wikilinks, co-evolution
+    loop) traces to the onebrain-ai/onebrain plugin.</p>
+
+<script>
+  var scrim = document.getElementById('scrim');
+  function closeModal(){ scrim.classList.remove('is-open'); }
+  document.getElementById('open-modal').addEventListener('click', function(){ scrim.classList.add('is-open'); });
+  document.getElementById('close-modal').addEventListener('click', closeModal);
+  document.getElementById('cancel-modal').addEventListener('click', closeModal);
+  scrim.addEventListener('click', function(e){ if(e.target === scrim) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  var dd = document.getElementById('dd');
+  document.getElementById('open-dd').addEventListener('click', function(){ dd.style.display = dd.style.display === 'none' ? 'block' : 'none'; });
+</script>
+</body>
+</html>

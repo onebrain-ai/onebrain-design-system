@@ -67,7 +67,8 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ├── README.md                  This guide
 ├── SKILL.md                   Agent-usable skill entry (YAML frontmatter)
 ├── PROVENANCE.md              Where every token/asset/rule came from
-├── colors_and_type.css        Tokens + @font-face bindings (the foundation)
+├── colors_and_type.css        Primitives + semantic intent tokens + @font-face bindings
+├── components.css             Reusable component layer (buttons, forms, nav, data, feedback, overlays)
 ├── assets/                    Preserved brand marks
 │   ├── brain.svg              Logo (gradient neural-network mark)
 │   ├── apple-touch-icon.png   App icon (180px)
@@ -87,6 +88,9 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   └── src/                   Astro build-time libs (lib/, middleware.ts, api/)
 ├── preview/                   Reviewable cards (see Preview Manifest below)
 │   ├── _preview.css           Shared atmosphere: section orb + boot reveal (linked by every card)
+│   ├── components-forms.html      Full form kit (consumes components.css) — inputs, select, checkbox/radio/switch/range, validation, composer, buttons
+│   ├── components-feedback.html   Alerts, toasts, badges, progress, skeleton, spinner, empty-state, modal/tooltip/dropdown
+│   ├── components-data.html       Table, list, tabs, breadcrumb, pagination, avatars, stats, density toggle
 │   ├── hero-split.html            .ob-synthwave hero · VARIANT 1 (split) — recessed pink 3D grid + floating frosted-glass terminal on the right
 │   └── hero-centered.html         .ob-synthwave hero · VARIANT 2 (centered) — same grid + terminal floating below, with pointer-reactive 3D tilt
 ├── ui_kits/app/               Runnable operator-console UI kit (React + Babel)
@@ -101,7 +105,8 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ## Preview Manifest
 
 Open these in the **Design System** tab. Each is a small, self-contained card that links
-`../colors_and_type.css` and demonstrates real, source-backed tokens/components/assets.
+`../colors_and_type.css` (the component cards below also link `../components.css`) and
+demonstrates real, source-backed tokens/components/assets.
 Every card also links `preview/_preview.css` — the shared atmosphere layer that adds the
 blurred section **orb** (DESIGN.md §1) and a one-shot **boot reveal** (§7), both with a
 `prefers-reduced-motion` fallback. It layers depth/motion only; it never restyles a card.
@@ -118,6 +123,9 @@ blurred section **orb** (DESIGN.md §1) and a one-shot **boot reveal** (§7), bo
 | [`preview/components-buttons.html`](preview/components-buttons.html) | Primary/secondary/quiet buttons, nav-link bracket reveal, state + eyebrow pills (hover them) | `.btn-tech`, `.nav-glass a`, semantic state colors, `.cyber-pill` |
 | [`preview/components-inputs.html`](preview/components-inputs.html) | Text fields, error state, the command composer + slash suggestions, focus rings | input focus ring (cyan), composer = mono field + `.btn-tech` |
 | [`preview/components-cards.html`](preview/components-cards.html) | `.cyber-card` hover (accent border + left bar), stat modules, the 5 sub-agents with their colors | `.cyber-card`, `--section-accent`, stat type, agent color tags |
+| [`preview/components-forms.html`](preview/components-forms.html) | **Consumes `components.css`.** The full form kit — text/textarea/select, checkbox/radio/switch/range, required + helper + on-blur validation + disabled, the command composer, and all button variants. Click in for focus rings; blur the email with bad input | `.cyber-input`, `.cyber-select`, `.cyber-check/-radio/-switch/-range`, `.composer`, `.btn-tech/-ghost/-quiet/-danger`, semantic intent tokens |
+| [`preview/components-feedback.html`](preview/components-feedback.html) | **Consumes `components.css`.** Semantic alerts (success/info/warning/danger), toasts, badges + tags, progress, skeleton, spinner, empty-state, and live modal/tooltip/dropdown (open them) | `.alert-*`, `.toast`, `.badge-*`, `.progress`, `.skeleton`, `.spinner`, `.empty-state`, `.modal`+`.scrim`, `--fb-*`, `--elev-3` |
+| [`preview/components-data.html`](preview/components-data.html) | **Consumes `components.css`.** `.cyber-table` (tabular nums, sticky header, hover rows) with a live density toggle, session list, tabs, breadcrumb, pagination, sub-agent avatars, stats, cards | `.cyber-table`, `.cyber-list`, `.cyber-tabs`, `.breadcrumb`, `.pagination`, `.avatar`, `.stat`, `data-density` |
 | [`preview/brand-assets.html`](preview/brand-assets.html) | The real preserved files loaded via `<img>`/`<object>` — logo, app icon, favicon, the 3 live diagrams, font specimens | `assets/brain.svg`, `build/icon.png`, `build/favicon.ico`, `assets/diagrams/*.svg`, `fonts/*.ttf` |
 | [`preview/hero-split.html`](preview/hero-split.html) | The `.ob-synthwave` **hero section — variant 1 (split)** — the perspective grid is dialed back + scrimmed so it recedes, while **one** OneBrain operator-console terminal floats out of it on the right as a single **iOS-style frosted-glass** window (translucent + `backdrop-filter` blur/saturate, inset top highlight, brand-glow shadow, cast glow beneath) tilted in 3D so the pink grid glows *through* it. Window bar uses brand-tinted state-color "traffic lights"; body runs the real `brew install …` → `capture` session transcript with a frosted input pill + `NODE · NETWORK :: ONLINE · LAT` status line. Hero accent re-keyed to brand **pink** via one variable (`--ha`). Confirm the backdrop never out-shouts the window and the grid reads through the glass; mobile flattens the tilt and stacks copy over the window | `--ha`→`--color-accent-3` (pink grid/UI), `--color-bg/-deep`, `backdrop-filter` frosted glass, `--color-danger/-warning/-success` window lights, `--grad-hero-btn` (pink→violet), `--clip-tech` CTA, `--font-display` stroke headline, wikilink `[[…]]` |
 | [`preview/hero-centered.html`](preview/hero-centered.html) | The `.ob-synthwave` **hero section — variant 2 (centered)** — same recessed pink grid + frosted-glass terminal, re-composed center-aligned (pill → `UNIFIED / INTELLIGENCE` → centered sub → CTAs → meta) with the terminal floating **below** the copy. Signature motion is a **pointer-reactive 3D tilt**: the window leans toward the cursor (`rotateX`/`rotateY` via `--rx`/`--ry`, glow tracking it), plus a load-rise + gentle bob. Headline `INTELLIGENCE` uses a pink→violet gradient text fill (vs. variant 1's stroke). Confirm the headline is fully visible on load, the tilt follows the cursor on desktop, and ≤560px flattens the tilt with no horizontal scroll | `--ha`→`--color-accent-3`, `backdrop-filter` frosted glass, `--rx`/`--ry` pointer tilt, `--grad-hero-btn`, `--clip-tech` CTA, `--font-display` gradient headline, `prefers-reduced-motion` / `pointer:fine` gates |
@@ -130,14 +138,18 @@ The applied screen lives separately at [`ui_kits/app/index.html`](ui_kits/app/in
 ## Reuse workflow
 
 1. **Read the rules.** Start with `DESIGN.md`; skim `PROVENANCE.md` to know what's real
-   vs. derived. Agents should also load `colors_and_type.css`, `preview/`, `assets/`,
-   `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/` before generating.
-2. **Bind the foundation.** `<link rel="stylesheet" href="colors_and_type.css">` (fix the
-   relative path for your file's location), or paste its `:root` into your first
-   `<style>`. This binds the brand fonts too — never substitute fonts.
-3. **Compose from the shapes.** Reuse `.btn-tech`, `.cyber-card`, `.cyber-pill`,
-   `.cyber-h2-stroke`, the 56px HUD grid, and the corner-cut geometry. Cross-check against
-   `preview/components-*.html` and `source_examples/styles/global.css`.
+   vs. derived. Agents should also load `colors_and_type.css`, `components.css`, `preview/`,
+   `assets/`, `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/` before generating.
+2. **Bind the foundation, then the components.** `<link rel="stylesheet" href="colors_and_type.css">`
+   then `<link rel="stylesheet" href="components.css">` (fix the relative paths for your
+   file's location), or paste their contents into your first `<style>`. The token file binds
+   the brand fonts too — never substitute fonts. Components reference the semantic intent
+   tokens, so re-skin by remapping `--action-primary` / `--fb-*` / `--bg-*`, not by editing
+   component rules.
+3. **Compose from the component layer.** Assemble surfaces from `components.css` — `.btn-tech`,
+   `.cyber-card`, `.cyber-pill`, the form controls, `.cyber-table`, `.alert`/`.toast`,
+   `.modal`/`.drawer`, etc. — plus the 56px HUD grid and corner-cut geometry. Cross-check
+   against `preview/components-*.html` and `source_examples/styles/global.css`.
 4. **Use real assets + vocabulary.** Pull marks from `assets/`/`build/`; use real skill
    names, vault folders, the co-evolution loop, and the real version `3.1.6`. No invented
    stats; use honest placeholders when a value is unknown.

@@ -258,6 +258,78 @@
 }
 
 /* ---------------------------------------------------------------------------
+   2.5 SEMANTIC / INTENT TOKENS  (alias layer)
+   Components in components.css reference THESE intents, never raw palette
+   hexes. Re-theme or re-skin a whole surface by remapping intents here (or
+   per-region by overriding one var) — both dark + light inherit automatically
+   because every intent points at a primitive above (which the light theme
+   re-inks). This is the layer that turns "tokens" into a "system".
+   --------------------------------------------------------------------------- */
+:root {
+  /* Text intents */
+  --text-primary:   var(--color-text);
+  --text-secondary: var(--color-muted);
+  --text-tertiary:  var(--color-faint);
+  --text-disabled:  var(--color-ghost);
+  --text-on-accent: var(--color-bg);    /* dark ink reads on a filled neon accent */
+
+  /* Surface intents */
+  --bg-base:     var(--color-bg);
+  --bg-surface:  var(--color-surface);
+  --bg-elevated: var(--color-surface-2);
+  --bg-sunken:   var(--color-bg-deep);
+
+  /* Border intents */
+  --border-subtle:  var(--color-border-2);
+  --border-default: var(--color-border);
+  --border-strong:  color-mix(in srgb, var(--color-text) 24%, transparent);
+  --border-focus:   var(--color-accent-2);
+
+  /* Action / interactive intents (default = cyan; override --action-* per region) */
+  --action-primary:      var(--color-accent-2);
+  --action-primary-weak: color-mix(in srgb, var(--color-accent-2) 12%, transparent);
+  --action-secondary:    var(--color-accent);
+  --focus-ring:          var(--color-accent-2);
+
+  /* Feedback intents — text / tint-bg / border per semantic state */
+  --fb-success:    var(--color-success);
+  --fb-success-bg: color-mix(in srgb, var(--color-success) 12%, transparent);
+  --fb-success-bd: color-mix(in srgb, var(--color-success) 45%, transparent);
+  --fb-info:       var(--color-info);
+  --fb-info-bg:    color-mix(in srgb, var(--color-info) 10%, transparent);
+  --fb-info-bd:    color-mix(in srgb, var(--color-info) 45%, transparent);
+  --fb-warning:    var(--color-warning);
+  --fb-warning-bg: color-mix(in srgb, var(--color-warning) 12%, transparent);
+  --fb-warning-bd: color-mix(in srgb, var(--color-warning) 45%, transparent);
+  --fb-danger:     var(--color-danger);
+  --fb-danger-bg:  color-mix(in srgb, var(--color-danger) 12%, transparent);
+  --fb-danger-bd:  color-mix(in srgb, var(--color-danger) 45%, transparent);
+
+  /* Elevation scale — dark-first = hairline + glow, almost no soft shadow.
+     The light theme overrides these with real drop-shadows (see §3). */
+  --elev-1: 0 0 0 1px var(--color-border);
+  --elev-2: 0 0 0 1px var(--color-border), 0 18px 40px rgba(0, 0, 0, 0.45);
+  --elev-3: 0 0 0 1px var(--color-border), var(--shadow-overlay);
+
+  /* Disabled affordance (0.38–0.5 per Material) + scrim for modals/drawers */
+  --disabled-opacity: 0.42;
+  --scrim: rgba(2, 2, 4, 0.62);
+
+  /* Density + control sizing. Default is comfortable / touch-safe (>=44px).
+     Set [data-density="compact"] on a container to tighten data-dense UIs. */
+  --control-h:     44px;   /* min touch target          */
+  --control-h-sm:  36px;
+  --control-pad-x: 15px;
+  --row-pad-y:     13px;
+}
+
+[data-density="compact"] {
+  --control-h:    36px;
+  --control-h-sm: 30px;
+  --row-pad-y:    9px;
+}
+
+/* ---------------------------------------------------------------------------
    3. OPTIONAL LIGHT THEME (documentation / print contexts)
    The product is dark-first; this inverted scale exists so spec sheets and
    light embeds stay legible. Apply with <html data-theme="light">.
@@ -292,6 +364,12 @@
      vars above, so they inherit the inked values automatically. --color-success
      points at --color-loop (a diagram color we keep neon), so re-ink it here. */
   --color-success:   #5f7d00;  /* lime -> moss ink (states only) */
+
+  /* Elevation on white reads as real drop-shadow, not neon glow. */
+  --elev-1: 0 1px 2px rgba(10, 10, 18, 0.06), 0 0 0 1px var(--color-border);
+  --elev-2: 0 4px 14px rgba(10, 10, 18, 0.10), 0 0 0 1px var(--color-border);
+  --elev-3: 0 18px 44px rgba(10, 10, 18, 0.16), 0 0 0 1px var(--color-border);
+  --scrim:  rgba(10, 10, 18, 0.45);
 }
 
 /* ---------------------------------------------------------------------------

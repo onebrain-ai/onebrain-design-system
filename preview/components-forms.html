@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Forms &amp; Controls</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .rowwrap{ display:flex; flex-wrap:wrap; gap:16px 22px; align-items:center; }
+  .stack{ display:flex; flex-direction:column; gap:14px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> COMPONENTS · FORMS &amp; CONTROLS</span>
+  <h1>Forms &amp; Controls</h1>
+  <p class="lede">Every control here is a real, accessible element from <code>components.css</code> — visible
+    labels, required markers, helper text, on-blur validation, and disabled states. Click into a field for
+    the cyan focus ring; blur the email with bad input to see inline validation.</p>
+
+  <div class="sec">// Text · textarea · select</div>
+  <div class="field">
+    <label class="field-label" for="f-path">Vault path <span class="req">*</span></label>
+    <input id="f-path" class="cyber-input" type="text" value="~/OneBrain" autocomplete="off" />
+    <p class="field-help">Local-first — your vault is plain Markdown you own forever.</p>
+  </div>
+  <div class="field">
+    <label class="field-label" for="f-email">Email — cloud waitlist <span class="req">*</span></label>
+    <input id="f-email" class="cyber-input" type="email" inputmode="email" placeholder="you@studio.com" autocomplete="email" />
+    <p class="field-error" id="f-email-err" hidden>▲ Enter a valid email address.</p>
+  </div>
+  <div class="field">
+    <label class="field-label" for="f-summary">Session summary</label>
+    <textarea id="f-summary" class="cyber-input" placeholder="What did we accomplish this session?"></textarea>
+  </div>
+  <div class="field">
+    <label class="field-label" for="f-skill">Default skill</label>
+    <span class="cyber-select"><select id="f-skill">
+      <option>/capture</option><option>/consolidate</option><option>/connect</option>
+      <option>/distill</option><option>/research</option><option>/wrapup</option>
+    </select></span>
+  </div>
+  <div class="field">
+    <label class="field-label" for="f-dis">Disabled — read-only</label>
+    <input id="f-dis" class="cyber-input" type="text" value="onebrain.yml (managed)" disabled />
+  </div>
+
+  <div class="sec">// Checkbox · radio · switch · range</div>
+  <div class="stack" style="margin-bottom:22px">
+    <label class="cyber-check"><input type="checkbox" checked /> Suggest wikilinks on capture</label>
+    <label class="cyber-check"><input type="checkbox" /> Auto-route inbox on idle</label>
+    <label class="cyber-check"><input type="checkbox" disabled /> Cloud sync (waitlist)</label>
+  </div>
+  <div class="rowwrap" style="margin-bottom:22px">
+    <label class="cyber-radio"><input type="radio" name="harness" checked /> Claude Code</label>
+    <label class="cyber-radio"><input type="radio" name="harness" /> Gemini CLI</label>
+    <label class="cyber-radio"><input type="radio" name="harness" /> Codex</label>
+    <label class="cyber-radio"><input type="radio" name="harness" /> Qwen</label>
+  </div>
+  <div class="stack" style="max-width:520px">
+    <label class="cyber-switch"><input type="checkbox" checked /> Persistent memory · ON</label>
+    <div>
+      <label class="field-label" for="f-range">Recall depth</label>
+      <input id="f-range" class="cyber-range" type="range" min="1" max="10" value="6" />
+    </div>
+  </div>
+
+  <div class="sec">// Command composer</div>
+  <div class="composer">
+    <span class="composer-slash">/</span>
+    <input type="text" placeholder="capture an idea, route the inbox, connect notes…" aria-label="Command composer" />
+    <button class="composer-send" type="button"><span>Run →</span></button>
+  </div>
+
+  <div class="sec">// Buttons (primary · secondary · quiet · destructive · disabled · small)</div>
+  <div class="rowwrap">
+    <button class="btn-tech"><span class="btn-tech-inner">Run /capture</span></button>
+    <button class="btn-ghost">View Commands</button>
+    <button class="btn-quiet">Cancel</button>
+    <button class="btn-danger">Delete Vault</button>
+    <button class="btn-quiet" disabled>Disabled</button>
+    <button class="btn-ghost btn-sm">Small</button>
+  </div>
+
+  <p class="srcnote">Source basis — controls extend the canonical <code>.btn-tech</code>, <code>.cyber-input</code>,
+    and <code>.composer</code> shapes reproduced from onebrain-ai/website <code>global.css</code>, now
+    consolidated in <code>components.css</code> on the semantic intent tokens in <code>colors_and_type.css</code>.
+    Waitlist email/validation mirrors <code>waitlist.ts</code> + <code>disposable-domains.ts</code> in
+    <code>source_examples/</code>.</p>
+
+<script>
+  // inline-validation: validate the email on blur (not on keystroke), per UX rules.
+  var email = document.getElementById('f-email');
+  var err = document.getElementById('f-email-err');
+  email.addEventListener('blur', function () {
+    var v = email.value.trim();
+    var ok = v === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    email.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    err.hidden = ok;
+  });
+</script>
+</body>
+</html>

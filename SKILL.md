@@ -22,8 +22,16 @@ surfaces, decks, or diagrams so the output instantly reads as "futuristic, AI, O
 
 - **`DESIGN.md`** — canonical rules: product context, visual foundations, color, type,
   spacing, layout, components, motion, voice, anti-patterns. Read this first.
-- **`colors_and_type.css`** — all design tokens + `@font-face` bindings to the preserved
-  brand fonts. Paste its `:root` into a new artifact's first `<style>`, or `<link>` it.
+- **`colors_and_type.css`** — all design tokens (palette primitives + a **semantic intent
+  layer**: `--action-primary`, `--fb-*`, `--bg-*`, `--elev-*`, `data-density`) + `@font-face`
+  bindings to the preserved brand fonts. Paste its `:root` into a new artifact's first
+  `<style>`, or `<link>` it.
+- **`components.css`** — the **reusable component layer**: drop-in classes for buttons, full
+  form controls, nav/tabs/breadcrumb/pagination, table/list/avatar/empty-state,
+  alert/toast/progress/skeleton/spinner, and modal/drawer/tooltip/dropdown. Load it after
+  `colors_and_type.css`; every class reads the semantic intents and ships accessible
+  focus/validation/disabled + reduced-motion states. Compose surfaces from this, don't
+  re-derive component CSS.
 - **`PROVENANCE.md`** — exactly where every token/asset/rule came from + honest gaps.
 - **`preview/`** — focused, reviewable HTML cards (color, type, spacing, components,
   brand assets) for the Design System tab.
@@ -63,12 +71,13 @@ light-first, or rounded "friendly SaaS" briefs — it is intentionally dark, sha
 ## How to use
 
 1. **Read `DESIGN.md`** for the rules, then skim `PROVENANCE.md` for what's real vs. derived.
-2. **Bind tokens:** `<link rel="stylesheet" href="colors_and_type.css">` (adjust the
-   relative path), or paste its `:root` into your first `<style>`. This also binds the
-   brand fonts — don't substitute fonts.
-3. **Match component shapes** from `preview/components-*.html` and the source classes in
-   `source_examples/styles/global.css` (`.btn-tech`, `.cyber-card`, `.cyber-pill`,
-   `.cyber-h2-stroke`).
+2. **Bind tokens + components:** `<link rel="stylesheet" href="colors_and_type.css">` then
+   `<link rel="stylesheet" href="components.css">` (adjust the relative paths), or paste
+   their contents into your first `<style>`. The token file also binds the brand fonts —
+   don't substitute fonts. Re-skin by remapping the semantic intents, not the component rules.
+3. **Compose from `components.css`** (`.btn-tech`, `.cyber-card`, `.cyber-pill`, the form
+   controls, `.cyber-table`, `.alert`/`.toast`, `.modal`…); cross-check shapes against
+   `preview/components-*.html` and the source classes in `source_examples/styles/global.css`.
 4. **Use real assets** from `assets/` / `build/` — never redraw the logo or icons.
 5. **Model real screens** on `ui_kits/app/` (sidebar · skill rail · console · composer)
    and its `components/`.
@@ -78,7 +87,7 @@ light-first, or rounded "friendly SaaS" briefs — it is intentionally dark, sha
    no rounding everything, one accent per surface, always include reduced-motion).
 
 Before generating, an agent should read: `README.md`, `DESIGN.md`, `colors_and_type.css`,
-`preview/`, `assets/`, `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/`.
+`components.css`, `preview/`, `assets/`, `build/`, `fonts/`, `source_examples/`, and `ui_kits/app/`.
 
 ## Design system highlights
 

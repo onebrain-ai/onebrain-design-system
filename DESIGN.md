@@ -2,7 +2,9 @@
 
 > Category: Custom · Surface: web (dark-first) · Aesthetic: cyberpunk / Tron "operator console"
 > Source of truth for color, type, spacing, layout, components, motion, voice.
-> Tokens live in [`colors_and_type.css`](colors_and_type.css). Provenance in [`PROVENANCE.md`](PROVENANCE.md).
+> Tokens live in [`colors_and_type.css`](colors_and_type.css) (primitives + a semantic
+> intent layer). Reusable component classes live in [`components.css`](components.css).
+> Provenance in [`PROVENANCE.md`](PROVENANCE.md).
 
 This system is **extracted from real source**, not invented. Every color, font, and
 component rule below traces to the OneBrain product code:
@@ -259,7 +261,23 @@ border or a neon glow:
 
 ## 6. Components
 
-All class names below exist in the source `global.css`; the previews and UI kit reproduce them.
+**The reusable component layer ships in [`components.css`](components.css)** — a drop-in
+stylesheet you load after `colors_and_type.css`. It consolidates the canonical source
+classes below (no more copy-pasting them per file) and adds the full kit needed to assemble
+real surfaces: **forms** (input, textarea, select, checkbox, radio, switch, range, validation
++ helper + disabled states, the command composer), **navigation** (`.nav-glass`, `.cyber-tabs`,
+`.breadcrumb`, `.pagination`), **data display** (`.cyber-table` with tabular numerics + sticky
+header, `.cyber-list`, `.avatar`, `.stat`, `.empty-state`), **feedback** (`.alert`, `.toast`,
+`.progress`, `.skeleton`, `.spinner`), and **overlays** (`.modal` + `.scrim`, `.drawer`,
+`.tooltip`, `.dropdown`). Every class references the **semantic intent tokens** in
+`colors_and_type.css` (`--action-primary`, `--fb-danger`, `--bg-elevated`, `--elev-2`,
+`--text-on-accent`, …) rather than raw palette hexes, so a re-skin or light/dark flip flows
+through automatically; controls honor focus-visible, `[disabled]`/`aria-invalid`, the
+`data-density` contract (comfortable ↔ compact), and `prefers-reduced-motion`. See
+`preview/components-forms.html`, `components-feedback.html`, `components-data.html`.
+
+The canonical classes below all exist in the source `global.css`; `components.css`, the
+previews, and the UI kit reproduce them.
 
 - **`.btn-tech` (primary CTA).** Angled `clip-path` frame filled with the `135deg accent→
   accent-2` gradient (1.5px padding), dark inner panel. Hover: inner → white (so inner text
