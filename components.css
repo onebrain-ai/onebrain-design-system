@@ -59,6 +59,10 @@
 
 /* Size + width modifiers */
 .btn-sm { padding: 8px 16px; min-height: var(--control-h-sm); font-size: 0.7rem; }
+/* btn-tech's padding IS its gradient frame thickness (1.5px) — the small
+   modifier must keep that thin frame and shrink the inner panel instead, or
+   the frame bloats into a thick outline. Higher specificity wins regardless of order. */
+.btn-tech.btn-sm, .btn-sm.btn-tech { padding: 1.5px; }
 .btn-sm.btn-tech .btn-tech-inner, .btn-tech.btn-sm .btn-tech-inner { padding: 8px 18px; font-size: 0.78rem; }
 .btn-block { display: flex; width: 100%; justify-content: center; }
 

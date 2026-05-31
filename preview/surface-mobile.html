@@ -11,8 +11,11 @@
     *, *::before, *::after { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; padding: 40px 20px 64px; }
 
-    /* hot magenta is the ONE accent for the mobile surface */
-    .mobile-surface { --section-accent: var(--color-accent-3); --action-primary: var(--color-accent-3); }
+    /* hot magenta is the ONE accent for the mobile surface — re-key the btn-tech
+       gradient frame to magenta too, so the Capture button + tab FAB match the
+       surface instead of the default violet→cyan brand gradient. */
+    .mobile-surface { --section-accent: var(--color-accent-3); --action-primary: var(--color-accent-3);
+      --grad-button: linear-gradient(135deg, var(--color-accent-3), var(--color-accent)); }
 
     .surface-head { max-width: 1180px; margin: 0 auto 36px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
     .surface-head .logo { width: 30px; height: 30px; flex: none; }
@@ -161,7 +164,7 @@
     .skill-row:hover { background: var(--action-primary-weak); }
     .skill-row .s-ic { width: 34px; height: 34px; flex: none; display: grid; place-content: center; border: 1px solid var(--border-default); background: var(--bg-elevated); color: var(--section-accent); transition: border-color var(--dur-fast), box-shadow var(--dur-fast); }
     .skill-row .s-ic svg { width: 17px; height: 17px; }
-    .skill-row .s-main { min-width: 0; flex: 1; }
+    .skill-row .s-main { min-width: 0; flex: 1; display: flex; flex-direction: column; }
     .skill-row .s-cmd { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-primary); }
     .skill-row .s-cmd .sl { color: var(--section-accent); }
     .skill-row .s-desc { margin-top: 3px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.06em; color: var(--text-disabled); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -192,11 +195,11 @@
     /* center capture (+) */
     .tab-center { position: relative; }
     .tab-center .plus-btn {
-      width: 50px; height: 50px; display: grid; place-content: center; margin-top: -16px;
+      width: 44px; height: 44px; display: grid; place-content: center; margin-top: -12px;
       background: var(--grad-button); clip-path: var(--clip-tech); padding: 1.5px;
     }
     .tab-center .plus-btn span { display: grid; place-content: center; width: 100%; height: 100%; clip-path: var(--clip-tech); background: var(--color-bg); color: #fff; }
-    .tab-center .plus-btn span svg { width: 22px; height: 22px; }
+    .tab-center .plus-btn span svg { width: 20px; height: 20px; }
     .tab-center.is-active .plus-btn { box-shadow: var(--glow-cta); }
 
     /* Home indicator */
