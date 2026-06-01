@@ -342,7 +342,7 @@
   --action-primary:      var(--color-accent-2);
   --action-primary-weak: color-mix(in srgb, var(--color-accent-2) 12%, transparent);
   --action-secondary:    var(--color-accent);
-  --focus-ring:          var(--color-accent-2);
+  --focus-ring:          var(--action-primary);
 
   /* Feedback intents — text / tint-bg / border per semantic state */
   --fb-success:    var(--color-success);

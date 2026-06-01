@@ -12,7 +12,7 @@
     background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
     background-size:var(--grid-size) var(--grid-size);
     -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
-  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent-2); background:color-mix(in srgb,var(--color-accent-2) 4%,transparent); border:1px solid color-mix(in srgb,var(--color-accent-2) 30%,transparent); position:relative; }
+  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--section-accent); background:color-mix(in srgb,var(--section-accent) 4%,transparent); border:1px solid color-mix(in srgb,var(--section-accent) 30%,transparent); position:relative; }
   .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
   .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
   .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
@@ -22,8 +22,8 @@
   .scale{ display:grid; gap:12px; }
   .srow{ display:flex; align-items:center; gap:18px; font-family:var(--font-mono); font-size:12.5px; color:var(--color-muted); }
   .srow .k{ width:200px; flex:none; color:var(--color-text); }
-  .srow .px{ width:54px; flex:none; color:var(--color-accent-2); }
-  .bar{ height:18px; background:color-mix(in srgb,var(--color-accent) 60%,transparent); border-left:2px solid var(--color-accent); }
+  .srow .px{ width:54px; flex:none; color:var(--section-accent); }
+  .bar{ height:18px; background:color-mix(in srgb,var(--section-accent) 60%,transparent); border-left:2px solid var(--section-accent); }
   .applied{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-top:8px; }
   .card{ background:var(--color-surface-2); border:1px solid var(--color-border-2); }
   .card .h{ padding:14px 16px; border-bottom:1px solid var(--color-border-2); font-family:var(--font-mono); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); }
@@ -34,7 +34,7 @@
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
   <span class="pill"><span class="dot"></span> SPACING · 4PX BASE · 56PX HUD LATTICE</span>
   <h1>Spacing Scale</h1>
@@ -78,6 +78,6 @@
     Source basis — spacing &amp; the 56px grid observed in onebrain-ai/website <code>global.css</code>;
     build-time libs <code>gh-stars.ts</code>, <code>version.ts</code>, <code>brain-id.ts</code>,
     <code>middleware.ts</code>, <code>waitlist.ts</code> preserved in <code>source_examples/</code>.</p>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

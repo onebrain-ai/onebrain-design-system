@@ -55,8 +55,6 @@
   .topbar .search{ margin-left:auto; position:relative; width:min(300px, 38vw); }
   .topbar .search svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--text-disabled); pointer-events:none; }
   .topbar .search input.cyber-input{ padding-left:36px; min-height:var(--control-h-sm); }
-  .density{ display:flex; align-items:center; gap:9px; font-family:var(--font-mono); font-size:10px;
-    letter-spacing:.18em; text-transform:uppercase; color:var(--text-secondary); white-space:nowrap; flex:none; }
 
   /* hamburger (mobile only) */
   .menu-btn{ display:none; background:var(--bg-surface); border:1px solid var(--border-default); color:var(--text-secondary);
@@ -140,7 +138,6 @@
       opacity:0; visibility:hidden; transition:opacity var(--dur-base), visibility var(--dur-base); }
     .side-scrim.is-open{ opacity:1; visibility:visible; }
     .topbar .search{ width:auto; flex:1; }
-    .density .dlabel{ display:none; }
   }
   @media (max-width:420px){
     .statgrid{ grid-template-columns:1fr; }
@@ -211,20 +208,6 @@
         <div class="search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
           <input class="cyber-input" id="search" type="search" placeholder="Filter sessions… (skill / status)" aria-label="Filter sessions table" />
-        </div>
-
-        <label class="density" title="Toggle layout density">
-          <span class="dlabel">Compact</span>
-          <span class="cyber-switch"><input type="checkbox" id="densityToggle" aria-label="Compact density" /></span>
-        </label>
-
-        <!-- runtime accent setting — re-keys the whole dashboard from one control -->
-        <div class="accent-dots" role="radiogroup" aria-label="Accent color" data-accent-key="ob-accent" data-accent-default="cyan">
-          <span class="accent-lbl">Accent</span>
-          <button class="accent-dot" type="button" role="radio" data-accent="cyan" style="--sw:var(--color-accent-2)" aria-label="Cyan accent" title="Cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
-          <button class="accent-dot" type="button" role="radio" data-accent="violet" style="--sw:var(--color-accent)" aria-label="Violet accent" title="Violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
-          <button class="accent-dot" type="button" role="radio" data-accent="magenta" style="--sw:var(--color-accent-3)" aria-label="Magenta accent" title="Magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
-          <button class="accent-dot" type="button" role="radio" data-accent="amber" style="--sw:var(--color-accent-4)" aria-label="Amber accent" title="Amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
         </div>
 
         <span class="avatar" title="ke@onebrain.run">KE</span>
@@ -353,12 +336,6 @@
 <script>
 (function(){
   "use strict";
-
-  /* -------------------------------------------------- DENSITY TOGGLE (real) */
-  var dash = document.getElementById('dash');
-  document.getElementById('densityToggle').addEventListener('change', function(e){
-    dash.setAttribute('data-density', e.target.checked ? 'compact' : 'comfortable');
-  });
 
   /* ----------------------------------------------- MOBILE SIDEBAR DRAWER */
   var side = document.getElementById('side');
@@ -539,7 +516,6 @@
   render();
 })();
 </script>
-<script src="accent-picker.js"></script>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

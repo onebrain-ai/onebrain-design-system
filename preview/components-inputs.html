@@ -11,7 +11,7 @@
   .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
     background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
     background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
-  .eb{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent-2); background:color-mix(in srgb,var(--color-accent-2) 4%,transparent); border:1px solid color-mix(in srgb,var(--color-accent-2) 30%,transparent); position:relative; }
+  .eb{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--section-accent); background:color-mix(in srgb,var(--section-accent) 4%,transparent); border:1px solid color-mix(in srgb,var(--section-accent) 30%,transparent); position:relative; }
   .eb::before,.eb::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
   .eb::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .eb::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
   .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
@@ -23,15 +23,15 @@
   .inp{ width:100%; box-sizing:border-box; background:var(--color-surface); border:1px solid var(--color-border);
     color:var(--color-text); font-family:var(--font-mono); font-size:14px; padding:13px 15px; outline:none; transition:border-color .2s,box-shadow .2s; }
   .inp::placeholder{ color:var(--color-muted); }
-  .inp:focus{ border-color:var(--color-accent-2); box-shadow:0 0 0 1px var(--color-accent-2),0 0 18px color-mix(in srgb,var(--color-accent-2) 25%,transparent); }
+  .inp:focus{ border-color:var(--section-accent); box-shadow:0 0 0 1px var(--section-accent),0 0 18px color-mix(in srgb,var(--section-accent) 25%,transparent); }
   textarea.inp{ resize:vertical; min-height:96px; line-height:1.6; }
   .inp-err{ border-color:var(--color-danger); }
   .errmsg{ font-family:var(--font-mono); font-size:11px; color:var(--color-danger); margin-top:7px; letter-spacing:.05em; }
 
   /* command composer — the agent input bar */
   .composer{ max-width:640px; display:flex; align-items:stretch; gap:0; border:1px solid var(--color-border); background:var(--color-surface); }
-  .composer:focus-within{ border-color:var(--color-accent-2); box-shadow:0 0 22px color-mix(in srgb,var(--color-accent-2) 20%,transparent); }
-  .composer .slash{ display:flex; align-items:center; padding:0 14px; font-family:var(--font-mono); color:var(--color-accent-2); font-size:16px; border-right:1px solid var(--color-border); }
+  .composer:focus-within{ border-color:var(--section-accent); box-shadow:0 0 22px color-mix(in srgb,var(--section-accent) 20%,transparent); }
+  .composer .slash{ display:flex; align-items:center; padding:0 14px; font-family:var(--font-mono); color:var(--section-accent); font-size:16px; border-right:1px solid var(--color-border); }
   .composer input{ flex:1; background:transparent; border:0; outline:none; color:var(--color-text); font-family:var(--font-mono); font-size:14px; padding:14px 12px; }
   .composer input::placeholder{ color:var(--color-muted); }
   .composer .send{ clip-path:var(--clip-tech); background:var(--grad-button); padding:1.5px; margin:5px; border:0; cursor:pointer; }
@@ -42,12 +42,12 @@
   .hint{ font-family:var(--font-mono); font-size:10.5px; color:var(--color-muted); margin-top:8px; letter-spacing:.05em; }
   /* toggle */
   .toggle{ display:inline-flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:12px; color:var(--color-muted); }
-  .sw{ width:42px; height:22px; border:1px solid var(--color-accent-2); position:relative; background:color-mix(in srgb,var(--color-accent-2) 12%,transparent); }
+  .sw{ width:42px; height:22px; border:1px solid var(--section-accent); position:relative; background:color-mix(in srgb,var(--section-accent) 12%,transparent); }
   .sw::after{ content:''; position:absolute; top:2px; left:22px; width:14px; height:14px; background:var(--color-accent-2); box-shadow:var(--glow-sm); }
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
   <span class="eb"><span class="dot"></span> COMPONENTS · INPUTS &amp; COMPOSER</span>
   <h1>Inputs &amp; Composer</h1>
@@ -72,6 +72,6 @@
 
   <div class="sec">// Toggle</div>
   <span class="toggle"><span class="sw"></span> Persistent memory · ON</span>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

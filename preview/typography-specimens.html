@@ -15,8 +15,8 @@
             mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
   .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono);
     font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase;
-    color:var(--color-accent-3); background:color-mix(in srgb,var(--color-accent-3) 4%,transparent);
-    border:1px solid color-mix(in srgb,var(--color-accent-3) 30%,transparent); position:relative; }
+    color:var(--section-accent); background:color-mix(in srgb,var(--section-accent) 4%,transparent);
+    border:1px solid color-mix(in srgb,var(--section-accent) 30%,transparent); position:relative; }
   .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
   .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
   .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
@@ -25,7 +25,7 @@
   .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 40px; }
   .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:40px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
   .spec{ background:var(--color-surface); border:1px solid var(--color-border); padding:26px clamp(18px,3vw,32px); margin-bottom:18px; }
-  .spec .fam{ font-family:var(--font-mono); font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--color-accent-2); }
+  .spec .fam{ font-family:var(--font-mono); font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--section-accent); }
   .spec .role{ font-family:var(--font-mono); font-size:11px; color:var(--color-muted); margin-bottom:18px; }
   .display-big{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; line-height:.92; letter-spacing:-.02em; font-size:clamp(2.6rem,7vw,5rem); color:#fff; margin:0; }
   .glyphs{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:2rem; color:var(--color-muted); margin-top:14px; letter-spacing:.02em; }
@@ -40,12 +40,12 @@
   .srow:last-child{ border-bottom:0; }
   .srow .k{ font-family:var(--font-mono); font-size:11px; color:var(--color-muted); width:150px; flex:none; letter-spacing:.05em; }
   .srow .v{ color:var(--color-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .stroke{ display:inline-block; color:transparent; -webkit-text-stroke:1.5px var(--color-accent-2);
-    text-shadow:0 0 40px color-mix(in srgb,var(--color-accent-2) 35%,transparent); }
+  .stroke{ display:inline-block; color:transparent; -webkit-text-stroke:1.5px var(--section-accent);
+    text-shadow:0 0 40px color-mix(in srgb,var(--section-accent) 35%,transparent); }
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-3)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
   <span class="pill"><span class="dot"></span> TYPE · CHAKRA PETCH · INTER · JETBRAINS MONO</span>
   <h1>Typography</h1>
@@ -98,6 +98,6 @@
     <div class="srow"><span class="k">--text-xs · 11px</span><span class="v" style="font-family:var(--font-mono);font-size:.6875rem">11 / card description</span></div>
     <div class="srow"><span class="k">--eyebrow · 10px</span><span class="v" style="font-family:var(--font-mono);font-size:.625rem;letter-spacing:.4em;text-transform:uppercase;color:var(--color-accent-2)">EYEBROW · TRACKING .4EM</span></div>
   </div>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

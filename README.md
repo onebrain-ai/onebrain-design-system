@@ -6,8 +6,8 @@ product code. It captures the futuristic, minimal, professional **cyberpunk / Tr
 that are instantly recognizable as a serious AI developer tool.
 
 **Live preview** (rendered, no local server needed): **<https://onebrain-ai.github.io/onebrain-design-system/>**
-— the launcher (`index.html`) opens every surface, preview card, and doc directly in the
-browser via GitHub Pages.
+— the showcase (`index.html`) browses every surface, preview card, and doc in one shell
+(categorized rail · live preview canvas · theme customizer) via GitHub Pages.
 
 > **Visual direction:** dark-first near-black canvas, four neon signal accents, italic
 > uppercase display type, monospace HUD, corner-cut geometry, neon-glow elevation.
@@ -67,7 +67,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 
 ```
 .
-├── index.html                 Launcher — HUD index linking every preview + surface (open first)
+├── index.html                 Showcase shell — categorized rail · live preview canvas · theme customizer (open first)
 ├── docs.html                  In-system Markdown reader (renders the docs below on the dark canvas, legibly)
 ├── DESIGN.md                  Canonical rules (read first)
 ├── README.md                  This guide
@@ -110,7 +110,6 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   ├── cyber-select.js        Custom <select> listbox enhancer (on-brand open state, full ARIA)
 │   ├── command-palette.js     ⌘K command-palette enhancer (filter, keyboard nav, ARIA dialog/listbox)
 │   ├── dropzone.js            File-dropzone enhancer (drag-drop + synced file list, no-JS fallback)
-│   ├── _home.js               Shared back-to-Index pill injected on every sub-page (mirrors docs.html)
 │   ├── components-forms.html      Full form kit (consumes components.css) — inputs, select, checkbox/radio/switch/range, validation, composer, buttons
 │   ├── components-feedback.html   Alerts, toasts, badges, progress, skeleton, spinner, empty-state, modal/tooltip/dropdown
 │   ├── components-data.html       Table, list, tabs, breadcrumb, pagination, avatars, stats, density toggle
@@ -147,9 +146,8 @@ demonstrates real, source-backed tokens/components/assets.
 Every card also links `preview/_preview.css` — the shared atmosphere layer that adds the
 blurred section **orb** (DESIGN.md §1) and a one-shot **boot reveal** (§7), both with a
 `prefers-reduced-motion` fallback. It layers depth/motion only; it never restyles a card.
-Each card also loads `preview/_home.js`, which injects one fixed bottom-left **Index** pill
-linking back to the launcher (`index.html`) — the same single-source affordance on every
-sub-page, mirroring the docs reader's back button (`ui_kits/app/` loads it too).
+Navigation lives in the **showcase** (`index.html`) — its categorized left rail opens each
+card / surface / doc in the live preview canvas; sub-pages carry no back button of their own.
 Every **SURFACE** card (mobile, dashboard, desktop, landing, deck) carries the runtime
 **accent picker** (`.accent-dots` + `preview/accent-picker.js`) at its natural settings home
 — click a swatch to re-key the whole surface; the choice persists and follows you across
@@ -158,8 +156,7 @@ surfaces (shared `ob-accent` key). See DESIGN.md §2 "User-settable accent (runt
 | Preview card | Inspect | Demonstrates (source-backed) |
 |---|---|---|
 | [`preview/colors-primary.html`](preview/colors-primary.html) | The four neon accents, the two brand gradients, and the surface/text neutrals | `--color-accent{,-2,-3,-4}`, `--grad-brand` (brain.svg), `--grad-button` (.btn-tech), `--color-bg/surface/...` |
-| [`preview/colors-theme-dark.html`](preview/colors-theme-dark.html) | Default dark theme applied to a real console panel + token map | Dark `--color-*` tokens, `--section-accent`, glow dot |
-| [`preview/colors-theme-light.html`](preview/colors-theme-light.html) | The optional light scale for spec/print; accents re-inked deeper for the white ground (AA ≥4.5:1) | `[data-theme="light"]` inverted neutrals + inked accents |
+| [`preview/colors-theme-dark.html`](preview/colors-theme-dark.html) | The theme scale on a real console panel + token map — flip to the light scale (`[data-theme="light"]`, accents re-inked AA ≥4.5:1) with the showcase **Theme** toggle | Dark + light `--color-*` tokens, `--section-accent`, glow dot |
 | [`preview/typography-specimens.html`](preview/typography-specimens.html) | The three families rendering from the bound fonts + the full type scale + stroke headline | `--font-display` (Chakra Petch), `--font-sans` (Inter), `--font-mono` (JetBrains Mono), `--text-*`, `@font-face` |
 | [`preview/spacing-tokens.html`](preview/spacing-tokens.html) | The 4px scale, layout constants, and `--card-pad` applied to cards | `--space-1…9`, `--nav-height`, `--content-max`, `--prose-max`, `--grid-size` |
 | [`preview/spacing-radius.html`](preview/spacing-radius.html) | Why corners are sharp; the angled CTA corner-cut | `--radius-0…pill`, `--clip-tech`, `.btn-tech` frame |

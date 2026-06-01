@@ -1,255 +1,706 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="ob-root">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>OneBrain Design System — Index</title>
-<meta name="description" content="Launcher for the OneBrain design system: foundations, components, heroes, surfaces, and the applied operator-console UI kit." />
+<title>OneBrain Design System</title>
+<meta name="description" content="ThemeForest-style browser for the OneBrain design system: categorized component / page navigation, a live preview canvas with responsive viewports, and a theme customizer (theme · accent · density · direction)." />
 <link rel="icon" href="assets/favicon.ico" sizes="any" />
 <link rel="stylesheet" href="colors_and_type.css" />
 <link rel="stylesheet" href="components.css" />
 <style>
-  *{ box-sizing:border-box; }
-  body{ margin:0; min-height:100dvh; overflow-x:hidden; }
+  /* ============================================================
+     Showcase shell — a Storybook / ThemeForest-style browser.
+     Left rail: categorized catalog + search.
+     Center:    live preview iframe + responsive viewport selector.
+     Right:     theme customizer (theme · accent · density · dir),
+                applied to the preview canvas in real time.
+     Built on the OneBrain tokens + components.css.
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { overflow: hidden; background: var(--color-bg); color: var(--color-text);
+    font-family: var(--font-sans); }
 
-  /* HUD atmosphere — faint 56px lattice + a single blurred accent orb. */
-  .bg-grid{ position:fixed; inset:0; z-index:-2; pointer-events:none;
-    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
-    background-size:var(--grid-size) var(--grid-size);
-    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 35%,transparent 100%);
-            mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 35%,transparent 100%); }
-  .bg-orb{ position:fixed; z-index:-1; top:-220px; left:50%; width:760px; height:520px; transform:translateX(-50%);
-    pointer-events:none; opacity:.12; filter:blur(60px);
-    background:radial-gradient(circle at 50% 50%, var(--section-accent), transparent 62%); }
-
-  .shell{ max-width:var(--content-max); margin:0 auto; padding:34px clamp(18px,5vw,56px) 90px; }
-
-  /* ---- Header / chrome ---- */
-  header.top{ display:flex; align-items:center; gap:18px; flex-wrap:wrap;
-    padding-bottom:22px; border-bottom:1px solid var(--color-border); }
-  .brand{ display:flex; align-items:center; gap:14px; margin-right:auto; }
-  .brand img{ width:44px; height:44px; filter:var(--glow-brand); }
-  .brand .wm{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
-    letter-spacing:var(--tracking-tight); font-size:1.55rem; line-height:1; color:var(--color-white);
-    text-shadow:0 0 22px rgba(255,255,255,.18); }
-  .brand .sub{ display:block; font-family:var(--font-mono); font-size:9.5px; letter-spacing:.42em;
-    text-transform:uppercase; color:var(--color-muted); margin-top:6px; }
-  .chrome{ display:flex; align-items:center; gap:18px; }
-  .ver{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--color-faint); }
-  .ver b{ color:var(--section-accent); font-weight:500; }
-
-  /* ---- Hero block ---- */
-  .pill{ display:inline-flex; align-items:center; gap:9px; padding:7px 13px; margin:40px 0 22px;
-    font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase;
-    color:var(--section-accent); background:var(--action-primary-weak);
-    border:1px solid color-mix(in srgb,var(--section-accent) 38%,transparent); position:relative; }
-  .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
-  .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
-  .pdot{ width:6px;height:6px;border-radius:50%;background:currentColor; box-shadow:0 0 8px currentColor; animation:pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
-  h1.title{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
-    letter-spacing:var(--tracking-tight); line-height:.92; font-size:clamp(2.6rem,7vw,5.5rem); margin:0 0 18px; color:var(--color-white); max-width:18ch; }
-  h1.title em{ font-style:italic; color:transparent; -webkit-text-stroke:1.6px var(--section-accent);
-    text-shadow:0 0 26px color-mix(in srgb,var(--section-accent) 45%,transparent); }
-  p.lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:62ch; line-height:1.7; font-size:.95rem; margin:0 0 26px; }
-
-  /* ---- Stat strip ---- */
-  .stats{ display:flex; flex-wrap:wrap; gap:1px; background:var(--color-border-2);
-    border:1px solid var(--color-border); margin-bottom:8px; }
-  .stat-c{ flex:1 1 140px; background:var(--color-surface-2); padding:16px 18px; }
-  .stat-c .n{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:1.7rem; color:var(--color-white); line-height:1; }
-  .stat-c .l{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--color-muted); margin-top:8px; }
-
-  /* ---- Sections ---- */
-  section.grp{ margin-top:48px; }
-  .grp-h{ display:flex; align-items:baseline; gap:14px; margin-bottom:18px; }
-  .grp-h .gi{ font-family:var(--font-mono); font-size:11px; letter-spacing:.2em; color:var(--sec); }
-  .grp-h .gt{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
-    letter-spacing:.02em; font-size:1.15rem; color:var(--color-text); }
-  .grp-h .gl{ flex:1; height:1px; background:linear-gradient(90deg,color-mix(in srgb,var(--sec) 50%,transparent),transparent); }
-  .grp-h .gc{ font-family:var(--font-mono); font-size:10px; letter-spacing:.2em; color:var(--color-ghost); }
-
-  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(258px,1fr)); gap:16px; }
-
-  /* ---- Card ---- */
-  a.card{ position:relative; display:flex; flex-direction:column; gap:9px; text-decoration:none;
-    background:var(--color-surface-2); border:1px solid var(--color-border-2); padding:18px 18px 16px;
-    overflow:hidden; transition:border-color var(--dur-base) ease, transform var(--dur-base) ease, background var(--dur-base) ease; }
-  a.card::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--sec);
-    transform:scaleY(0); transform-origin:top; transition:transform var(--dur-base) var(--ease-out-expo); }
-  a.card:hover{ border-color:color-mix(in srgb,var(--sec) 55%,transparent); transform:translateY(-2px);
-    background:color-mix(in srgb,var(--sec) 5%,var(--color-surface-2)); }
-  a.card:hover::before{ transform:scaleY(1); }
-  a.card:focus-visible{ outline:2px solid var(--sec); outline-offset:3px; }
-  .card .crow{ display:flex; align-items:center; justify-content:space-between; }
-  .card .cix{ font-family:var(--font-mono); font-size:10px; letter-spacing:.22em; color:var(--color-ghost); transition:color var(--dur-base) ease; }
-  a.card:hover .cix{ color:var(--sec); }
-  .card .ctag{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.2em; text-transform:uppercase;
-    color:var(--sec); border:1px solid color-mix(in srgb,var(--sec) 34%,transparent); padding:2px 6px; }
-  .card .ct{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
-    letter-spacing:.02em; font-size:1.02rem; color:var(--color-text); }
-  .card .cd{ font-family:var(--font-mono); font-size:11px; line-height:1.55; color:var(--color-faint); }
-  .card .arr{ margin-top:2px; font-family:var(--font-mono); font-size:11px; color:var(--sec); opacity:0; transform:translateX(-4px);
-    transition:opacity var(--dur-base) ease, transform var(--dur-base) ease; }
-  a.card:hover .arr{ opacity:1; transform:translateX(0); }
-
-  /* ---- Docs chips ---- */
-  .docs{ display:flex; flex-wrap:wrap; gap:10px; }
-  a.doc{ display:inline-flex; align-items:center; gap:9px; text-decoration:none; padding:11px 15px;
-    background:var(--color-surface); border:1px solid var(--color-border); transition:border-color var(--dur-base) ease, color var(--dur-base) ease; }
-  a.doc:hover{ border-color:var(--section-accent); }
-  a.doc:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:3px; }
-  a.doc .di{ color:var(--section-accent); display:grid; place-content:center; }
-  a.doc .dn{ font-family:var(--font-mono); font-size:12px; color:var(--color-text); }
-  a.doc .dx{ font-family:var(--font-mono); font-size:10px; color:var(--color-ghost); }
-
-  footer.foot{ margin-top:64px; padding-top:22px; border-top:1px solid var(--color-border);
-    display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center;
-    font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--color-muted); }
-  footer.foot .b{ color:var(--color-faint); }
-  footer.foot .dotsep{ color:var(--color-ghost); }
-
-  /* ---- Boot reveal ---- */
-  .reveal{ opacity:0; transform:translateY(16px); animation:rise .7s var(--ease-out-expo) forwards; animation-delay:var(--d,0s); }
-  @keyframes rise{ to{ opacity:1; transform:none; } }
-
-  @media (max-width:560px){
-    header.top{ gap:12px; } .chrome{ width:100%; justify-content:space-between; }
-    .brand .wm{ font-size:1.3rem; }
+  .sc-app {
+    --bar-h: 54px; --nav-w: 270px; --panel-w: 304px;
+    display: grid; height: 100dvh;
+    grid-template-columns: var(--nav-w) 1fr var(--panel-w);
+    grid-template-rows: var(--bar-h) 1fr;
+    transition: grid-template-columns .26s var(--ease-out-expo);
   }
-  @media (prefers-reduced-motion:reduce){
-    .reveal{ animation:none; opacity:1; transform:none; }
-    .pdot{ animation:none; }
+  body.nav-collapsed   .sc-app { --nav-w: 0px; }
+  body.panel-collapsed .sc-app { --panel-w: 0px; }
+
+  /* ---- HUD atmosphere behind the canvas ---- */
+  .sc-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 60% 40%, #000 30%, transparent 100%);
+            mask-image: radial-gradient(ellipse 70% 60% at 60% 40%, #000 30%, transparent 100%); }
+
+  /* ---- Top bar ---- */
+  .sc-bar { grid-column: 1 / -1; grid-row: 1; z-index: 5;
+    display: flex; align-items: center; gap: 12px; padding: 0 12px;
+    background: var(--color-bg-deep); border-bottom: 1px solid var(--color-border); }
+  .sc-icbtn { width: 34px; height: 34px; display: grid; place-content: center;
+    background: transparent; border: 1px solid var(--color-border); color: var(--color-muted);
+    cursor: pointer; transition: color var(--dur-base) ease, border-color var(--dur-base) ease; }
+  .sc-icbtn:hover { color: var(--color-text); border-color: var(--section-accent); }
+  .sc-icbtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .sc-icbtn svg { width: 17px; height: 17px; }
+  .sc-icbtn.is-on { color: var(--section-accent); border-color: color-mix(in srgb, var(--section-accent) 50%, transparent); }
+  .sc-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .sc-brand img { width: 28px; height: 28px; filter: var(--glow-brand); }
+  .sc-brand .wm { font-family: var(--font-display); font-style: italic; font-weight: 700;
+    text-transform: uppercase; letter-spacing: var(--tracking-tight); font-size: 1.05rem;
+    color: var(--color-white); text-shadow: 0 0 18px rgba(255,255,255,.16); line-height: 1; }
+  .sc-brand .wm em { font-style: italic; color: var(--color-muted); text-shadow: none; font-weight: 500; }
+  .sc-bar-spacer { flex: 1; }
+  .sc-ver { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--color-faint); }
+  .sc-ver b { color: var(--section-accent); font-weight: 500; }
+
+  /* ---- Left nav ---- */
+  .sc-nav { grid-column: 1; grid-row: 2; position: relative; overflow: hidden;
+    border-right: 1px solid var(--color-border); background: var(--color-bg-deep); }
+  .sc-nav-scroll { position: absolute; top: 0; bottom: 0; left: 0; width: 270px;
+    display: flex; flex-direction: column; overflow: hidden; }
+  .sc-search { position: relative; padding: 12px; border-bottom: 1px solid var(--color-border-2); }
+  .sc-search svg { position: absolute; left: 22px; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; color: var(--color-muted); pointer-events: none; }
+  .sc-search input { width: 100%; height: 38px; padding: 0 34px 0 36px;
+    background: var(--color-surface-2); border: 1px solid var(--color-border);
+    color: var(--color-text); font-family: var(--font-mono); font-size: 12.5px;
+    border-radius: var(--radius-sm); }
+  .sc-search input::placeholder { color: var(--color-muted); }
+  .sc-search input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-color: var(--section-accent); }
+  .sc-search .kbd { position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: 10px; color: var(--color-ghost);
+    border: 1px solid var(--color-border); padding: 1px 5px; pointer-events: none; }
+  .sc-list { flex: 1; overflow-y: auto; padding: 8px 8px 22px; scrollbar-width: thin; }
+  .sc-list::-webkit-scrollbar { width: 8px; }
+  .sc-list::-webkit-scrollbar-thumb { background: var(--color-border); }
+
+  .sc-grp { margin-top: 12px; }
+  .sc-grp:first-child { margin-top: 4px; }
+  .sc-grp-h { display: flex; align-items: baseline; gap: 8px; padding: 4px 8px 8px; }
+  .sc-grp-h .gi { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .18em; color: var(--sec); }
+  .sc-grp-h .gt { font-family: var(--font-display); font-style: italic; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .02em; font-size: .82rem; color: var(--color-text); }
+  .sc-grp-h .gl { flex: 1; height: 1px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--sec) 45%, transparent), transparent); }
+  .sc-grp-h .gc { font-family: var(--font-mono); font-size: 9px; letter-spacing: .14em; color: var(--color-ghost); }
+
+  .sc-item { position: relative; width: 100%; display: flex; align-items: center; gap: 9px;
+    padding: 8px 10px 8px 12px; background: transparent; border: 0; cursor: pointer; text-align: start;
+    color: var(--color-muted); transition: background var(--dur-base) ease, color var(--dur-base) ease; }
+  .sc-item::before { content: ''; position: absolute; inset-inline-start: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--section-accent); transform: scaleY(0); transform-origin: center;
+    transition: transform var(--dur-base) var(--ease-out-expo); }
+  .sc-item:hover { color: var(--color-text); background: color-mix(in srgb, var(--section-accent) 6%, transparent); }
+  .sc-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+  .sc-item .t { flex: 1; font-family: var(--font-sans); font-size: 13px; font-weight: 500; line-height: 1.2;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sc-item .tag { font-family: var(--font-mono); font-size: 8px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--color-ghost); border: 1px solid var(--color-border); padding: 2px 5px; flex: none; }
+  .sc-item[aria-current="true"] { color: var(--color-white); background: color-mix(in srgb, var(--section-accent) 12%, transparent); }
+  .sc-item[aria-current="true"]::before { transform: scaleY(1); }
+  .sc-item[aria-current="true"] .tag { color: var(--section-accent); border-color: color-mix(in srgb, var(--section-accent) 40%, transparent); }
+  .sc-noresult { display: none; padding: 16px; font-family: var(--font-mono); font-size: 12px;
+    color: var(--color-muted); line-height: 1.6; }
+  .sc-list.is-empty .sc-noresult { display: block; }
+  .sc-grp[hidden] { display: none; }
+  .sc-item[hidden] { display: none; }
+
+  /* ---- Center main ---- */
+  .sc-main { grid-column: 2; grid-row: 2; position: relative; z-index: 1;
+    display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .sc-toolbar { display: flex; align-items: center; gap: 14px; padding: 9px 14px;
+    border-bottom: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-bg-deep) 70%, transparent);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .sc-cur { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .sc-cur .sc-cur-tag { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--section-accent); border: 1px solid color-mix(in srgb, var(--section-accent) 34%, transparent); padding: 3px 6px; flex: none; }
+  .sc-cur .sc-cur-title { font-family: var(--font-display); font-style: italic; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .01em; font-size: 1rem; color: var(--color-white);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sc-tb-right { margin-inline-start: auto; display: flex; align-items: center; gap: 10px; }
+  .sc-vp label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; padding: 5px 9px; min-height: 30px; }
+  .sc-open { display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--color-muted);
+    border: 1px solid var(--color-border); padding: 6px 10px; transition: color var(--dur-base) ease, border-color var(--dur-base) ease; }
+  .sc-open:hover { color: var(--color-text); border-color: var(--section-accent); }
+  .sc-open svg { width: 14px; height: 14px; }
+
+  .sc-canvas { flex: 1; position: relative; min-height: 0; padding: 18px;
+    display: flex; align-items: stretch; justify-content: center; }
+  .sc-frame-wrap { position: relative; flex: 1; min-width: 0; max-width: 100%;
+    background: var(--color-bg); border: 1px solid var(--color-border-2);
+    transition: max-width .3s var(--ease-out-expo); overflow: hidden; }
+  .sc-frame-wrap.is-device { flex: none; box-shadow: var(--shadow-overlay);
+    border-color: var(--color-border); }
+  .sc-canvas.is-device { align-items: stretch; }
+  #frame { display: block; width: 100%; height: 100%; border: 0; background: var(--color-bg); }
+  .sc-vw-readout { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--color-faint); background: var(--color-bg-deep); border: 1px solid var(--color-border);
+    padding: 4px 10px; pointer-events: none; opacity: 0; transition: opacity var(--dur-base) ease; }
+  .sc-frame-wrap.is-device + .sc-vw-readout,
+  .sc-canvas:hover .sc-vw-readout { opacity: 1; }
+
+  /* ---- Right settings panel ---- */
+  .sc-panel { grid-column: 3; grid-row: 2; position: relative; overflow: hidden;
+    border-inline-start: 1px solid var(--color-border); background: var(--color-bg-deep); }
+  .sc-panel-scroll { position: absolute; top: 0; bottom: 0; right: 0; width: 304px;
+    overflow-y: auto; padding: 16px 16px 26px; }
+  .sc-eyebrow { display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: var(--eyebrow-size); letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase; color: var(--section-accent); }
+  .sc-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+    box-shadow: 0 0 8px currentColor; }
+  .sc-panel-sub { font-family: var(--font-mono); font-size: 11px; line-height: 1.6; color: var(--color-faint);
+    margin: 10px 0 18px; }
+  .sc-field { padding: 14px 0; border-top: 1px solid var(--color-border-2); }
+  .sc-field > label { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--color-muted); margin-bottom: 9px; }
+  .sc-field .segmented { width: 100%; }
+  .sc-field .segmented label { flex: 1; justify-content: center; text-align: center;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; }
+  .sc-field .accent-dots { gap: 10px; }
+  .sc-field .accent-dots .accent-dot { width: 26px; height: 26px; }
+  .sc-panel-foot { padding-top: 16px; margin-top: 6px; border-top: 1px solid var(--color-border-2);
+    display: flex; flex-direction: column; gap: 10px; }
+  .sc-note { font-family: var(--font-mono); font-size: 10px; line-height: 1.6; color: var(--color-ghost); margin: 0; }
+  .sc-panel-foot .btn-ghost { width: 100%; justify-content: center; }
+
+  /* ---- Scrim (narrow-screen drawer overlay) ---- */
+  .sc-scrim { position: fixed; inset: 0; z-index: 4; background: var(--scrim, rgba(2,2,4,.62));
+    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+    opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+
+  /* ---- Narrow: nav + panel become overlay drawers ---- */
+  @media (max-width: 920px) {
+    .sc-app { grid-template-columns: 0 1fr 0 !important; }
+    .sc-nav, .sc-panel { position: fixed; top: var(--bar-h); bottom: 0; z-index: 6;
+      overflow: visible; border: 0; background: transparent; pointer-events: none; width: auto; }
+    .sc-nav { left: 0; } .sc-panel { right: 0; }
+    .sc-nav-scroll { width: min(284px, 84vw); transform: translateX(-100%);
+      transition: transform .26s var(--ease-out-expo); pointer-events: auto;
+      background: var(--color-bg-deep); border-right: 1px solid var(--color-border); box-shadow: var(--shadow-overlay); }
+    .sc-panel-scroll { width: min(304px, 86vw); transform: translateX(100%);
+      transition: transform .26s var(--ease-out-expo); pointer-events: auto;
+      background: var(--color-bg-deep); border-left: 1px solid var(--color-border); box-shadow: var(--shadow-overlay);
+      position: absolute; top: 0; bottom: 0; right: 0; }
+    body:not(.nav-collapsed)   .sc-nav-scroll   { transform: none; }
+    body:not(.panel-collapsed) .sc-panel-scroll { transform: none; }
+    body:not(.nav-collapsed)   .sc-scrim,
+    body:not(.panel-collapsed) .sc-scrim { opacity: 1; pointer-events: auto; }
+  }
+  @media (max-width: 560px) { .sc-brand .wm em { display: none; } .sc-ver { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sc-app, .sc-item::before, .sc-frame-wrap, .sc-nav-scroll, .sc-panel-scroll,
+    .sc-vw-readout, .sc-scrim { transition: none !important; }
   }
 </style>
 </head>
-<body class="ob-root">
-  <div class="bg-grid"></div>
-  <div class="bg-orb"></div>
+<body>
+<div class="sc-grid" aria-hidden="true"></div>
 
-  <div class="shell">
-    <!-- Chrome -->
-    <header class="top">
-      <div class="brand">
-        <img src="assets/brain.svg" alt="OneBrain logo" />
-        <div>
-          <span class="wm">OneBrain</span>
-          <span class="sub">Design System</span>
-        </div>
+<div class="sc-app">
+  <!-- Top bar -->
+  <header class="sc-bar">
+    <button class="sc-icbtn is-on" id="navToggle" type="button" aria-label="Toggle catalog" aria-pressed="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18"/></svg>
+    </button>
+    <a class="sc-brand" href="index.html" title="OneBrain Design System">
+      <img src="assets/brain.svg" alt="OneBrain logo" />
+      <span class="wm">OneBrain <em>Design System</em></span>
+    </a>
+    <div class="sc-bar-spacer"></div>
+    <span class="sc-ver">v<b>1.0.0</b> · 26 surfaces</span>
+    <button class="sc-icbtn is-on" id="panelToggle" type="button" aria-label="Toggle theme customizer" aria-pressed="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+    </button>
+  </header>
+
+  <!-- Left catalog -->
+  <nav class="sc-nav" aria-label="Component catalog">
+    <div class="sc-nav-scroll">
+      <div class="sc-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="navSearch" type="search" placeholder="Search catalog…" aria-label="Search catalog" autocomplete="off" />
+        <span class="kbd">/</span>
       </div>
-      <div class="chrome">
-        <span class="ver">v<b>1.0.0</b> · AGPL-3.0</span>
-        <div class="accent-dots" role="radiogroup" aria-label="Accent color" data-accent-key="ob-accent" data-accent-default="cyan">
-          <span class="accent-lbl">Accent</span>
-          <button class="accent-dot" type="button" role="radio" data-accent="cyan" style="--sw:var(--color-accent-2)" aria-label="Cyan accent" title="Cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
-          <button class="accent-dot" type="button" role="radio" data-accent="violet" style="--sw:var(--color-accent)" aria-label="Violet accent" title="Violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
-          <button class="accent-dot" type="button" role="radio" data-accent="magenta" style="--sw:var(--color-accent-3)" aria-label="Magenta accent" title="Magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
-          <button class="accent-dot" type="button" role="radio" data-accent="amber" style="--sw:var(--color-accent-4)" aria-label="Amber accent" title="Amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
-        </div>
+      <div class="sc-list" id="navList">
+        <p class="sc-noresult" id="navNoResult">No component matches that search.</p>
       </div>
-    </header>
-
-    <!-- Hero -->
-    <span class="pill reveal" style="--d:.05s"><span class="pdot"></span> System Online · Operator Console</span>
-    <h1 class="title reveal" style="--d:.12s">Unified <em>Intelligence</em>, one system.</h1>
-    <p class="lede reveal" style="--d:.2s">A cyberpunk / Tron operator-console design system, extracted from the real OneBrain
-      product — tokens, a reusable component layer, cross-platform exports, and six built surfaces.
-      Pick a card to inspect; pick an accent to re-key the chrome.</p>
-
-    <div class="stats reveal" style="--d:.28s">
-      <div class="stat-c"><div class="n">131</div><div class="l">Design tokens</div></div>
-      <div class="stat-c"><div class="n">22</div><div class="l">Preview cards</div></div>
-      <div class="stat-c"><div class="n">6</div><div class="l">Surfaces</div></div>
-      <div class="stat-c"><div class="n">6</div><div class="l">Export targets</div></div>
-      <div class="stat-c"><div class="n">2</div><div class="l">Themes (dark · light)</div></div>
     </div>
+  </nav>
 
-    <!-- FOUNDATIONS -->
-    <section class="grp reveal" style="--sec:var(--color-accent-2); --d:.34s">
-      <div class="grp-h"><span class="gi">// 01</span><span class="gt">Foundations</span><span class="gl"></span><span class="gc">8 cards</span></div>
-      <div class="grid">
-        <a class="card" href="preview/colors-primary.html"><div class="crow"><span class="cix">01</span><span class="ctag">color</span></div><span class="ct">Palette</span><span class="cd">The four neon signals, both brand gradients, surface + text neutrals.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/colors-theme-dark.html"><div class="crow"><span class="cix">02</span><span class="ctag">color</span></div><span class="ct">Dark theme</span><span class="cd">Default dark scale on a real console panel + token map.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/colors-theme-light.html"><div class="crow"><span class="cix">03</span><span class="ctag">color</span></div><span class="ct">Light theme</span><span class="cd">Re-inked spec / print scale — accents AA ≥4.5:1 on white.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/typography-specimens.html"><div class="crow"><span class="cix">04</span><span class="ctag">type</span></div><span class="ct">Typography</span><span class="cd">Chakra Petch · Inter · JetBrains Mono from bound fonts + the scale.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/spacing-tokens.html"><div class="crow"><span class="cix">05</span><span class="ctag">space</span></div><span class="ct">Spacing</span><span class="cd">The 4px scale + layout constants applied to cards.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/spacing-radius.html"><div class="crow"><span class="cix">06</span><span class="ctag">space</span></div><span class="ct">Radius &amp; clip</span><span class="cd">Why corners are sharp; the width-independent corner-cut CTA.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/spacing-shadows.html"><div class="crow"><span class="cix">07</span><span class="ctag">space</span></div><span class="ct">Elevation</span><span class="cd">Neon-glow "elevation" vs. the single overlay shadow.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/brand-assets.html"><div class="crow"><span class="cix">08</span><span class="ctag">asset</span></div><span class="ct">Brand assets</span><span class="cd">Real logo, app icon, favicon, the 3 live diagrams + font specimens.</span><span class="arr">inspect →</span></a>
+  <!-- Center preview -->
+  <main class="sc-main">
+    <div class="sc-toolbar">
+      <div class="sc-cur">
+        <span class="sc-cur-tag" id="curTag">—</span>
+        <span class="sc-cur-title" id="curTitle">Loading…</span>
       </div>
-    </section>
-
-    <!-- COMPONENTS -->
-    <section class="grp reveal" style="--sec:var(--color-accent); --d:.4s">
-      <div class="grp-h"><span class="gi">// 02</span><span class="gt">Components</span><span class="gl"></span><span class="gc">12 cards · components.css</span></div>
-      <div class="grid">
-        <a class="card" href="preview/components-buttons.html"><div class="crow"><span class="cix">09</span><span class="ctag">ui</span></div><span class="ct">Buttons</span><span class="cd">btn-tech family, nav bracket reveal, state + eyebrow pills.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-inputs.html"><div class="crow"><span class="cix">10</span><span class="ctag">ui</span></div><span class="ct">Inputs</span><span class="cd">Text fields, error state, the command composer + focus rings.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-cards.html"><div class="crow"><span class="cix">11</span><span class="ctag">ui</span></div><span class="ct">Cards</span><span class="cd">cyber-card hover, stat modules, the five sub-agents.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-forms.html"><div class="crow"><span class="cix">12</span><span class="ctag">kit</span></div><span class="ct">Form kit</span><span class="cd">Full controls + on-blur validation. Consumes components.css.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-feedback.html"><div class="crow"><span class="cix">13</span><span class="ctag">kit</span></div><span class="ct">Feedback</span><span class="cd">Alerts, toasts, progress, skeleton, live modal / dropdown.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-data.html"><div class="crow"><span class="cix">14</span><span class="ctag">kit</span></div><span class="ct">Data display</span><span class="cd">cyber-table, tabs, breadcrumb, pagination, density toggle.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-command-palette.html"><div class="crow"><span class="cix">15</span><span class="ctag">ui</span></div><span class="ct">Command palette</span><span class="cd">⌘K skill launcher — filter, keyboard nav, ARIA dialog / listbox.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/charts.html"><div class="crow"><span class="cix">16</span><span class="ctag">viz</span></div><span class="ct">Charts</span><span class="cd">Inline-SVG line / area / bar / donut / sparkline keyed to --chart-1…6.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-icons.html"><div class="crow"><span class="cix">17</span><span class="ctag">ui</span></div><span class="ct">Icons</span><span class="cd">Lucide-line &lt;symbol&gt; sprite — .ob-icon, sizes 16/20/24, product vocabulary.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/components-interactive.html"><div class="crow"><span class="cix">18</span><span class="ctag">ui</span></div><span class="ct">Interactive</span><span class="cd">Accordion (native details), CSS-only segmented control, file dropzone.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/i18n-rtl.html"><div class="crow"><span class="cix">19</span><span class="ctag">i18n</span></div><span class="ct">i18n &amp; RTL</span><span class="cd">Thai · Arabic · CJK fallbacks + dir=rtl mirror of cards, alerts, accordion.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/page-states.html"><div class="crow"><span class="cix">20</span><span class="ctag">state</span></div><span class="ct">Page states</span><span class="cd">404 / 500 / 403 / offline / loading templates — re-tint via --section-accent.</span><span class="arr">inspect →</span></a>
+      <div class="sc-tb-right">
+        <div class="segmented sc-vp" role="radiogroup" aria-label="Viewport width" id="vpSeg">
+          <input type="radio" id="vp-full" name="vp" data-val="full" checked><label for="vp-full">Full</label>
+          <input type="radio" id="vp-1440" name="vp" data-val="1440"><label for="vp-1440">1440</label>
+          <input type="radio" id="vp-1024" name="vp" data-val="1024"><label for="vp-1024">1024</label>
+          <input type="radio" id="vp-768"  name="vp" data-val="768"><label for="vp-768">768</label>
+          <input type="radio" id="vp-390"  name="vp" data-val="390"><label for="vp-390">390</label>
+          <input type="radio" id="vp-360"  name="vp" data-val="360"><label for="vp-360">360</label>
+        </div>
+        <a class="sc-open" id="openRaw" href="#" target="_blank" rel="noopener" title="Open this preview in a new tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          <span>Open</span>
+        </a>
       </div>
-    </section>
-
-    <!-- HEROES -->
-    <section class="grp reveal" style="--sec:var(--color-accent-3); --d:.46s">
-      <div class="grp-h"><span class="gi">// 03</span><span class="gt">Heroes</span><span class="gl"></span><span class="gc">2 variants · .ob-synthwave</span></div>
-      <div class="grid">
-        <a class="card" href="preview/hero-split.html"><div class="crow"><span class="cix">21</span><span class="ctag">v1</span></div><span class="ct">Hero · split</span><span class="cd">Recessed 3D grid + frosted-glass terminal floating on the right.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/hero-centered.html"><div class="crow"><span class="cix">22</span><span class="ctag">v2</span></div><span class="ct">Hero · centered</span><span class="cd">Same grid, centered, with a pointer-reactive 3D tilt.</span><span class="arr">inspect →</span></a>
+    </div>
+    <div class="sc-canvas" id="canvas">
+      <div class="sc-frame-wrap" id="frameWrap">
+        <iframe id="frame" title="Component preview" src="about:blank"></iframe>
       </div>
-    </section>
+      <div class="sc-vw-readout" id="vwReadout">Full width</div>
+    </div>
+  </main>
 
-    <!-- SURFACES -->
-    <section class="grp reveal" style="--sec:var(--color-accent-4); --d:.52s">
-      <div class="grp-h"><span class="gi">// 04</span><span class="gt">Surfaces</span><span class="gl"></span><span class="gc">5 scaffolds</span></div>
-      <div class="grid">
-        <a class="card" href="preview/surface-dashboard.html"><div class="crow"><span class="cix">23</span><span class="ctag">app</span></div><span class="ct">Dashboard</span><span class="cd">Inline-SVG charts, sortable table, stats, co-evolution feed.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/surface-deck.html"><div class="crow"><span class="cix">24</span><span class="ctag">deck</span></div><span class="ct">Pitch deck</span><span class="cd">1920×1080 fit-to-viewport, 7 slides, keyboard nav, print.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/surface-mobile.html"><div class="crow"><span class="cix">25</span><span class="ctag">ios</span></div><span class="ct">Mobile app</span><span class="cd">iOS flow (Vault · Capture · Skills · You) + live accent setting.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/surface-desktop.html"><div class="crow"><span class="cix">26</span><span class="ctag">desktop</span></div><span class="ct">Desktop console</span><span class="cd">Three panes (sidebar · session · inspector) + ⌘K palette.</span><span class="arr">inspect →</span></a>
-        <a class="card" href="preview/surface-landing.html"><div class="crow"><span class="cix">27</span><span class="ctag">web</span></div><span class="ct">Landing</span><span class="cd">Marketing site — hero, feature grid, harness-OS stack, waitlist.</span><span class="arr">inspect →</span></a>
+  <!-- Right theme customizer -->
+  <aside class="sc-panel" aria-label="Theme customizer">
+    <div class="sc-panel-scroll">
+      <span class="sc-eyebrow">Theme customizer</span>
+      <p class="sc-panel-sub">Re-key the preview canvas live. Each control drives a real design-system token — theme, accent intents, density, and text direction.</p>
+
+      <div class="sc-field">
+        <label>Theme</label>
+        <div class="segmented" role="radiogroup" aria-label="Theme" id="themeSeg">
+          <input type="radio" id="th-dark" name="th" data-val="dark" checked><label for="th-dark">Dark</label>
+          <input type="radio" id="th-light" name="th" data-val="light"><label for="th-light">Light</label>
+        </div>
       </div>
-    </section>
 
-    <!-- APPLIED KIT -->
-    <section class="grp reveal" style="--sec:var(--color-success); --d:.58s">
-      <div class="grp-h"><span class="gi">// 05</span><span class="gt">Applied kit</span><span class="gl"></span><span class="gc">React + Babel</span></div>
-      <div class="grid">
-        <a class="card" href="ui_kits/app/index.html"><div class="crow"><span class="cix">→</span><span class="ctag">runnable</span></div><span class="ct">Operator console</span><span class="cd">Sidebar · AssistantsList · ChatArea · MessageBubble · InputBar, composed by App.</span><span class="arr">launch →</span></a>
+      <div class="sc-field">
+        <label>Accent</label>
+        <div class="accent-dots" id="accentDots" role="radiogroup" aria-label="Accent color">
+          <button class="accent-dot" type="button" role="radio" data-accent="cyan"    style="--sw:var(--color-accent-2)" aria-label="Cyan accent"    title="Cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <button class="accent-dot" type="button" role="radio" data-accent="violet"  style="--sw:var(--color-accent)"   aria-label="Violet accent"  title="Violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <button class="accent-dot" type="button" role="radio" data-accent="magenta" style="--sw:var(--color-accent-3)" aria-label="Magenta accent" title="Magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <button class="accent-dot" type="button" role="radio" data-accent="amber"   style="--sw:var(--color-accent-4)" aria-label="Amber accent"   title="Amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        </div>
       </div>
-    </section>
 
-    <!-- DOCS -->
-    <section class="grp reveal" style="--d:.64s">
-      <div class="grp-h"><span class="gi">// 06</span><span class="gt">Docs &amp; source</span><span class="gl" style="background:linear-gradient(90deg,var(--color-border),transparent)"></span></div>
-      <div class="docs">
-        <a class="doc" href="docs.html?doc=DESIGN.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="dn">DESIGN.md</span><span class="dx">rules</span></a>
-        <a class="doc" href="docs.html?doc=README.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span class="dn">README.md</span><span class="dx">guide</span></a>
-        <a class="doc" href="docs.html?doc=CONTRIBUTING.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><span class="dn">CONTRIBUTING.md</span><span class="dx">extend</span></a>
-        <a class="doc" href="docs.html?doc=ACCESSIBILITY.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="1"/><path d="m18 6-6 1-6-1"/><path d="m9 21 3-7 3 7"/><path d="M12 7v6"/></svg></span><span class="dn">ACCESSIBILITY.md</span><span class="dx">a11y</span></a>
-        <a class="doc" href="docs.html?doc=PROVENANCE.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><span class="dn">PROVENANCE.md</span><span class="dx">source trail</span></a>
-        <a class="doc" href="docs.html?doc=CHANGELOG.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg></span><span class="dn">CHANGELOG.md</span><span class="dx">history</span></a>
-        <a class="doc" href="docs.html?doc=tokens/README.md"><span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></span><span class="dn">tokens/README.md</span><span class="dx">cross-platform</span></a>
+      <div class="sc-field">
+        <label>Density</label>
+        <div class="segmented" role="radiogroup" aria-label="Density" id="densSeg">
+          <input type="radio" id="dn-comfy" name="dn" data-val="comfortable" checked><label for="dn-comfy">Comfortable</label>
+          <input type="radio" id="dn-compact" name="dn" data-val="compact"><label for="dn-compact">Compact</label>
+        </div>
       </div>
-    </section>
 
-    <footer class="foot">
-      <span class="b">OneBrain Design System</span>
-      <span class="dotsep">·</span>
-      <span>extracted from <span class="b">onebrain-ai/website</span> + <span class="b">onebrain-ai/onebrain</span></span>
-      <span class="dotsep">·</span>
-      <span>v1.0.0 · AGPL-3.0 · dark-first</span>
-    </footer>
-  </div>
+      <div class="sc-field">
+        <label>Direction</label>
+        <div class="segmented" role="radiogroup" aria-label="Text direction" id="dirSeg">
+          <input type="radio" id="dr-ltr" name="dr" data-val="ltr" checked><label for="dr-ltr">LTR</label>
+          <input type="radio" id="dr-rtl" name="dr" data-val="rtl"><label for="dr-rtl">RTL</label>
+        </div>
+      </div>
 
-  <script src="preview/accent-picker.js"></script>
+      <div class="sc-panel-foot">
+        <button class="btn-ghost" id="resetBtn" type="button">Reset to defaults</button>
+        <p class="sc-note">Settings persist locally and re-apply on each preview load. Accent also syncs the <code>ob-accent</code> key, so a preview's own picker agrees.</p>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sc-scrim" id="scrim" aria-hidden="true"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---- Catalog: data-driven so it's easy to extend. ---- */
+  var CATALOG = [
+    { gi: "01", title: "Foundations", accent: "var(--color-accent-2)", items: [
+      { t: "Palette",        tag: "color", href: "preview/colors-primary.html",       d: "four neon signals, gradients, neutrals" },
+      { t: "Theme scale",    tag: "color", href: "preview/colors-theme-dark.html",     d: "console scale — flip light/dark in the panel" },
+      { t: "Typography",     tag: "type",  href: "preview/typography-specimens.html",  d: "Chakra Petch, Inter, JetBrains Mono + scale" },
+      { t: "Spacing",        tag: "space", href: "preview/spacing-tokens.html",        d: "4px scale + layout constants" },
+      { t: "Radius & clip",  tag: "space", href: "preview/spacing-radius.html",        d: "sharp corners, corner-cut CTA" },
+      { t: "Elevation",      tag: "space", href: "preview/spacing-shadows.html",       d: "neon-glow elevation vs overlay shadow" },
+      { t: "Brand assets",   tag: "asset", href: "preview/brand-assets.html",          d: "logo, app icon, favicon, diagrams" }
+    ]},
+    { gi: "02", title: "Components", accent: "var(--color-accent)", items: [
+      { t: "Buttons",          tag: "ui",   href: "preview/components-buttons.html",          d: "btn-tech family, nav reveal, state pills" },
+      { t: "Inputs",           tag: "ui",   href: "preview/components-inputs.html",           d: "text fields, error state, composer" },
+      { t: "Cards",            tag: "ui",   href: "preview/components-cards.html",            d: "cyber-card hover, stats, sub-agents" },
+      { t: "Form kit",         tag: "kit",  href: "preview/components-forms.html",            d: "full controls + on-blur validation" },
+      { t: "Feedback",         tag: "kit",  href: "preview/components-feedback.html",         d: "alerts, toasts, progress, modal, dropdown" },
+      { t: "Data display",     tag: "kit",  href: "preview/components-data.html",             d: "table, tabs, breadcrumb, pagination" },
+      { t: "Command palette",  tag: "ui",   href: "preview/components-command-palette.html",  d: "⌘K launcher — filter, keyboard, ARIA" },
+      { t: "Charts",           tag: "viz",  href: "preview/charts.html",                      d: "line / area / bar / donut / sparkline" },
+      { t: "Icons",            tag: "ui",   href: "preview/components-icons.html",            d: "Lucide-line sprite, .ob-icon sizes" },
+      { t: "Interactive",      tag: "ui",   href: "preview/components-interactive.html",      d: "accordion, segmented control, dropzone" },
+      { t: "i18n & RTL",       tag: "i18n", href: "preview/i18n-rtl.html",                    d: "Thai · Arabic · CJK + dir=rtl mirror" },
+      { t: "Page states",      tag: "state",href: "preview/page-states.html",                 d: "404 / 500 / 403 / offline / loading" }
+    ]},
+    { gi: "03", title: "Heroes", accent: "var(--color-accent-3)", items: [
+      { t: "Hero · split",    tag: "v1", href: "preview/hero-split.html",    d: "3D grid + frosted terminal, right" },
+      { t: "Hero · centered", tag: "v2", href: "preview/hero-centered.html", d: "centered grid, pointer-reactive tilt" }
+    ]},
+    { gi: "04", title: "Surfaces", accent: "var(--color-accent-4)", items: [
+      { t: "Dashboard",       tag: "app",     href: "preview/surface-dashboard.html", d: "charts, sortable table, feed" },
+      { t: "Pitch deck",      tag: "deck",    href: "preview/surface-deck.html",      d: "1920×1080 fit, 7 slides, keyboard" },
+      { t: "Mobile app",      tag: "ios",     href: "preview/surface-mobile.html",    d: "iOS flow + live accent setting" },
+      { t: "Desktop console", tag: "desktop", href: "preview/surface-desktop.html",   d: "three panes + ⌘K palette" },
+      { t: "Landing",         tag: "web",     href: "preview/surface-landing.html",   d: "hero, features, stack, waitlist" }
+    ]},
+    { gi: "05", title: "Applied kit", accent: "var(--color-success)", items: [
+      { t: "Operator console", tag: "react", href: "ui_kits/app/index.html", d: "Sidebar · AssistantsList · ChatArea · InputBar" }
+    ]},
+    { gi: "06", title: "Docs & source", accent: "var(--color-muted)", items: [
+      { t: "DESIGN.md",       tag: "rules",   href: "docs.html?doc=DESIGN.md",         d: "visual principles + rules" },
+      { t: "README.md",       tag: "guide",   href: "docs.html?doc=README.md",         d: "how to use the system" },
+      { t: "CONTRIBUTING.md", tag: "extend",  href: "docs.html?doc=CONTRIBUTING.md",   d: "sync, maturity, branch policy" },
+      { t: "ACCESSIBILITY.md",tag: "a11y",    href: "docs.html?doc=ACCESSIBILITY.md",  d: "contrast + a11y checklist" },
+      { t: "PROVENANCE.md",   tag: "source",  href: "docs.html?doc=PROVENANCE.md",     d: "where every value traces from" },
+      { t: "CHANGELOG.md",    tag: "history", href: "docs.html?doc=CHANGELOG.md",      d: "version history" },
+      { t: "SKILL.md",        tag: "skill",   href: "docs.html?doc=SKILL.md",          d: "how an agent consumes the system" },
+      { t: "tokens/README.md",tag: "tokens",  href: "docs.html?doc=tokens/README.md",  d: "DTCG export + Figma bridge" }
+    ]}
+  ];
+
+  /* Accent options mirror accent-picker.js so the canvas stays on-palette. */
+  var ACCENTS = {
+    cyan:    { c: "var(--color-accent-2)", g: "linear-gradient(135deg, var(--color-accent-2), var(--color-accent))" },
+    violet:  { c: "var(--color-accent)",   g: "linear-gradient(135deg, var(--color-accent), var(--color-accent-2))" },
+    magenta: { c: "var(--color-accent-3)", g: "linear-gradient(135deg, var(--color-accent-3), var(--color-accent))" },
+    amber:   { c: "var(--color-accent-4)", g: "linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3))" }
+  };
+
+  var VW = { full: null, "1440": 1440, "1024": 1024, "768": 768, "390": 390, "360": 360 };
+
+  var LS = { item: "sc:item", theme: "sc:theme", density: "sc:density", dir: "sc:dir",
+             accent: "sc:accent", vw: "sc:vw", nav: "sc:nav", panel: "sc:panel" };
+  function get(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
+  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  var META = {};   // href -> item meta
+  CATALOG.forEach(function (g) { g.items.forEach(function (it) { META[it.href] = it; }); });
+
+  var state = {
+    item:    get(LS.item, "preview/colors-primary.html"),
+    theme:   get(LS.theme, "dark"),
+    density: get(LS.density, "comfortable"),
+    dir:     get(LS.dir, "ltr"),
+    accent:  get(LS.accent, "cyan"),
+    vw:      get(LS.vw, "full")
+  };
+  if (!META[state.item]) { state.item = "preview/colors-primary.html"; }
+  if (!ACCENTS[state.accent]) { state.accent = "cyan"; }
+  if (!(state.vw in VW)) { state.vw = "full"; }
+
+  var $ = function (id) { return document.getElementById(id); };
+  var frame = $("frame"), frameWrap = $("frameWrap"), canvas = $("canvas");
+  var navList = $("navList"), curTag = $("curTag"), curTitle = $("curTitle"), openRaw = $("openRaw");
+  var vwReadout = $("vwReadout"), scrim = $("scrim");
+  var narrowMQ = window.matchMedia("(max-width: 920px)");
+
+  /* ---- Deliver customizer settings to the preview. ----
+     The OD preview pane can render this shell inside a sandboxed iframe, which
+     makes the preview a cross-origin / opaque child whose DOM we cannot reach
+     (contentDocument throws). So we use two paths that BOTH cross that boundary:
+     postMessage (live changes) + the URL hash (first paint / Open link). When
+     the iframe happens to be same-origin we also write straight into its
+     document as a fast path, so even a preview without the listener gets themed. */
+  function prefs() {
+    return { theme: state.theme, accent: state.accent, density: state.density, dir: state.dir };
+  }
+  function hashFrag() {
+    var p = prefs();
+    return "#ob=theme:" + p.theme + ",accent:" + p.accent + ",density:" + p.density + ",dir:" + p.dir;
+  }
+  function syncOpen() { openRaw.setAttribute("href", state.item + hashFrag()); }
+
+  /* Same-origin fast path — silently no-ops when the iframe is cross-origin. */
+  function applyToFrameDoc() {
+    var doc;
+    try { doc = frame.contentDocument; } catch (e) { return; }
+    if (!doc || !doc.documentElement) { return; }
+    var root = doc.documentElement, p = prefs();
+    if (p.theme === "light") { root.setAttribute("data-theme", "light"); }
+    else { root.removeAttribute("data-theme"); }
+    if (p.density === "compact") { root.setAttribute("data-density", "compact"); }
+    else { root.removeAttribute("data-density"); }
+    root.setAttribute("dir", p.dir);
+    var a = ACCENTS[p.accent];
+    if (a) {
+      root.style.setProperty("--section-accent", a.c);
+      root.style.setProperty("--action-primary", a.c);
+      root.style.setProperty("--action-primary-weak", "color-mix(in srgb, " + a.c + " 12%, transparent)");
+      root.style.setProperty("--grad-button", a.g);
+    }
+  }
+  /* Re-key the SHOWCASE SHELL's own chrome to the chosen accent so the inspector
+     header (current-item eyebrow, nav active, icon buttons, viewport selector,
+     version mark, search focus) follows the picker — mirrors the system's
+     .accent-dots rule of re-keying <html> "so even fixed chrome follows".
+     Theme / density / dir stay preview-only: the shell is a deliberately stable
+     dark inspector, but its accent should track the one the user picked. */
+  function applyToShell() {
+    var root = document.documentElement, a = ACCENTS[state.accent];
+    if (!a) { return; }
+    root.style.setProperty("--section-accent", a.c);
+    root.style.setProperty("--action-primary", a.c);
+    root.style.setProperty("--action-primary-weak", "color-mix(in srgb, " + a.c + " 12%, transparent)");
+    root.style.setProperty("--grad-button", a.g);
+  }
+  /* Sandbox-safe path — post the prefs across the (possibly opaque) boundary. */
+  function pushPrefs() {
+    applyToShell();
+    applyToFrameDoc();
+    try { frame.contentWindow.postMessage({ type: "ob-sc-prefs", prefs: prefs() }, "*"); } catch (e) {}
+    syncOpen();
+  }
+  frame.addEventListener("load", pushPrefs);
+  /* Preview announces readiness — re-send so prefs land even if it missed the
+     load-time post (race) or the hash. */
+  window.addEventListener("message", function (e) {
+    if (e && e.data && e.data.type === "ob-sc-ready") { pushPrefs(); }
+  });
+
+  /* ---- Load a catalog item into the canvas. ---- */
+  function loadItem(href, push) {
+    state.item = href; set(LS.item, href);
+    set("ob-accent", state.accent);   // keep a preview's own picker in sync
+    var meta = META[href] || { t: "Preview", tag: "—" };
+    curTitle.textContent = meta.t;
+    curTag.textContent = meta.tag;
+    frame.title = meta.t + " preview";
+    syncOpen();
+    // Carry current prefs in the hash so the first (cross-origin) paint is themed.
+    frame.setAttribute("src", href + hashFrag());
+    updateActive();
+    if (narrowMQ.matches) { closeDrawers(); }
+  }
+
+  function updateActive() {
+    var btns = navList.querySelectorAll(".sc-item");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.setAttribute("aria-current", b.getAttribute("data-href") === state.item ? "true" : "false");
+    });
+  }
+
+  /* ---- Build the nav from the catalog. ---- */
+  function buildNav() {
+    var frag = document.createDocumentFragment();
+    CATALOG.forEach(function (g) {
+      var grp = document.createElement("div");
+      grp.className = "sc-grp"; grp.style.setProperty("--sec", g.accent);
+      var h = document.createElement("div");
+      h.className = "sc-grp-h";
+      var gi = document.createElement("span"); gi.className = "gi"; gi.textContent = "// " + g.gi;
+      var gt = document.createElement("span"); gt.className = "gt"; gt.textContent = g.title;
+      var gl = document.createElement("span"); gl.className = "gl";
+      var gc = document.createElement("span"); gc.className = "gc"; gc.textContent = String(g.items.length);
+      h.appendChild(gi); h.appendChild(gt); h.appendChild(gl); h.appendChild(gc);
+      grp.appendChild(h);
+      g.items.forEach(function (it) {
+        var b = document.createElement("button");
+        b.className = "sc-item"; b.type = "button";
+        b.setAttribute("data-href", it.href);
+        b.setAttribute("data-search", (it.t + " " + it.tag + " " + it.d).toLowerCase());
+        b.setAttribute("aria-current", "false");
+        var t = document.createElement("span"); t.className = "t"; t.textContent = it.t;
+        var tag = document.createElement("span"); tag.className = "tag"; tag.textContent = it.tag;
+        b.appendChild(t); b.appendChild(tag);
+        b.addEventListener("click", function () { loadItem(it.href, true); });
+        grp.appendChild(b);
+      });
+      frag.appendChild(grp);
+    });
+    navList.appendChild(frag);
+  }
+
+  /* ---- Search filter. ---- */
+  function filterNav(q) {
+    q = (q || "").trim().toLowerCase();
+    var any = false;
+    CATALOG.length; // noop
+    Array.prototype.forEach.call(navList.querySelectorAll(".sc-grp"), function (grp) {
+      var shown = 0;
+      Array.prototype.forEach.call(grp.querySelectorAll(".sc-item"), function (b) {
+        var match = !q || b.getAttribute("data-search").indexOf(q) !== -1;
+        b.hidden = !match; if (match) { shown++; any = true; }
+      });
+      grp.hidden = shown === 0;
+    });
+    navList.classList.toggle("is-empty", !any);
+  }
+
+  /* ---- Viewport width. ---- */
+  function applyVW() {
+    var w = VW[state.vw];
+    if (w == null) {
+      frameWrap.classList.remove("is-device");
+      frameWrap.style.width = "";
+      frameWrap.style.maxWidth = "";
+      vwReadout.textContent = "Full width";
+    } else {
+      frameWrap.classList.add("is-device");
+      frameWrap.style.width = w + "px";       // explicit width — max-width alone collapses to iframe default
+      frameWrap.style.maxWidth = "100%";      // still shrink on a narrow canvas
+      vwReadout.textContent = w + " px";
+    }
+    set(LS.vw, state.vw);
+  }
+
+  /* ---- Drawer toggles. ---- */
+  function setCollapsed(which, collapsed) {
+    document.body.classList.toggle(which + "-collapsed", collapsed);
+    var btn = which === "nav" ? $("navToggle") : $("panelToggle");
+    btn.classList.toggle("is-on", !collapsed);
+    btn.setAttribute("aria-pressed", String(!collapsed));
+    set(which === "nav" ? LS.nav : LS.panel, collapsed ? "collapsed" : "open");
+  }
+  function closeDrawers() {
+    document.body.classList.add("nav-collapsed", "panel-collapsed");
+    $("navToggle").classList.remove("is-on"); $("navToggle").setAttribute("aria-pressed", "false");
+    $("panelToggle").classList.remove("is-on"); $("panelToggle").setAttribute("aria-pressed", "false");
+  }
+
+  /* ---- Segmented + accent wiring. ---- */
+  function wireSeg(id, key, after) {
+    var seg = $(id);
+    seg.addEventListener("change", function (e) {
+      var inp = e.target;
+      if (!inp || inp.tagName !== "INPUT") { return; }
+      state[key] = inp.getAttribute("data-val");
+      set(LS[key] || ("sc:" + key), state[key]);
+      if (after) { after(); } else { pushPrefs(); }
+    });
+  }
+  function checkSeg(id, val) {
+    var inp = $(id).querySelector('input[data-val="' + val + '"]');
+    if (inp) { inp.checked = true; }
+  }
+
+  function wireAccent() {
+    var dots = Array.prototype.slice.call($("accentDots").querySelectorAll("[data-accent]"));
+    function paint() {
+      dots.forEach(function (d) {
+        var on = d.getAttribute("data-accent") === state.accent;
+        d.classList.toggle("is-sel", on);
+        d.setAttribute("aria-checked", on ? "true" : "false");
+      });
+    }
+    dots.forEach(function (d) {
+      d.addEventListener("click", function () {
+        state.accent = d.getAttribute("data-accent");
+        set(LS.accent, state.accent); set("ob-accent", state.accent);
+        paint(); pushPrefs();
+      });
+    });
+    paint();
+  }
+
+  /* ---- Init. ---- */
+  function init() {
+    buildNav();
+
+    // Reflect stored state into the controls.
+    checkSeg("themeSeg", state.theme);
+    checkSeg("densSeg", state.density);
+    checkSeg("dirSeg", state.dir);
+    checkSeg("vpSeg", state.vw);
+
+    wireSeg("themeSeg", "theme");
+    wireSeg("densSeg", "density");
+    wireSeg("dirSeg", "dir");
+    wireSeg("vpSeg", "vw", applyVW);
+    wireAccent();
+
+    // Drawer toggles.
+    $("navToggle").addEventListener("click", function () {
+      setCollapsed("nav", !document.body.classList.contains("nav-collapsed"));
+    });
+    $("panelToggle").addEventListener("click", function () {
+      setCollapsed("panel", !document.body.classList.contains("panel-collapsed"));
+    });
+    scrim.addEventListener("click", closeDrawers);
+
+    // Open in a new tab — fall back to copying the link when popups are blocked
+    // (a sandboxed preview pane blocks target=_blank / window.open).
+    openRaw.addEventListener("click", function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) { return; }   // honor native new-tab
+      e.preventDefault();
+      var url = openRaw.href;   // absolute, with the current prefs in its hash
+      var w = null;
+      try { w = window.open(url, "_blank", "noopener"); } catch (_) {}
+      if (w) { return; }
+      var label = openRaw.querySelector("span");
+      var orig = label ? label.textContent : "Open";
+      function flash(msg) { if (label) { label.textContent = msg; setTimeout(function () { label.textContent = orig; }, 1600); } }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () { flash("Link copied"); }, function () { flash("Popups blocked"); });
+        } else { flash("Popups blocked"); }
+      } catch (_) { flash("Popups blocked"); }
+    });
+
+    // Initial collapsed state: overlays closed on narrow; stored prefs on wide.
+    if (narrowMQ.matches) {
+      closeDrawers();
+    } else {
+      if (get(LS.nav, "open") === "collapsed") { setCollapsed("nav", true); }
+      if (get(LS.panel, "open") === "collapsed") { setCollapsed("panel", true); }
+    }
+    narrowMQ.addEventListener("change", function (e) { if (e.matches) { closeDrawers(); } });
+
+    // Search.
+    var search = $("navSearch");
+    search.addEventListener("input", function () { filterNav(search.value); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement !== search &&
+          !/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement || {}).tagName || "")) {
+        e.preventDefault(); search.focus(); search.select();
+      } else if (e.key === "Escape" && document.activeElement === search) {
+        search.value = ""; filterNav(""); search.blur();
+      }
+    });
+
+    // Reset.
+    $("resetBtn").addEventListener("click", function () {
+      state.theme = "dark"; state.density = "comfortable"; state.dir = "ltr"; state.accent = "cyan"; state.vw = "full";
+      set(LS.theme, "dark"); set(LS.density, "comfortable"); set(LS.dir, "ltr");
+      set(LS.accent, "cyan"); set("ob-accent", "cyan"); set(LS.vw, "full");
+      checkSeg("themeSeg", "dark"); checkSeg("densSeg", "comfortable");
+      checkSeg("dirSeg", "ltr"); checkSeg("vpSeg", "full");
+      wireAccentRepaint(); applyVW(); pushPrefs();
+    });
+    // Repaint accent dots after reset without re-binding.
+    function wireAccentRepaint() {
+      var dots = $("accentDots").querySelectorAll("[data-accent]");
+      Array.prototype.forEach.call(dots, function (d) {
+        var on = d.getAttribute("data-accent") === state.accent;
+        d.classList.toggle("is-sel", on);
+        d.setAttribute("aria-checked", on ? "true" : "false");
+      });
+    }
+
+    applyToShell();
+    applyVW();
+    loadItem(state.item, false);
+  }
+
+  if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", init); }
+  else { init(); }
+})();
+</script>
 </body>
 </html>

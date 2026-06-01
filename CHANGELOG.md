@@ -11,6 +11,92 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **Showcase shell** — `index.html` is now a ThemeForest / Storybook-style browser for the whole
+  system: a categorized, searchable left rail (Foundations · Components · Heroes · Surfaces ·
+  Applied kit · Docs — data-driven from one `CATALOG` array, so it's trivial to extend), a center
+  preview canvas with a responsive **viewport selector** (Full · 1440 · 1024 · 768 · 390 · 360),
+  and a right **theme customizer** that re-keys the live preview in real time — theme (dark/light),
+  accent (the four brand accents), density (comfortable/compact), and direction (LTR/RTL). All four
+  controls drive real design-system tokens, none are mock knobs. Settings + last-opened item persist
+  to `localStorage`; nav/panel collapse to overlay drawers under 920px. Zero-dependency vanilla JS,
+  built on `colors_and_type.css` + `components.css`. It replaces the old card-grid launcher as
+  the package index — sub-pages navigate through its rail, not a back button of their own. The
+  in-system docs reader (`docs.html`) detects iframe embedding (`window.self !== window.top`) and
+  renders **content-only** — its local top bar is dropped so it doesn't stack on the showcase
+  chrome (it still shows the bar, brand, and accent picker when opened standalone in a new tab).
+- **Sandbox-safe theming channel** — `preview/showcase-prefs.js`, a tiny dependency-free listener
+  loaded by every preview. The showcase customizer delivers prefs over **postMessage + a URL hash**
+  (`#ob=theme:…,accent:…,density:…,dir:…`) so theming works even when the preview pane renders the
+  shell in a **sandboxed iframe** (opaque/cross-origin), where the old `contentDocument` write is
+  blocked. A same-origin `contentDocument` fast path is kept as a bonus; a preview opened standalone
+  reads the hash, then the shell's stored prefs, so it remembers the last choice.
+
+### Changed
+
+- **Surfaces no longer embed their own accent / density controls** — the in-surface accent-picker
+  strips (landing nav, dashboard top bar, desktop sidebar, deck presenter chrome) and the dashboard
+  density switch + the mobile *You / Appearance* accent grid are removed, along with the hard-coded
+  `--section-accent` / `data-density` overrides that fought central control. Accent / theme / density
+  / direction are now driven solely by the showcase customizer (or, standalone, the stored prefs), so
+  the surfaces read as clean product UI. `.accent-dots` + `accent-picker.js` remain as a reusable
+  component for real product settings screens; the mobile screen keeps an honest read-only "Accent ·
+  Theme" row. (`DESIGN.md §2` updated to match.)
+
+### Fixed
+
+- **Foundation previews and the sidebar didn't follow the accent.** Two more instances of the same
+  chrome-reads-primitive root cause. (1) The Foundation preview pages (`colors-primary`, `colors-theme-dark`,
+  `typography-specimens`, `spacing-radius`, `spacing-shadows`, plus the `spacing-tokens` scale bars) pinned
+  their eyebrow `.pill` and incidental accent chrome (theme active-row, type stroke headline, radius demo
+  boxes, spacing bars) to raw primitives (`--color-accent` / `-2` / `-3`) — only the orb followed, too
+  subtle to notice — so picking an accent appeared to do nothing. Repointed that chrome to `--section-accent`.
+  Genuine *palette/glow demonstrations* stay fixed by design: the named color swatches, the theme legend,
+  inline `<code>` (cyan per spec), and the `--glow-cta` / `--glow-accent` demo dots. (2) The showcase sidebar's
+  hover, active background, active left-bar, and active tag read the per-category `--sec` color, so they were
+  category-coded and ignored the accent; repointed those interaction states to `--section-accent`. The category
+  number + header gradient keep `--sec`, so categories retain a quiet identity while the thing you hover/select
+  follows your accent. Verified in-browser at amber: all six eyebrows + the sidebar interaction chrome resolve
+  to `#ffb000`, every fixed demo holds.
+- **Showcase shell chrome ignored the accent picker.** The customizer pushed the chosen accent into
+  the preview iframe but never re-keyed the showcase's *own* `<html>`, so the inspector header (the
+  `TYPE` eyebrow, version mark, icon buttons, nav active item, viewport selector, search focus) stayed
+  cyan no matter which accent you picked. Added `applyToShell()` — it writes the four accent intents
+  (`--section-accent` / `--action-primary` / `--action-primary-weak` / `--grad-button`) onto the shell
+  root on every accent change, init, and reset, mirroring the system's `.accent-dots` rule of re-keying
+  `<html>` "so even fixed chrome follows". Also dropped the `.sc-vp { --section-accent: … }` pin that
+  held the viewport selector on cyan, so the whole header follows one accent. Theme / density / dir stay
+  preview-only by design (the shell is a stable dark inspector); the accent dots' own swatches and the
+  per-group category colors stay fixed.
+- **Accent customizer only re-keyed buttons, not the whole surface.** The picker rewrites the accent
+  *intent* layer (`--section-accent` / `--action-primary` / `--grad-button`) on the preview root, but a
+  lot of accent-colored *chrome* in the preview pages read the raw primitive `--color-accent-2`
+  directly — eyebrow pills (`.eb` / `.pill`), the atmospheric `.pv-orb`, nav `[ ]` brackets, input
+  focus rings, the composer/switch states, deck nav + active-slide dot — so only component-class
+  elements (which read the intents) followed the chosen accent. Converted that chrome to read
+  `--section-accent`, and re-pointed the `--focus-ring` token from `--color-accent-2` →
+  `--action-primary` so focus rings re-key too. Genuine demonstrations are deliberately left fixed:
+  the color/theme swatch tiles + legends, the multi-accent demo cards (which set `--section-accent`
+  per region on purpose), hero `--ha` art direction, and the chart series. Defaults are unchanged
+  (`--section-accent` / `--action-primary` both default to cyan), so only re-keying behavior improves.
+- **Five preview pages still ignored the accent (Brand assets · Feedback · Icons · i18n · Interactive).**
+  Two leftover causes the prior pass didn't reach: (1) the eyebrow pills set `style="--section-accent:
+  var(--color-accent-2/3)"` inline — pinning the intent *to a never-re-keyed primitive* on a closer
+  ancestor, which shadowed the picker's `<html>` value (the prior converter skipped any line containing
+  `--section-accent` to avoid circular refs, so these survived); and (2) page-specific chrome
+  (`.eb` + `.lockup-label` in brand-assets — which doesn't even load `components.css` — plus
+  `.langcard .mt`, `.modrow .ob-icon`, the i18n RTL demo cards/accordions, and the icons "accent"
+  in-context chip) read raw `--color-accent-N`. Removed the pins so they inherit the picker's accent,
+  and pointed that chrome at `--section-accent`. Verified at a distinct accent (amber) so following is
+  unambiguous. Deliberately left fixed: the brand gradient marks + wordmark lockups, the diagrams'
+  domain accents, semantic alert/toast states, inline-`<code>`/syntax two-tone, and the Interactive
+  page's multi-accent segmented/accordion demos. Also corrected a stale "31 nodes" → **36 nodes**
+  in the brand-assets lede and `DESIGN.md §8` (the spark set grew to 36 in the edge/vertex fix).
+- **Showcase customizer + "Open" were dead in the sandboxed preview pane.** The customizer wrote
+  through `iframe.contentDocument`, which throws across the pane's sandbox boundary, so nothing
+  changed; `target="_blank"` was likewise blocked. The customizer now themes via postMessage/hash
+  (above), and **Open** uses `window.open` with a clipboard-copy fallback (flashes "Link copied")
+  when popups are blocked. The viewport selector's device-width also sets an explicit `width` so a
+  framed preview no longer collapses to the iframe's default.
 - **CI workflow** — `.github/workflows/ci.yml` runs the two guards (`tokens/check.js`
   token-drift + `tokens/a11y.js` WCAG AA contrast) on every push to `main` and every PR,
   as separate named steps for a readable pass/fail signal. Both are zero-dependency Node
@@ -114,6 +200,12 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- **Showcase is the package index** — `index.html` is now the showcase shell (the old HUD
+  card-grid launcher is gone). Navigation is the showcase's left rail, so the per-preview
+  back-to-Index pill (`preview/_home.js`, dropped from all previews + `ui_kits/app/`) and the
+  docs reader's nested doc rail were removed; `docs.html` is now a single-column reader that
+  takes its `?doc=` target from the showcase rail (its `?doc=` deep-links + in-doc `.md` links
+  still work). Three more docs (PROVENANCE / SKILL / tokens/README) joined the rail's Docs group.
 - `.scrim` → `--z-overlay`, `.drawer` → `--z-modal`; `.dropdown` and `.tooltip .tip` now
   carry `--z-dropdown` / `--z-tooltip` so menus and hints layer correctly.
 - **Overlay readability** — the scrim backdrop blur behind modals + the command palette went
@@ -145,6 +237,13 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   the pulse animation are unchanged) with `stroke-width` dropped to `0.93` to hold the line weight
   equal to the others — measured rendered heights are now brain 18.7 / llm 17.1 / vault 19.0 /
   harness 20.9, a consistent set.
+
+### Removed
+
+- `preview/colors-theme-light.html` — the standalone light-theme spec card. The light scale
+  (`[data-theme="light"]`) is unchanged and now exercised via the showcase **Theme** toggle on
+  any preview, so a dedicated page was redundant.
+- `preview/_home.js` — the shared back-to-Index pill, superseded by the showcase rail.
 
 ### Fixed
 

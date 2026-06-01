@@ -16,9 +16,9 @@
             mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 100%); }
   .pill { display:inline-flex; align-items:center; gap:10px; padding:8px 14px;
     font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow);
-    text-transform:uppercase; color:var(--color-accent-2);
-    background:color-mix(in srgb,var(--color-accent-2) 4%,transparent);
-    border:1px solid color-mix(in srgb,var(--color-accent-2) 30%,transparent); position:relative; }
+    text-transform:uppercase; color:var(--section-accent);
+    background:color-mix(in srgb,var(--section-accent) 4%,transparent);
+    border:1px solid color-mix(in srgb,var(--section-accent) 30%,transparent); position:relative; }
   .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
   .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;}
   .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
@@ -52,7 +52,7 @@
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
   <span class="pill"><span class="dot"></span> PALETTE · CYBER OPERATOR CONSOLE</span>
   <h1>Primary &amp; Accents</h1>
@@ -98,6 +98,6 @@
     <div class="scell"><div class="sw" style="background:#f0f0f2"></div><span class="lbl"><b>--color-text</b>#f0f0f2</span></div>
     <div class="scell"><div class="sw" style="background:#a1a1aa"></div><span class="lbl"><b>--color-muted</b>#a1a1aa</span></div>
   </div>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>
