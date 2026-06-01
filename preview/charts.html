@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Charts / Data-viz</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+  .cv-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:18px; align-items:start; }
+  .swatches{ display:flex; flex-wrap:wrap; gap:8px 16px; }
+  .swatches .lg{ display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11px; color:var(--color-muted); letter-spacing:.04em; }
+  .swatches .lg::before{ content:''; width:12px; height:12px; background:var(--c); box-shadow:0 0 8px color-mix(in srgb,var(--c) 50%,transparent); }
+  .sparkrow{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; }
+  .sparkcard{ background:var(--bg-surface); border:1px solid var(--border-default); padding:16px 18px; display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  .sparkcard .sn{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:var(--text-2xl); line-height:1; color:var(--color-white); font-variant-numeric:tabular-nums; }
+  .sparkcard .sl{ margin-top:8px; font-family:var(--font-mono); font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:var(--text-disabled); }
+  .sparkcard .delta{ font-family:var(--font-mono); font-size:11px; margin-top:6px; }
+  .sparkcard .up{ color:var(--color-success); }
+  .donutcard{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> FOUNDATIONS · CHARTS / DATA-VIZ</span>
+  <h1>Charts / Data-viz</h1>
+  <p class="lede">Inline-SVG &amp; CSS charts keyed to the <code>--chart-1…6</code> scale in
+    <code>colors_and_type.css</code> — the six categorical series alias the accents + diagram colors (so they
+    inherit the light re-ink), while <code>--chart-grid</code> / <code>--chart-axis</code> / <code>--chart-track</code>
+    stay low-contrast so the data is the signal. Shared frame, legend, donut, sparkline &amp; bar-meter live in
+    <code>components.css</code>; series geometry is hand-drawn SVG — never a chart library's defaults.</p>
+
+  <div class="sec">// Categorical series — --chart-1 … --chart-6</div>
+  <div class="swatches">
+    <span class="lg" style="--c:var(--chart-1)">--chart-1 · cyan</span>
+    <span class="lg" style="--c:var(--chart-2)">--chart-2 · violet</span>
+    <span class="lg" style="--c:var(--chart-3)">--chart-3 · magenta</span>
+    <span class="lg" style="--c:var(--chart-4)">--chart-4 · amber</span>
+    <span class="lg" style="--c:var(--chart-5)">--chart-5 · lime</span>
+    <span class="lg" style="--c:var(--chart-6)">--chart-6 · vault</span>
+  </div>
+
+  <div class="sec">// Line · area</div>
+  <div class="cv-grid">
+    <!-- LINE -->
+    <div class="chart-frame">
+      <div class="chart-head"><span class="chart-title">Vault activity</span><span class="chart-meta">7 days</span></div>
+      <svg class="chart-svg" viewBox="0 0 680 244" role="img" aria-label="Vault activity over 7 days: captures rise from 8 to 24, connections from 3 to 14.">
+        <g class="grid">
+          <line x1="52" y1="210" x2="664" y2="210"/><line x1="52" y1="172" x2="664" y2="172"/>
+          <line x1="52" y1="134" x2="664" y2="134"/><line x1="52" y1="96" x2="664" y2="96"/>
+          <line x1="52" y1="58" x2="664" y2="58"/><line x1="52" y1="20" x2="664" y2="20"/>
+        </g>
+        <g class="axis" text-anchor="end">
+          <text x="42" y="214">0</text><text x="42" y="176">5</text><text x="42" y="138">10</text>
+          <text x="42" y="100">15</text><text x="42" y="62">20</text><text x="42" y="24">25</text>
+        </g>
+        <g class="axis" text-anchor="middle">
+          <text x="52" y="232">MON</text><text x="154" y="232">TUE</text><text x="256" y="232">WED</text>
+          <text x="358" y="232">THU</text><text x="460" y="232">FRI</text><text x="562" y="232">SAT</text><text x="664" y="232">SUN</text>
+        </g>
+        <path d="M52,187.2 L154,164.4 L256,172 L358,141.6 L460,118.8 L562,149.2 L664,103.6" fill="none" stroke="var(--chart-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M52,149.2 L154,103.6 L256,126.4 L358,73.2 L460,42.8 L562,88.4 L664,27.6" fill="none" stroke="var(--chart-1)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+        <g class="dots">
+          <circle class="dot" cx="52" cy="149.2" r="3.2" style="stroke:var(--chart-1)"/><circle class="dot" cx="154" cy="103.6" r="3.2" style="stroke:var(--chart-1)"/>
+          <circle class="dot" cx="256" cy="126.4" r="3.2" style="stroke:var(--chart-1)"/><circle class="dot" cx="358" cy="73.2" r="3.2" style="stroke:var(--chart-1)"/>
+          <circle class="dot" cx="460" cy="42.8" r="3.2" style="stroke:var(--chart-1)"/><circle class="dot" cx="562" cy="88.4" r="3.2" style="stroke:var(--chart-1)"/>
+          <circle class="dot" cx="664" cy="27.6" r="3.2" style="stroke:var(--chart-1)"/>
+        </g>
+      </svg>
+      <div class="chart-legend">
+        <span class="lg" style="--c:var(--chart-1)">Captures <span class="lg-v">113</span></span>
+        <span class="lg" style="--c:var(--chart-2)">Connections <span class="lg-v">57</span></span>
+      </div>
+    </div>
+
+    <!-- AREA -->
+    <div class="chart-frame">
+      <div class="chart-head"><span class="chart-title">Memory growth</span><span class="chart-meta">cumulative notes</span></div>
+      <svg class="chart-svg" viewBox="0 0 680 244" role="img" aria-label="Cumulative notes in memory growing from 12 to 71 over 7 days.">
+        <g class="grid">
+          <line x1="52" y1="210" x2="664" y2="210"/><line x1="52" y1="146.7" x2="664" y2="146.7"/>
+          <line x1="52" y1="83.3" x2="664" y2="83.3"/><line x1="52" y1="20" x2="664" y2="20"/>
+        </g>
+        <g class="axis" text-anchor="end">
+          <text x="42" y="214">0</text><text x="42" y="150.7">25</text><text x="42" y="87.3">50</text><text x="42" y="24">75</text>
+        </g>
+        <g class="axis" text-anchor="middle">
+          <text x="52" y="232">MON</text><text x="154" y="232">TUE</text><text x="256" y="232">WED</text>
+          <text x="358" y="232">THU</text><text x="460" y="232">FRI</text><text x="562" y="232">SAT</text><text x="664" y="232">SUN</text>
+        </g>
+        <path d="M52,179.6 L154,161.9 L256,139.1 L358,123.9 L460,90.9 L562,63.1 L664,30.1 L664,210 L52,210 Z" fill="color-mix(in srgb, var(--chart-3) 16%, transparent)" stroke="none"/>
+        <path d="M52,179.6 L154,161.9 L256,139.1 L358,123.9 L460,90.9 L562,63.1 L664,30.1" fill="none" stroke="var(--chart-3)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="chart-legend">
+        <span class="lg" style="--c:var(--chart-3)">Notes in <code style="color:inherit">memory/</code> <span class="lg-v">71</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">// Bar (categorical) · donut</div>
+  <div class="cv-grid">
+    <!-- BAR -->
+    <div class="chart-frame">
+      <div class="chart-head"><span class="chart-title">Notes by PARA folder</span><span class="chart-meta">vault</span></div>
+      <svg class="chart-svg" viewBox="0 0 680 244" role="img" aria-label="Notes per PARA folder: inbox 14, projects 28, areas 22, resources 41, archive 17, logs 33.">
+        <g class="grid">
+          <line x1="52" y1="210" x2="664" y2="210"/><line x1="52" y1="146.7" x2="664" y2="146.7"/>
+          <line x1="52" y1="83.3" x2="664" y2="83.3"/><line x1="52" y1="20" x2="664" y2="20"/>
+        </g>
+        <g class="axis" text-anchor="end">
+          <text x="42" y="214">0</text><text x="42" y="150.7">15</text><text x="42" y="87.3">30</text><text x="42" y="24">45</text>
+        </g>
+        <g class="track">
+          <rect x="73" y="20" width="60" height="190"/><rect x="175" y="20" width="60" height="190"/><rect x="277" y="20" width="60" height="190"/>
+          <rect x="379" y="20" width="60" height="190"/><rect x="481" y="20" width="60" height="190"/><rect x="583" y="20" width="60" height="190"/>
+        </g>
+        <rect x="73" y="150.9" width="60" height="59.1" fill="var(--chart-1)"/>
+        <rect x="175" y="91.8" width="60" height="118.2" fill="var(--chart-2)"/>
+        <rect x="277" y="117.1" width="60" height="92.9" fill="var(--chart-3)"/>
+        <rect x="379" y="36.9" width="60" height="173.1" fill="var(--chart-4)"/>
+        <rect x="481" y="138.2" width="60" height="71.8" fill="var(--chart-5)"/>
+        <rect x="583" y="70.7" width="60" height="139.3" fill="var(--chart-6)"/>
+        <g class="axis" text-anchor="middle">
+          <text x="103" y="232">00</text><text x="205" y="232">01</text><text x="307" y="232">02</text>
+          <text x="409" y="232">03</text><text x="511" y="232">04</text><text x="613" y="232">07</text>
+        </g>
+      </svg>
+      <div class="chart-legend">
+        <span class="lg" style="--c:var(--chart-1)">00-inbox</span>
+        <span class="lg" style="--c:var(--chart-2)">01-projects</span>
+        <span class="lg" style="--c:var(--chart-3)">02-areas</span>
+        <span class="lg" style="--c:var(--chart-4)">03-resources</span>
+        <span class="lg" style="--c:var(--chart-5)">04-archive</span>
+        <span class="lg" style="--c:var(--chart-6)">07-logs</span>
+      </div>
+    </div>
+
+    <!-- DONUT -->
+    <div class="chart-frame">
+      <div class="chart-head"><span class="chart-title">Time by skill area</span><span class="chart-meta">30 days</span></div>
+      <div class="donutcard">
+        <div class="donut-wrap">
+          <div class="donut" role="img" aria-label="Time split: capture 34%, organize 26%, research 22%, system 18%."
+               style="--donut: var(--chart-1) 0 34%, var(--chart-2) 34% 60%, var(--chart-3) 60% 82%, var(--chart-4) 82% 100%; --hole:64%; --donut-size:148px"></div>
+          <div class="donut-center"><span class="dn">29</span><span class="dl">skills</span></div>
+        </div>
+        <div class="chart-legend" style="flex-direction:column; gap:9px; margin-top:0">
+          <span class="lg" style="--c:var(--chart-1)">Capture <span class="lg-v">34%</span></span>
+          <span class="lg" style="--c:var(--chart-2)">Organize <span class="lg-v">26%</span></span>
+          <span class="lg" style="--c:var(--chart-3)">Research <span class="lg-v">22%</span></span>
+          <span class="lg" style="--c:var(--chart-4)">System <span class="lg-v">18%</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">// Bar-meter — top skills · last 30 days</div>
+  <div class="chart-frame">
+    <div class="bar-meter">
+      <div class="bm"><span>/capture</span><span class="bm-track"><span class="bm-fill" style="--v:100%; --c:var(--chart-1)"></span></span><span class="bm-v">142</span></div>
+      <div class="bm"><span>/connect</span><span class="bm-track"><span class="bm-fill" style="--v:67.6%; --c:var(--chart-2)"></span></span><span class="bm-v">96</span></div>
+      <div class="bm"><span>/distill</span><span class="bm-track"><span class="bm-fill" style="--v:50%; --c:var(--chart-3)"></span></span><span class="bm-v">71</span></div>
+      <div class="bm"><span>/daily</span><span class="bm-track"><span class="bm-fill" style="--v:40.8%; --c:var(--chart-5)"></span></span><span class="bm-v">58</span></div>
+      <div class="bm"><span>/research</span><span class="bm-track"><span class="bm-fill" style="--v:27.5%; --c:var(--chart-4)"></span></span><span class="bm-v">39</span></div>
+    </div>
+  </div>
+
+  <div class="sec">// Sparklines — inline trend in a stat</div>
+  <div class="sparkrow">
+    <div class="sparkcard">
+      <div><div class="sn">24</div><div class="sl">Captures / wk</div><div class="delta up">▲ 18%</div></div>
+      <svg class="spark" viewBox="0 0 96 26" style="--c:var(--chart-1)" preserveAspectRatio="none" aria-hidden="true">
+        <path class="fill" d="M0,16.3 L16,11.3 L32,13.8 L48,8 L64,4.7 L80,9.7 L96,3 L96,26 L0,26 Z"/>
+        <path class="line" d="M0,16.3 L16,11.3 L32,13.8 L48,8 L64,4.7 L80,9.7 L96,3"/>
+      </svg>
+    </div>
+    <div class="sparkcard">
+      <div><div class="sn">312</div><div class="sl">Search hits</div><div class="delta up">▲ 7%</div></div>
+      <svg class="spark" viewBox="0 0 96 26" style="--c:var(--chart-2)" preserveAspectRatio="none" aria-hidden="true">
+        <path class="fill" d="M0,8 L16,12 L32,7 L48,14 L64,10 L80,16 L96,12 L96,26 L0,26 Z"/>
+        <path class="line" d="M0,8 L16,12 L32,7 L48,14 L64,10 L80,16 L96,12"/>
+      </svg>
+    </div>
+    <div class="sparkcard">
+      <div><div class="sn">71</div><div class="sl">Memory notes</div><div class="delta up">▲ 31%</div></div>
+      <svg class="spark" viewBox="0 0 96 26" style="--c:var(--chart-5)" preserveAspectRatio="none" aria-hidden="true">
+        <path class="fill" d="M0,22 L16,18 L32,19 L48,13 L64,14 L80,8 L96,6 L96,26 L0,26 Z"/>
+        <path class="line" d="M0,22 L16,18 L32,19 L48,13 L64,14 L80,8 L96,6"/>
+      </svg>
+    </div>
+  </div>
+
+  <p class="srcnote">Source basis — chart palette + chrome tokens (<code>--chart-1…6</code>, <code>--chart-grid</code>,
+    <code>--chart-axis</code>, <code>--chart-track</code>) in <code>colors_and_type.css</code> (DESIGN.md §2);
+    <code>--chart-1…6</code> alias the four neon accents + success lime + vault purple, so they inherit the
+    <code>[data-theme="light"]</code> re-ink automatically. Shared <code>.chart-frame</code> / <code>.chart-legend</code> /
+    <code>.donut</code> / <code>.spark</code> / <code>.bar-meter</code> live in <code>components.css</code> §5.5. Data is
+    illustrative OneBrain vault activity; PARA folders + skill names trace to the onebrain-ai/onebrain plugin.</p>
+
+  <script src="_home.js"></script>
+</body>
+</html>

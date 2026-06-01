@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Command Palette</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+
+  /* A console-style launcher: a search-shaped button that opens the palette. */
+  .launch{ display:flex; align-items:center; gap:12px; width:min(560px,100%); padding:13px 16px;
+    background:var(--bg-surface); border:1px solid var(--border-default); cursor:pointer; text-align:left;
+    transition:border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease; }
+  .launch:hover{ border-color:var(--section-accent); box-shadow:0 0 0 1px color-mix(in srgb,var(--section-accent) 30%,transparent); }
+  .launch:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:3px; }
+  .launch svg{ width:18px; height:18px; flex:0 0 auto; color:var(--section-accent); }
+  .launch .lx{ flex:1; font-family:var(--font-mono); font-size:14px; color:var(--color-muted); }
+  .launch .kbd{ pointer-events:none; }
+
+  .ran{ box-sizing:border-box; display:flex; align-items:center; gap:10px; width:min(560px,100%); margin-top:16px; padding:11px 14px;
+    background:var(--color-bg-deep); border:1px solid var(--color-border-2);
+    font-family:var(--font-mono); font-size:12.5px; color:var(--color-muted); letter-spacing:.04em; }
+  .ran .rdot{ width:7px; height:7px; flex:0 0 auto; border-radius:50%; background:var(--color-success);
+    box-shadow:0 0 8px color-mix(in srgb,var(--color-success) 60%,transparent); }
+  .ran b{ color:var(--color-text); font-weight:600; }
+  .ran .idle{ color:var(--color-ghost); }
+
+  .anat{ list-style:none; margin:0; padding:0; display:grid; gap:11px; max-width:74ch;
+    font-family:var(--font-mono); font-size:12.5px; line-height:1.6; color:var(--color-faint); }
+  .anat li{ display:flex; gap:12px; }
+  .anat b{ flex:0 0 132px; color:var(--color-accent-2); font-weight:600; }
+  .anat code{ color:var(--color-text); }
+
+  /* Source-basis cards — each models one real onebrain-ai/website source module. */
+  .srclede{ font-family:var(--font-mono); color:var(--color-faint); max-width:82ch; line-height:1.7; font-size:.85rem; margin:0 0 22px; }
+  .srclede code{ color:var(--color-accent-2); }
+  .srccards{ display:grid; gap:16px; max-width:1180px;
+    grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr)); }
+  .srccards .cyber-card{ display:flex; flex-direction:column; }
+  .srccards .card-desc code{ color:var(--color-accent-2); }
+  .cardart{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:auto; padding-top:16px; }
+  .cardart .alert,.cardart .cyber-list{ width:100%; }
+  .badge svg,.tag svg{ width:12px; height:12px; flex:0 0 auto; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> COMPONENTS · COMMAND PALETTE</span>
+  <h1>Command Palette</h1>
+  <p class="lede">The ⌘K skill launcher — OneBrain runs on <code>/skill</code> slash-commands, so this is the
+    operator-console heart. One reusable component (<code>.command-palette</code> / <code>.cmdk-*</code> in
+    <code>components.css</code>) driven by <code>command-palette.js</code> from a declarative config. Press
+    <span class="kbd" style="pointer-events:none">⌘K</span> / <span class="kbd" style="pointer-events:none">Ctrl K</span>,
+    type to filter, <span class="kbd" style="pointer-events:none">↑↓</span> to navigate,
+    <span class="kbd" style="pointer-events:none">↵</span> to run.</p>
+
+  <div class="sec">// Launch (⌘K · or click) — full WAI-ARIA dialog + combobox/listbox</div>
+  <button class="launch" data-command-palette-open aria-label="Open command palette">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span class="lx">Run a skill…&nbsp; /capture&nbsp; /connect&nbsp; /distill</span>
+    <span class="kbd">⌘K</span>
+  </button>
+
+  <div class="ran" id="ran">
+    <span class="rdot"></span>
+    <span id="ranmsg" class="idle">No command run yet — open the palette and press ↵ on a skill.</span>
+  </div>
+
+  <div class="sec">// Anatomy</div>
+  <ul class="anat">
+    <li><b>cmdk-scrim</b><span>Dims the page at <code>--z-overlay</code>; soft 3px blur. Click outside the panel or <code>Esc</code> to close.</span></li>
+    <li><b>command-palette</b><span>Frosted elevated panel riding <code>--z-modal</code> — above the sticky nav. Rises in on open (motion-safe).</span></li>
+    <li><b>cmdk-field</b><span>Mono search input + accent search glyph + an <code>ESC</code> hint <code>.kbd</code>.</span></li>
+    <li><b>cmdk-group</b><span>Wide-tracked mono section label (<code>CAPTURE</code> / <code>ORGANIZE</code> …); hidden when a filter empties it.</span></li>
+    <li><b>cmdk-item</b><span>Lucide icon + name + right-aligned desc. Match runs highlight in <code>.cmdk-hl</code> white.</span></li>
+    <li><b>is-active</b><span>Accent left-bar + weak tint — never a solid-accent fill (the same anti-OS-blue rule as the custom select).</span></li>
+  </ul>
+
+  <div class="sec">// Source basis — real onebrain-ai/website modules behind the console chrome</div>
+  <p class="srclede">Every preview in this package is extracted from real source, not invented. The operator
+    console's status chrome is fed by five modules in <code>onebrain-ai/website · src/</code> (preserved in
+    this package under <code>source_examples/</code>) — modeled below as live design-system cards, each
+    rendering the exact chip, badge, gate, or header set it produces in production.</p>
+
+  <div class="srccards">
+
+    <!-- src/lib/version.ts -->
+    <article class="cyber-card">
+      <div class="card-meta">lib · build</div>
+      <h3 class="card-title">version</h3>
+      <p class="card-desc">Build-time fetch of the latest CLI release tag from the GitHub Releases API,
+        memoized at module scope and sanitized to a semver-safe charset. Falls back to a known-good string
+        when the API is unreachable, so the version chip never renders empty.</p>
+      <div class="cardart">
+        <span class="badge badge-info">v3.0.0</span>
+        <span class="tag">FALLBACK · 3.0.0</span>
+      </div>
+    </article>
+
+    <!-- src/lib/gh-stars.ts -->
+    <article class="cyber-card">
+      <div class="card-meta">lib · build</div>
+      <h3 class="card-title">gh-stars</h3>
+      <p class="card-desc">Build-time star count for onebrain-ai/onebrain, baked into static HTML.
+        <code>formatStars()</code> compacts the number; a <code>0</code> result hides the badge entirely —
+        "0 stars" is worse social proof than none.</p>
+      <div class="cardart">
+        <span class="badge badge-warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>1.2k</span>
+        <span class="tag">1200 → 1.2k</span>
+        <span class="tag">950 → 950</span>
+      </div>
+    </article>
+
+    <!-- src/lib/disposable-domains.ts -->
+    <article class="cyber-card">
+      <div class="card-meta">lib · waitlist</div>
+      <h3 class="card-title">disposable-domains</h3>
+      <p class="card-desc">Frozen <code>Set</code> blocklist (~150 throwaway domains) gating the waitlist
+        form. On a match the server returns 200 OK with no write — the bot can't tell "blocked" from
+        "accepted", so it stops retrying and sender reputation stays clean.</p>
+      <div class="cardart">
+        <div class="alert alert-danger">
+          <div>
+            <div class="alert-title">Blocked · silent 200</div>
+            <p class="alert-body">you@mailinator.com → 200 OK · no D1 write</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- src/middleware.ts -->
+    <article class="cyber-card">
+      <div class="card-meta">edge · api</div>
+      <h3 class="card-title">middleware</h3>
+      <p class="card-desc">Astro edge middleware that attaches security headers to dynamic API responses,
+        and catches downstream throws so the headers still ship on a <code>500</code> instead of leaking a
+        bare error.</p>
+      <div class="cardart">
+        <div class="cyber-list">
+          <div class="row"><b>Strict-Transport-Security</b><span class="stamp">HSTS</span></div>
+          <div class="row"><b>X-Content-Type-Options</b><span class="stamp">nosniff</span></div>
+          <div class="row"><b>Referrer-Policy</b><span class="stamp">strict-origin</span></div>
+          <div class="row"><b>X-Frame-Options</b><span class="stamp">DENY</span></div>
+          <div class="row"><b>Cross-Origin-Opener-Policy</b><span class="stamp">same-origin</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- src/lib/brain-id.ts -->
+    <article class="cyber-card">
+      <div class="card-meta">lib · ssr</div>
+      <h3 class="card-title">brain-id</h3>
+      <p class="card-desc">Per-SSR-pass counter so each <code>&lt;Brain /&gt;</code> render gets distinct
+        gradient/filter ids without <code>Math.random</code> — keeping the HTML byte-stable so edge caching
+        isn't broken on every request.</p>
+      <div class="cardart">
+        <span class="tag">#brain-grad-1</span>
+        <span class="tag">#brain-grad-2</span>
+      </div>
+    </article>
+
+  </div>
+
+  <p class="srcnote">Source basis — component lives in <code>components.css</code> (§7.45 <code>.command-palette</code> / <code>.cmdk-*</code>),
+    driven by <code>preview/command-palette.js</code>; generalizes the inline palette prior-art in
+    <code>preview/surface-desktop.html</code>. Skill names + descriptions (<code>/capture</code>, <code>/connect</code>,
+    <code>/distill</code>, <code>/doctor</code> …) and the PARA / co-evolution vocabulary trace to the
+    onebrain-ai/onebrain plugin (DESIGN.md §8). Running a command dispatches an <code>ob:command</code> event —
+    the host decides what "run" means. The source-basis cards above are modeled byte-for-byte from the
+    onebrain-ai/website modules preserved in this package: <code>source_examples/src/lib/version.ts</code>,
+    <code>gh-stars.ts</code>, <code>disposable-domains.ts</code>, <code>brain-id.ts</code>, and
+    <code>source_examples/src/middleware.ts</code>.</p>
+
+  <!-- Declarative palette config — real OneBrain skills, grouped. -->
+  <script type="application/json" data-command-palette>
+  {
+    "placeholder": "Run a skill…  type to filter",
+    "groups": [
+      { "label": "Capture", "items": [
+        { "name": "/capture", "desc": "Quick titled note", "icon": "capture" },
+        { "name": "/braindump", "desc": "Stream-of-thought dump", "icon": "braindump" },
+        { "name": "/bookmark", "desc": "Save a URL for later", "icon": "bookmark" },
+        { "name": "/import", "desc": "Pull external content in", "icon": "default" }
+      ]},
+      { "label": "Organize", "items": [
+        { "name": "/consolidate", "desc": "Process the inbox", "icon": "consolidate" },
+        { "name": "/connect", "desc": "Find note connections", "icon": "connect" },
+        { "name": "/distill", "desc": "Synthesize a topic", "icon": "distill" },
+        { "name": "/moc", "desc": "Build a map of content", "icon": "moc" }
+      ]},
+      { "label": "Review", "items": [
+        { "name": "/daily", "desc": "Today's briefing", "icon": "daily" },
+        { "name": "/weekly", "desc": "Weekly reflection", "icon": "weekly" },
+        { "name": "/recap", "desc": "Promote recurring insights", "icon": "recap" },
+        { "name": "/memory-review", "desc": "Audit memory/ files", "icon": "default" }
+      ]},
+      { "label": "Research", "items": [
+        { "name": "/research", "desc": "Investigate from the web", "icon": "research" },
+        { "name": "/summarize", "desc": "Deep-read a URL", "icon": "summarize" },
+        { "name": "/reading-notes", "desc": "Process a book", "icon": "default" },
+        { "name": "/learn", "desc": "Teach a lasting preference", "icon": "learn" }
+      ]},
+      { "label": "System", "items": [
+        { "name": "/doctor", "desc": "Diagnose vault health", "icon": "doctor" },
+        { "name": "/tasks", "desc": "Open the task dashboard", "icon": "tasks" },
+        { "name": "/update", "desc": "Pull the latest OneBrain", "icon": "default" },
+        { "name": "/qmd", "desc": "Manage the search index", "icon": "default" }
+      ]}
+    ]
+  }
+  </script>
+
+  <script src="command-palette.js"></script>
+  <script>
+    /* Reflect a run into the console line so the reviewer sees ↵ / click work. */
+    document.addEventListener("ob:command", function (e) {
+      var m = document.getElementById("ranmsg");
+      m.classList.remove("idle");
+      m.textContent = "";
+      var ran = document.createTextNode("ran ");
+      var b = document.createElement("b");
+      b.textContent = e.detail.name;
+      var grp = document.createTextNode("  ·  " + e.detail.group + "  ·  " + e.detail.desc);
+      m.appendChild(ran); m.appendChild(b); m.appendChild(grp);
+    });
+    /* Open once on load so the gallery card shows the palette immediately. */
+    window.addEventListener("load", function () {
+      if (window.OneBrainPalette) { window.OneBrainPalette.open(); }
+    });
+  </script>
+  <script src="_home.js"></script>
+</body>
+</html>

@@ -33,13 +33,38 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   first-letter typeahead, click-outside close, selection mirrored back to the native
   `<select>` (re-fires `input` + `change`). Honors reduced-motion / reduced-transparency;
   scrolls via `scrollTop` (never `scrollIntoView`). Demoed in `preview/components-forms.html`.
-- **`--glass-fill-menu` token** (dark + light) — a near-opaque frosted fill for scrim-less
-  popup menus that float directly over live page content.
+- **`--glass-fill-menu` token** (dark + light) — an effectively-solid frosted fill for dense
+  pick-lists (select / dropdown / command palette) that must read crisply over live content.
+- **`--glass-blur-scrim` token** — the backdrop blur applied to a scrim (`.scrim`,
+  `.cmdk-scrim`). Drives the "background recedes behind an overlay" effect from one value.
+- **Command palette** — `.command-palette` / `.cmdk-*` in `components.css` (§7.45), the ⌘K
+  skill launcher that was previously re-rolled inline per surface (prior art in
+  `preview/surface-desktop.html`). Driven by `preview/command-palette.js`, a zero-dependency
+  enhancer that builds the list from a declarative JSON config, opens on ⌘K / Ctrl-K or any
+  `[data-command-palette-open]`, and dispatches a bubbling `ob:command` event on run. Full
+  WAI-ARIA dialog + combobox/listbox: `aria-activedescendant`, keyboard (↑ ↓ Home End Enter
+  Esc), focus restored to the opener on close, active row = accent left-bar + weak tint (never
+  a solid fill), match highlight in `.cmdk-hl`. Panel rides `--z-modal` (above the sticky nav),
+  scrim at `--z-overlay`. Honors reduced-motion / reduced-transparency; scrolls via `scrollTop`.
+  Demoed in `preview/components-command-palette.html` with the real 29-skill set, grouped.
+- **Charts / data-viz primitives** — shared `.chart-frame`, `.chart-legend`, `.donut` (CSS
+  conic-gradient ring), `.spark` sparkline, `.bar-meter`, and `.chart-svg` grid/axis/track
+  conventions in `components.css` (§5.5), all keyed to the existing `--chart-1…6` +
+  `--chart-grid` / `--chart-axis` / `--chart-track` scale. Closes the "tokens exist but no
+  implementation" gap — `preview/charts.html` ships paste-ready inline-SVG line, area, bar,
+  donut, and sparkline examples (no chart library) so dashboards stop rolling their own.
 
 ### Changed
 
 - `.scrim` → `--z-overlay`, `.drawer` → `--z-modal`; `.dropdown` and `.tooltip .tip` now
   carry `--z-dropdown` / `--z-tooltip` so menus and hints layer correctly.
+- **Overlay readability** — the scrim backdrop blur behind modals + the command palette went
+  from `blur(3px)` to `--glass-blur-scrim` (`blur(16px) saturate(1.2)`), so the page behind a
+  open overlay recedes into a soft wash instead of competing for focus. The command palette
+  panel moved off the lighter `--glass-fill-elevated` (0.72) onto the near-opaque
+  `--glass-fill-menu` — it's a dense pick-list like the select/dropdown, so its rows now read
+  as crisply as theirs over the blurred scrim. `--glass-fill-menu` itself was nudged 0.97 → 0.99
+  (dark) / 0.98 → 0.99 (light) to remove the last trace of bleed-through from the scrim-less menus.
 
 ### Fixed
 
