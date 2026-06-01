@@ -83,9 +83,12 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ├── tokens/                    Cross-platform token export (DTCG source + generated outputs)
 │   ├── tokens.json            Single source of truth (W3C DTCG)
 │   ├── build.js               Zero-dependency generator (node tokens/build.js)
+│   ├── check.js               Drift guard — css ↔ json ↔ dist parity (npm test)
+│   ├── a11y.js                WCAG AA contrast guard — asserts documented ratios (npm test)
 │   └── dist/                  Generated: tokens.css · tokens.js · tokens.d.ts · onebrain.tailwind.js · ios/*.swift · android/*.xml
 ├── assets/                    Preserved brand marks
 │   ├── brain.svg              Logo (gradient neural-network mark)
+│   ├── icons.svg              Lucide-line <symbol> sprite (.ob-icon) — product icon set
 │   ├── apple-touch-icon.png   App icon (180px)
 │   ├── favicon.ico            Multi-size 16·32·48 — rebuilt from brain.svg
 │   └── diagrams/              Live architecture SVGs
@@ -104,10 +107,19 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ├── preview/                   Reviewable cards (see Preview Manifest below)
 │   ├── _preview.css           Shared atmosphere: section orb + boot reveal (linked by every card)
 │   ├── accent-picker.js       Shared runtime accent picker — re-keys a surface from one `.accent-dots` control
+│   ├── cyber-select.js        Custom <select> listbox enhancer (on-brand open state, full ARIA)
+│   ├── command-palette.js     ⌘K command-palette enhancer (filter, keyboard nav, ARIA dialog/listbox)
+│   ├── dropzone.js            File-dropzone enhancer (drag-drop + synced file list, no-JS fallback)
 │   ├── _home.js               Shared back-to-Index pill injected on every sub-page (mirrors docs.html)
 │   ├── components-forms.html      Full form kit (consumes components.css) — inputs, select, checkbox/radio/switch/range, validation, composer, buttons
 │   ├── components-feedback.html   Alerts, toasts, badges, progress, skeleton, spinner, empty-state, modal/tooltip/dropdown
 │   ├── components-data.html       Table, list, tabs, breadcrumb, pagination, avatars, stats, density toggle
+│   ├── components-command-palette.html  ⌘K skill launcher (consumes components.css + command-palette.js)
+│   ├── components-icons.html      Lucide-line icon sprite — .ob-icon, sizes 16/20/24, product vocabulary
+│   ├── components-interactive.html  Accordion (native details), CSS-only segmented control, file dropzone
+│   ├── charts.html                Inline-SVG line / area / bar / donut / sparkline keyed to --chart-1…6
+│   ├── i18n-rtl.html              Thai · Arabic · CJK fallbacks + dir=rtl mirror of cards/alerts/accordion
+│   ├── page-states.html          .page-state templates — 404 / 500 / 403 / offline / loading, re-tint via --section-accent
 │   ├── hero-split.html            .ob-synthwave hero · VARIANT 1 (split) — recessed pink 3D grid + floating frosted-glass terminal on the right
 │   ├── hero-centered.html         .ob-synthwave hero · VARIANT 2 (centered) — same grid + terminal floating below, with pointer-reactive 3D tilt
 │   ├── surface-dashboard.html     SURFACE: operator analytics dashboard (inline-SVG charts, sortable table, stats)
@@ -158,6 +170,12 @@ surfaces (shared `ob-accent` key). See DESIGN.md §2 "User-settable accent (runt
 | [`preview/components-forms.html`](preview/components-forms.html) | **Consumes `components.css`.** The full form kit — text/textarea/select, checkbox/radio/switch/range, required + helper + on-blur validation + disabled, the command composer, and all button variants. Click in for focus rings; blur the email with bad input | `.cyber-input`, `.cyber-select`, `.cyber-check/-radio/-switch/-range`, `.composer`, `.btn-tech/-ghost/-quiet/-danger`, semantic intent tokens |
 | [`preview/components-feedback.html`](preview/components-feedback.html) | **Consumes `components.css`.** Semantic alerts (success/info/warning/danger), toasts, badges + tags, progress, skeleton, spinner, empty-state, and live modal/tooltip/dropdown (open them) | `.alert-*`, `.toast`, `.badge-*`, `.progress`, `.skeleton`, `.spinner`, `.empty-state`, `.modal`+`.scrim`, `--fb-*`, `--elev-3` |
 | [`preview/components-data.html`](preview/components-data.html) | **Consumes `components.css`.** `.cyber-table` (tabular nums, sticky header, hover rows) with a live density toggle, session list, tabs, breadcrumb, pagination, sub-agent avatars, stats, cards | `.cyber-table`, `.cyber-list`, `.cyber-tabs`, `.breadcrumb`, `.pagination`, `.avatar`, `.stat`, `data-density` |
+| [`preview/components-command-palette.html`](preview/components-command-palette.html) | **Consumes `components.css` + `command-palette.js`.** ⌘K skill launcher over the real 29-skill set (grouped); filter + highlight, keyboard nav, ARIA dialog/listbox; a "source basis" section models the real website modules | `.command-palette`, `.cmdk-*`, `--z-modal`/`--z-overlay`, `ob:command` event |
+| [`preview/charts.html`](preview/charts.html) | **Consumes `components.css`.** Inline-SVG line / area / bar (6 categorical series) / donut / sparkline + bar-meter — no chart library, all keyed to the chart scale | `.chart-frame`, `.chart-legend`, `.donut`, `.spark`, `.bar-meter`, `--chart-1…6`, `--chart-grid/-axis/-track` |
+| [`preview/components-icons.html`](preview/components-icons.html) | **Consumes `components.css` + `assets/icons.svg`.** The Lucide-line `<symbol>` sprite at sizes 16/20/24, product-vocabulary names, `currentColor` in context; a "source basis" list fronts the real website modules with icons | `.ob-icon`, `.ob-icon-16/-20/-24`, `assets/icons.svg#ob-*` |
+| [`preview/components-interactive.html`](preview/components-interactive.html) | **Consumes `components.css` + `dropzone.js`.** Native-`<details>` accordion, CSS-only segmented control, drag-drop file dropzone; the "source basis" accordion documents the real website modules | `.accordion`, `.segmented`, `.dropzone`, `.dz-files`, `DataTransfer` |
+| [`preview/i18n-rtl.html`](preview/i18n-rtl.html) | **Consumes `components.css`.** Thai · Arabic · CJK rendering through the fallback stacks + a `dir="rtl"` mirror of cards / alerts / accordion, and LTR-isolated code in RTL prose | `--font-sans`/`--font-display` fallbacks, `[dir="rtl"]` (§13), `unicode-bidi:isolate` |
+| [`preview/page-states.html`](preview/page-states.html) | **Consumes `components.css`.** Full-page 404 / 500 / 403 / offline / loading templates for the operator console; each re-tints from one var and a "source basis" list ties them to the real website edge modules | `.page-state`, `.page-state-code/-title/-sub/-actions/-status`, `--section-accent` |
 | [`preview/brand-assets.html`](preview/brand-assets.html) | The real preserved files loaded via `<img>`/`<object>` — logo, app icon, favicon, the 3 live diagrams, font specimens | `assets/brain.svg`, `build/icon.png`, `build/favicon.ico`, `assets/diagrams/*.svg`, `fonts/*.ttf` |
 | [`preview/hero-split.html`](preview/hero-split.html) | The `.ob-synthwave` **hero section — variant 1 (split)** — the perspective grid is dialed back + scrimmed so it recedes, while **one** OneBrain operator-console terminal floats out of it on the right as a single **iOS-style frosted-glass** window (translucent + `backdrop-filter` blur/saturate, inset top highlight, brand-glow shadow, cast glow beneath) tilted in 3D so the pink grid glows *through* it. Window bar uses brand-tinted state-color "traffic lights"; body runs the real `brew install …` → `capture` session transcript with a frosted input pill + `NODE · NETWORK :: ONLINE · LAT` status line. Hero accent re-keyed to brand **pink** via one variable (`--ha`). Confirm the backdrop never out-shouts the window and the grid reads through the glass; mobile flattens the tilt and stacks copy over the window | `--ha`→`--color-accent-3` (pink grid/UI), `--color-bg/-deep`, `backdrop-filter` frosted glass, `--color-danger/-warning/-success` window lights, `--grad-hero-btn` (pink→violet), `--clip-tech` CTA, `--font-display` stroke headline, wikilink `[[…]]` |
 | [`preview/hero-centered.html`](preview/hero-centered.html) | The `.ob-synthwave` **hero section — variant 2 (centered)** — same recessed pink grid + frosted-glass terminal, re-composed center-aligned (pill → `UNIFIED / INTELLIGENCE` → centered sub → CTAs → meta) with the terminal floating **below** the copy. Signature motion is a **pointer-reactive 3D tilt**: the window leans toward the cursor (`rotateX`/`rotateY` via `--rx`/`--ry`, glow tracking it), plus a load-rise + gentle bob. Headline `INTELLIGENCE` uses a pink→violet gradient text fill (vs. variant 1's stroke). Confirm the headline is fully visible on load, the tilt follows the cursor on desktop, and ≤560px flattens the tilt with no horizontal scroll | `--ha`→`--color-accent-3`, `backdrop-filter` frosted glass, `--rx`/`--ry` pointer tilt, `--grad-hero-btn`, `--clip-tech` CTA, `--font-display` gradient headline, `prefers-reduced-motion` / `pointer:fine` gates |

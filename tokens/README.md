@@ -64,6 +64,36 @@ gradients** as Tailwind `bg-ob-brand` / `bg-ob-button`; **font weights** as
 - **Android:** `values/` (dark, the product default) vs `values-night/` — or invert per your
   app's convention; both sets are generated.
 
+## Figma / Tokens Studio bridge
+
+`tokens.json` is valid **W3C DTCG**, which is exactly the format the
+[**Tokens Studio**](https://tokens.studio) Figma plugin imports and exports — so the same
+source of truth round-trips between code and design without a converter.
+
+**Code → Figma (recommended direction).** Code stays the source of truth:
+
+1. In Figma, open **Tokens Studio → Tools → Import**, choose **Single file**, and load
+   `tokens/tokens.json` (or paste its contents).
+2. The plugin reads each group as a token set — `color.*`, `space.*`, `radius.*`,
+   `font.*`, `shadow.*`, `breakpoint.*`. Apply the set to your Figma styles/variables.
+3. Re-import after each `node build.js`/`tokens.json` change to pull the latest values.
+
+**Light theme.** Our dark value lives in `$value` and the light override in
+`$extensions["com.onebrain.light"]`. Tokens Studio reads the base `$value`; to drive a second
+Figma theme, maintain a **light** token set (or a Figma variable mode) whose values map to the
+`com.onebrain.light` overrides. The build already resolves both, so the CSS/native exports stay
+the contract — Figma is a mirror, not a second source.
+
+**Figma → code.** If a designer changes values in Tokens Studio, export the set and **diff it
+into `tokens.json`** (don't commit the plugin's file verbatim — it may reorder keys or drop our
+`$extensions`/`web` clamp metadata). Then `node tokens/build.js` and `npm test` to regenerate
+`dist/` and re-assert css↔json parity. Treat Figma edits as a PR against `tokens.json`, never a
+direct write to `dist/`.
+
+**Style Dictionary.** Because the source is DTCG, [Style Dictionary](https://styledictionary.com)
+or any DTCG-aware pipeline can also consume `tokens.json` directly if you'd rather generate
+platform files with an industry tool than our zero-dependency `build.js`.
+
 ## Notes
 
 - `dist/tokens.css` is a **generated, namespaced mirror** (`--ob-*`). The **canonical,

@@ -80,6 +80,9 @@ const tokens = {
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
+          "Noto Sans Thai",
+          "Noto Sans Arabic",
+          "Noto Sans CJK SC",
           "sans-serif"
         ],
         "mono": [
@@ -95,6 +98,7 @@ const tokens = {
           "Inter",
           "ui-sans-serif",
           "system-ui",
+          "Noto Sans Thai",
           "sans-serif"
         ]
       },
@@ -283,6 +287,9 @@ const tokens = {
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
+          "Noto Sans Thai",
+          "Noto Sans Arabic",
+          "Noto Sans CJK SC",
           "sans-serif"
         ],
         "mono": [
@@ -298,6 +305,7 @@ const tokens = {
           "Inter",
           "ui-sans-serif",
           "system-ui",
+          "Noto Sans Thai",
           "sans-serif"
         ]
       },

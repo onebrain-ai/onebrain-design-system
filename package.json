@@ -45,7 +45,8 @@
   "scripts": {
     "build:tokens": "node tokens/build.js",
     "check:tokens": "node tokens/check.js",
-    "test": "node tokens/check.js",
+    "check:a11y": "node tokens/a11y.js",
+    "test": "node tokens/check.js && node tokens/a11y.js",
     "start": "npx --yes serve ."
   }
 }

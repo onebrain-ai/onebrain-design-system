@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — i18n &amp; RTL</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .grid2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .langcard{ background:var(--color-surface-2); border:1px solid var(--border-subtle); padding:20px 22px; }
+  .langcard .scr{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--color-ghost); display:block; margin-bottom:12px; }
+  .langcard .hd{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:1.5rem; line-height:1.15; color:var(--color-white); margin:0 0 8px; }
+  .langcard .bd{ font-family:var(--font-sans); font-size:15px; line-height:1.7; color:var(--text-secondary); margin:0; }
+  .langcard .mt{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; color:var(--color-accent-2); margin-top:14px; }
+  .mirror{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; align-items:start; }
+  .frame{ border:1px dashed var(--border-default); padding:16px; }
+  .frame > .tag-dir{ font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--color-ghost); display:block; margin-bottom:14px; }
+  .stack{ display:grid; gap:14px; }
+  .lbd{ font-family:var(--font-sans); font-size:14px; line-height:1.7; color:var(--text-secondary); }
+  .isolate-ltr{ unicode-bidi:isolate; direction:ltr; font-family:var(--font-mono); color:var(--color-accent-2); }
+  .fontspec{ background:var(--bg-surface); border:1px solid var(--border-default); padding:16px 18px; max-width:760px; font-family:var(--font-mono); font-size:11.5px; line-height:1.9; color:var(--color-faint); overflow-x:auto; }
+  .fontspec b{ color:var(--color-accent-3); }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="ob-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+  </svg>
+
+  <span class="cyber-pill" style="--section-accent:var(--color-accent-2)"><span class="cyber-dot is-pulse"></span> FOUNDATION · I18N &amp; RTL</span>
+  <h1>i18n &amp; RTL</h1>
+  <p class="lede">The type stacks carry Thai · Arabic · CJK system fallbacks after the Latin faces, so non-Latin
+    text renders instead of tofu, and the layout primitives mirror under <code>dir="rtl"</code>. See <code>DESIGN.md §10</code>.</p>
+
+  <div class="sec">// Non-Latin rendering — --font-sans body + --font-display headline</div>
+  <div class="grid2">
+    <div class="langcard">
+      <span class="scr">Thai · ไทย</span>
+      <p class="hd">หนึ่งสมอง</p>
+      <p class="bd">คู่คิด AI ที่จดจำว่าคุณเป็นใคร กำลังทำอะไร และชอบทำงานแบบไหน ทุกเซสชันต่อยอดจากครั้งก่อนได้ทันที</p>
+      <p class="mt">// system Thai face after Inter</p>
+    </div>
+    <div class="langcard" dir="rtl">
+      <span class="scr" style="text-align:right">Arabic · العربية</span>
+      <p class="hd">عقل واحد</p>
+      <p class="bd">شريك تفكير بالذكاء الاصطناعي يتذكّر من أنت وما الذي تعمل عليه، فتُكمل كل جلسة من حيث انتهت السابقة.</p>
+      <p class="mt" style="text-align:right">// Noto Sans Arabic · RTL shaping</p>
+    </div>
+    <div class="langcard">
+      <span class="scr">CJK · 中文</span>
+      <p class="hd">统一智能</p>
+      <p class="bd">一个会记忆的 AI 思考伙伴：记住你是谁、在做什么、喜欢怎样工作，让每一次对话都接续上一次。</p>
+      <p class="mt">// CJK fallback after the Latin stack</p>
+    </div>
+  </div>
+
+  <div class="sec">// RTL mirror — same components, dir flips the physical decorations (components.css §13)</div>
+  <div class="mirror">
+    <div class="frame">
+      <span class="tag-dir">dir="ltr" · Thai</span>
+      <div class="stack">
+        <div class="cyber-card" style="--section-accent:var(--color-accent-2)">
+          <div class="card-meta">บันทึก</div>
+          <div class="card-title">Capture</div>
+          <p class="card-desc" style="font-family:var(--font-sans);font-size:13px">บันทึกไอเดียเดียว แล้วระบบจะเสนอ wikilink ไปยังโน้ตที่เกี่ยวข้อง</p>
+        </div>
+        <div class="alert alert-info"><div><div class="alert-title">◐ กำลังจัดทำดัชนี</div><div class="alert-body lbd">qmd กำลังฝังโน้ต 142 รายการ — ค้นหายังใช้งานได้</div></div></div>
+        <div class="accordion" style="--section-accent:var(--color-accent-2)">
+          <details class="accordion-item" open>
+            <summary>โฟลเดอร์ PARA
+              <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+            </summary>
+            <div class="accordion-body lbd">แท่งเน้นสีและลูกศรอยู่ทางซ้ายตามทิศ LTR</div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame" dir="rtl">
+      <span class="tag-dir" style="text-align:right">dir="rtl" · Arabic</span>
+      <div class="stack">
+        <div class="cyber-card" style="--section-accent:var(--color-accent-2)">
+          <div class="card-meta">التقاط</div>
+          <div class="card-title">Capture</div>
+          <p class="card-desc" style="font-family:var(--font-sans);font-size:13px">سجّل فكرة واحدة وسيقترح النظام روابط wiki إلى الملاحظات ذات الصلة</p>
+        </div>
+        <div class="alert alert-info"><div><div class="alert-title">◐ جارٍ الفهرسة</div><div class="alert-body lbd">يقوم qmd بفهرسة 142 ملاحظة — البحث ما زال متاحًا</div></div></div>
+        <div class="accordion" style="--section-accent:var(--color-accent-2)">
+          <details class="accordion-item" open>
+            <summary>مجلدات PARA
+              <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+            </summary>
+            <div class="accordion-body lbd">شريط التمييز والسهم ينعكسان إلى اليمين في الوضع RTL</div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">// LTR isolation — code / wikilinks / slash-commands stay LTR inside RTL prose</div>
+  <div class="frame" dir="rtl" style="max-width:680px">
+    <p class="lbd">شغّل الأمر <span class="isolate-ltr">/capture</span> لحفظ ملاحظة، ثم اربطها بـ
+      <span class="isolate-ltr">[[Co-Evolution Loop]]</span> داخل <span class="isolate-ltr">00-inbox</span>.</p>
+  </div>
+
+  <div class="sec">// The stacks</div>
+  <div class="fontspec"><b>--font-sans</b>    "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", "Noto Sans Arabic", "Noto Sans CJK SC", sans-serif;
+<b>--font-display</b> "Chakra Petch", "Inter", ui-sans-serif, system-ui, "Noto Sans Thai", sans-serif;
+<b>--font-mono</b>    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;   <span style="color:var(--color-ghost)">/* Latin — code / IDs */</span></div>
+
+  <p class="srcnote">Stacks live in <code>colors_and_type.css</code> + <code>tokens/tokens.json</code> (drift-check asserts
+    they match, and the fallbacks export to every native platform). RTL mirror block: <code>components.css §13</code>.
+    Fallback families (<code>Noto Sans Thai / Arabic / CJK SC</code>) are system/Google faces — not shipped here —
+    so rendering depends on the platform having them; Apple platforms also cover these via <code>system-ui</code>.</p>
+</body>
+</html>

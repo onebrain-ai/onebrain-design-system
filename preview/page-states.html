@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Page states</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+
+  /* Gallery of templates — each state is shown inside a bordered demo frame so
+     all five read at once. In production each .page-state fills the viewport
+     (min-height:100dvh, see components.css §12.5); the frame just bounds it here. */
+  .gallery{ display:grid; gap:24px; grid-template-columns:1fr; max-width:1180px; }
+  @media (min-width:900px){ .gallery{ grid-template-columns:1fr 1fr; } }
+  .state-frame{ position:relative; height:460px; border:1px solid var(--border-default); background:var(--color-bg); overflow:hidden; }
+  .state-frame .frame-grid{ position:absolute; inset:0; z-index:0; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 35%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 90% 80% at 50% 35%,#000 20%,transparent 100%); }
+  .state-frame .page-state{ min-height:100%; padding:28px 22px; position:relative; z-index:1; }
+  .state-frame .page-state-code{ font-size:clamp(3rem,9vw,5.5rem); }
+  .frame-tag{ position:absolute; top:0; inset-inline-start:0; z-index:2; font-family:var(--font-mono); font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--color-ghost); padding:8px 12px; border-inline-end:1px solid var(--color-border-2); border-bottom:1px solid var(--color-border-2); background:var(--color-surface-2); }
+  /* loading state uses the shipped .spinner instead of a status code */
+  .boot-mark{ display:flex; align-items:center; gap:14px; }
+  .boot-mark .spinner{ width:30px; height:30px; }
+  .boot-mark .ob-icon{ color:var(--section-accent); }
+  .page-state .build{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin-top:6px; }
+  .page-state .build code{ color:var(--color-accent-2); }
+
+  /* source-basis */
+  .modlist{ list-style:none; margin:0; padding:0; max-width:820px; border:1px solid var(--border-default); background:var(--bg-surface); }
+  .modrow{ display:flex; align-items:flex-start; gap:14px; padding:13px 16px; border-bottom:1px solid var(--border-subtle); font-family:var(--font-mono); font-size:12px; color:var(--text-secondary); line-height:1.6; }
+  .modrow:last-child{ border-bottom:0; }
+  .modrow .ob-icon{ color:var(--color-accent-2); margin-top:1px; flex:none; }
+  .modrow code{ color:var(--color-accent-3); }
+  .modrow b{ color:var(--text-primary); font-weight:600; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:88ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+
+  <h1>Page states</h1>
+  <p class="lede">Full-page system states for the operator console — not-found, harness fault,
+    access denied, vault offline, and the boot/loading screen. Each is a <code>.page-state</code>
+    (components.css §12.5): a corner-cut mono status code, an italic Chakra headline, a mono
+    sub-line, real <code>.btn-tech</code> / <code>.btn-ghost</code> actions, and a pulsing
+    status line. Re-tint per state by setting one var — <code>--section-accent</code>.</p>
+
+  <div class="sec">Templates</div>
+  <div class="gallery">
+
+    <!-- 404 — route / note not found (info cyan) -->
+    <div class="state-frame">
+      <span class="frame-tag">404 · not found</span>
+      <div class="frame-grid"></div>
+      <section class="page-state" style="--section-accent: var(--color-accent-2)">
+        <div class="page-state-inner">
+          <div class="page-state-code">404</div>
+          <h2 class="page-state-title">Signal lost</h2>
+          <p class="page-state-sub">No note or route at <code>/00-inbox/draft-x</code>. It may have
+            been consolidated, renamed, or never captured. Search the vault or head back to the console.</p>
+          <div class="page-state-actions">
+            <button class="btn-tech"><span class="btn-tech-inner">
+              <svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="../assets/icons.svg#ob-search"/></svg> Search vault</span></button>
+            <button class="btn-ghost">Back to console</button>
+          </div>
+          <p class="page-state-status"><span class="dot"></span>NODE · NETWORK :: ONLINE · 404</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- 500 — harness fault (danger magenta) -->
+    <div class="state-frame">
+      <span class="frame-tag">500 · harness fault</span>
+      <div class="frame-grid"></div>
+      <section class="page-state" style="--section-accent: var(--color-danger)">
+        <div class="page-state-inner">
+          <div class="page-state-code">500</div>
+          <h2 class="page-state-title">Harness fault</h2>
+          <p class="page-state-sub">The harness hit an unexpected error mid-session. Your vault is
+            untouched — everything is plain Markdown on disk. Retry, or send the request id below.</p>
+          <div class="page-state-actions">
+            <button class="btn-tech"><span class="btn-tech-inner">
+              <svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="../assets/icons.svg#ob-recap"/></svg> Retry session</span></button>
+            <button class="btn-ghost">Run /doctor</button>
+          </div>
+          <p class="build">REQUEST · ID <code>#brain-7f3a-c2</code></p>
+          <p class="page-state-status"><span class="dot"></span>HARNESS :: FAULT · 500</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- 403 — access denied (warning amber) -->
+    <div class="state-frame">
+      <span class="frame-tag">403 · access denied</span>
+      <div class="frame-grid"></div>
+      <section class="page-state" style="--section-accent: var(--color-warning)">
+        <div class="page-state-inner">
+          <div class="page-state-code">403</div>
+          <h2 class="page-state-title">Access denied</h2>
+          <p class="page-state-sub">This vault folder is gated. Your harness session isn't authorized
+            to read <code>/05-private</code>. Switch identity or request access from the vault owner.</p>
+          <div class="page-state-actions">
+            <button class="btn-tech"><span class="btn-tech-inner">
+              <svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="../assets/icons.svg#ob-vault"/></svg> Switch vault</span></button>
+            <button class="btn-ghost">Request access</button>
+          </div>
+          <p class="page-state-status"><span class="dot"></span>VAULT :: GATED · 403</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- offline — vault sync lost (info cyan) -->
+    <div class="state-frame">
+      <span class="frame-tag">offline · vault sync</span>
+      <div class="frame-grid"></div>
+      <section class="page-state" style="--section-accent: var(--color-accent-2)">
+        <div class="page-state-inner">
+          <div class="page-state-code">
+            <svg class="ob-icon" style="width:clamp(56px,12vw,84px);height:auto" aria-hidden="true"><use href="../assets/icons.svg#ob-vault"/></svg>
+          </div>
+          <h2 class="page-state-title">Vault offline</h2>
+          <p class="page-state-sub">Lost connection to the remote. OneBrain is local-first — you can
+            keep capturing and editing; notes queue and sync the moment the link is back.</p>
+          <div class="page-state-actions">
+            <button class="btn-tech"><span class="btn-tech-inner">
+              <svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="../assets/icons.svg#ob-harness"/></svg> Reconnect</span></button>
+            <button class="btn-ghost">Work offline</button>
+          </div>
+          <p class="page-state-status"><span class="dot"></span>NETWORK :: OFFLINE · LOCAL-FIRST</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- loading / boot (info cyan) -->
+    <div class="state-frame">
+      <span class="frame-tag">loading · boot</span>
+      <div class="frame-grid"></div>
+      <section class="page-state" style="--section-accent: var(--color-accent-2)">
+        <div class="page-state-inner">
+          <div class="boot-mark">
+            <span class="spinner" role="status" aria-label="Loading"></span>
+            <svg class="ob-icon ob-icon-24" aria-hidden="true"><use href="../assets/icons.svg#ob-brain"/></svg>
+          </div>
+          <h2 class="page-state-title" style="margin-top:8px">Initializing session</h2>
+          <p class="page-state-sub">Loading vault index, memory, and 29+ skills. Restoring where the
+            last session left off…</p>
+          <p class="build">BUILD · <code>v3.0.0</code></p>
+          <p class="page-state-status"><span class="dot"></span>SYSTEM :: BOOTING</p>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <!-- Source basis — these states are exactly what the website edge layer produces.
+       Modelled from the real onebrain-ai/website source preserved in source_examples/. -->
+  <div class="sec">Source basis · onebrain-ai/website</div>
+  <ul class="modlist">
+    <li class="modrow"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="../assets/icons.svg#ob-harness"/></svg>
+      <span><b>middleware.ts</b> — the edge layer that <em>emits</em> these states: route guarding
+      (404 / 403 redirects) and the security headers stamped on every response —
+      <code>Strict-Transport-Security</code>, <code>X-Content-Type-Options: nosniff</code>,
+      <code>X-Frame-Options: DENY</code>, <code>Referrer-Policy: strict-origin-when-cross-origin</code>.</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="../assets/icons.svg#ob-memory"/></svg>
+      <span><b>brain-id.ts</b> — the deterministic, SSR-safe request/session id (no <code>Math.random</code>)
+      stamped on the 500 card (<code>#brain-7f3a-c2</code>) so a fault is traceable to a request.</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="../assets/icons.svg#ob-doctor"/></svg>
+      <span><b>version.ts</b> — resolves the build version with a <code>FALLBACK</code> of <code>3.0.0</code>;
+      shown as the <code>BUILD · v3.0.0</code> stamp on the boot screen.</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="../assets/icons.svg#ob-connect"/></svg>
+      <span><b>disposable-domains.ts</b> — the waitlist "silent-200" soft-reject (accept the POST, drop the
+      address, never reveal the block) — the same graceful, non-alarming posture the <em>offline</em>
+      state takes instead of a hard error.</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="../assets/icons.svg#ob-bookmark"/></svg>
+      <span><b>gh-stars.ts</b> — <code>formatStars()</code> (hide-on-0, <code>1200 → 1.2k</code>) keeps the
+      star chip rendering in the degraded offline shell, demonstrating graceful UI under data loss.</span></li>
+  </ul>
+
+  <p class="srcnote">Source basis preserved verbatim under <code>source_examples/</code>:
+    <code>src/middleware.ts</code>, <code>src/lib/brain-id.ts</code>, <code>src/lib/version.ts</code>,
+    <code>src/lib/disposable-domains.ts</code>, <code>src/lib/gh-stars.ts</code> — from
+    <code>onebrain-ai/website</code>. Status codes and copy are real product vocabulary; no invented
+    metrics. Templates re-tint via <code>--section-accent</code> and honor reduced-motion.</p>
+
+</body>
+</html>

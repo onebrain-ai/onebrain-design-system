@@ -53,6 +53,49 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `--chart-grid` / `--chart-axis` / `--chart-track` scale. Closes the "tokens exist but no
   implementation" gap — `preview/charts.html` ships paste-ready inline-SVG line, area, bar,
   donut, and sparkline examples (no chart library) so dashboards stop rolling their own.
+- **Icon sprite** — `assets/icons.svg`, a Lucide-line `<symbol>` set (30 icons) in the real
+  product vocabulary (`ob-vault`, `ob-skill`, `ob-harness`, `ob-memory`, `ob-capture`, the
+  co-evolution skills + UI affordances). Geometry-only; the new `.ob-icon` class
+  (`components.css` §9) sets fill / stroke / 1.75 width / round caps once and the symbols
+  inherit it, with sizes `.ob-icon-16/-20/-24`. The 14 skill marks reuse the exact paths in
+  `preview/command-palette.js` so palette and sprite never diverge. Closes the "icons are a
+  rule with no shipped set" gap (`DESIGN.md` §6). Demoed in `preview/components-icons.html`.
+- **Interactive components** — three controls the kit was missing, in `components.css`
+  (§10–§12): `.accordion` over native `<details>`/`<summary>` (keyboard + a11y for free, open
+  item keys to the accent + 2px left bar); `.segmented`, a CSS-only radio group whose active
+  segment is accent text + weak tint + hairline ring (never a solid fill); and `.dropzone`, a
+  file upload progressively enhanced by `preview/dropzone.js` (real `<input type="file">` +
+  no-JS fallback, drag-drop, a synced file list via `DataTransfer`). Demoed in
+  `preview/components-interactive.html`.
+- **Internationalization & RTL** — `--font-sans` and `--font-display` now carry Thai · Arabic ·
+  CJK system fallbacks after the Latin faces (synced across `colors_and_type.css` +
+  `tokens/tokens.json`, exported to every platform, asserted by the drift-check), so non-Latin
+  text renders instead of tofu. `components.css` §13 adds a focused `[dir="rtl"]` block that
+  mirrors the physical left/right decorations (card / accordion accent bar, alert state bar,
+  default drawer, toast stack, open-accordion chevron). New `DESIGN.md` §10 documents the
+  fallback strategy + the logical-property authoring guidance. Demoed in `preview/i18n-rtl.html`.
+- **Page-level state templates** — `.page-state` in `components.css` (§12.5): full-page
+  not-found / harness-fault / access-denied / vault-offline / boot-loading screens for the
+  operator console. A corner-cut mono status code, italic Chakra headline, mono sub-line, real
+  `.btn-tech` / `.btn-ghost` actions, and a pulsing status line — each re-tints by setting one
+  var (`--section-accent`) and honors reduced-motion. Demoed in `preview/page-states.html`,
+  modelled on the real `onebrain-ai/website` edge layer (`middleware.ts`, `brain-id.ts`,
+  `version.ts`, `disposable-domains.ts`, `gh-stars.ts`).
+- **WCAG contrast guard** — `tokens/a11y.js`, now part of `npm test` (root **and** `tokens/`).
+  A zero-dependency check that parses the real hex values out of `colors_and_type.css` and
+  asserts the documented text/accent pairs clear WCAG 2.1 AA on both themes (dark text/muted on
+  the canvas; the five re-inked light accents on white). Makes `ACCESSIBILITY.md`'s ratios
+  machine-verified — re-ink a token below 4.5:1 and the build fails. Pairs with `check.js`:
+  drift keeps the sources identical, a11y keeps them legible.
+- **Content & microcopy guide** — `DESIGN.md` §11: reusable copy formulas (error / empty-state /
+  page-state patterns, action-label and slash-command conventions, number / date / status-line
+  formatting, capitalization) so every surface reads as one product.
+- **Stability & deprecation policy** — `CONTRIBUTING.md` now carries a component **maturity
+  matrix** (stable / beta / experimental / deprecated) and a semver-aligned token/component
+  **deprecation cycle** (add → alias → announce → remove on next major).
+- **Figma / Tokens Studio bridge** — `tokens/README.md` documents round-tripping the DTCG
+  `tokens.json` through the Tokens Studio Figma plugin (code stays source of truth; Figma edits
+  land as a diff against `tokens.json`, never `dist/`).
 
 ### Changed
 

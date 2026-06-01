@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Icon sprite</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .ig{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:1px; background:var(--border-subtle); border:1px solid var(--border-subtle); }
+  .ic{ display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; padding:22px 12px; background:var(--bg-surface); transition:background var(--dur-fast) ease, color var(--dur-fast) ease; }
+  .ic:hover{ background:var(--action-primary-weak); color:var(--section-accent,var(--color-accent-2)); }
+  .ic .ob-icon{ color:inherit; }
+  .ic .id{ font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--text-secondary); }
+  .ic .meaning{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--color-ghost); }
+  .sizes{ display:flex; align-items:flex-end; gap:28px; padding:22px; background:var(--bg-surface); border:1px solid var(--border-default); max-width:520px; }
+  .sizes figure{ margin:0; display:grid; gap:8px; justify-items:center; color:var(--section-accent,var(--color-accent-2)); }
+  .sizes figcaption{ font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; color:var(--color-ghost); }
+  .usage{ background:var(--color-surface-2); border:1px solid var(--border-subtle); padding:18px 20px; max-width:680px; font-family:var(--font-mono); font-size:12px; line-height:1.9; color:var(--color-faint); white-space:pre-wrap; overflow-x:auto; }
+  .usage .c{ color:var(--color-accent-2); }
+  .usage .k{ color:var(--color-accent-3); }
+  .inkrow{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+  .inkrow .chip-ic{ display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border:1px solid var(--border-default); background:var(--bg-surface); font-family:var(--font-mono); font-size:12px; }
+  .modlist{ list-style:none; margin:0; padding:0; max-width:760px; border:1px solid var(--border-default); background:var(--bg-surface); }
+  .modrow{ display:flex; align-items:flex-start; gap:14px; padding:13px 16px; border-bottom:1px solid var(--border-subtle); font-family:var(--font-mono); font-size:12px; color:var(--text-secondary); line-height:1.6; }
+  .modrow:last-child{ border-bottom:0; }
+  .modrow .ob-icon{ color:var(--color-accent-2); margin-top:1px; flex:none; }
+  .modrow code{ color:var(--color-accent-3); }
+  .modrow b{ color:var(--text-primary); font-weight:600; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-grid-bg"></div>
+
+  <!-- The sprite, inlined once so the page renders standalone (file:// or http).
+       In production reference the shipped file instead:
+       <svg class="ob-icon"><use href="../assets/icons.svg#ob-vault"/></svg> -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="ob-brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 1 3 3 0 0 0 3-1 3 3 0 0 0 2-5 3 3 0 0 0-2-5 3 3 0 0 0-3-3Z"/><path d="M12 5v14"/><path d="M9 8h0"/><path d="M15 8h0"/></symbol>
+    <symbol id="ob-vault" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+    <symbol id="ob-harness" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></symbol>
+    <symbol id="ob-memory" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></symbol>
+    <symbol id="ob-skill" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></symbol>
+    <symbol id="ob-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="ob-capture" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+    <symbol id="ob-braindump" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+    <symbol id="ob-connect" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></symbol>
+    <symbol id="ob-consolidate" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="ob-daily" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+    <symbol id="ob-weekly" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+    <symbol id="ob-recap" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></symbol>
+    <symbol id="ob-research" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="ob-summarize" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></symbol>
+    <symbol id="ob-learn" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.6 4.6 0 0 1 8.91 14"/></symbol>
+    <symbol id="ob-tasks" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+    <symbol id="ob-doctor" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+    <symbol id="ob-moc" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></symbol>
+    <symbol id="ob-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="ob-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="ob-command" viewBox="0 0 24 24"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/></symbol>
+    <symbol id="ob-sidebar" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></symbol>
+    <symbol id="ob-settings" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="10" y1="8" x2="14" y2="8"/><line x1="18" y1="16" x2="22" y2="16"/></symbol>
+    <symbol id="ob-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="ob-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+    <symbol id="ob-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="ob-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+    <symbol id="ob-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="ob-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="ob-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+    <symbol id="ob-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  </svg>
+
+  <span class="cyber-pill" style="--section-accent:var(--color-accent-2)"><span class="cyber-dot is-pulse"></span> COMPONENTS · ICON SPRITE</span>
+  <h1>Icons</h1>
+  <p class="lede">One Lucide-line <code>&lt;symbol&gt;</code> sprite — <code>assets/icons.svg</code> — geometry only.
+    <code>.ob-icon</code> sets fill / stroke / 1.75 width / round caps once and every symbol inherits it;
+    <code>currentColor</code> makes each icon follow the surrounding text or accent. Hover a tile to see it key to the section accent.</p>
+
+  <div class="sec">// Sizes — 16 / 20 / 24 (the only three)</div>
+  <div class="sizes">
+    <figure><svg class="ob-icon ob-icon-16"><use href="#ob-vault"/></svg><figcaption>16</figcaption></figure>
+    <figure><svg class="ob-icon ob-icon-20"><use href="#ob-vault"/></svg><figcaption>20</figcaption></figure>
+    <figure><svg class="ob-icon ob-icon-24"><use href="#ob-vault"/></svg><figcaption>24</figcaption></figure>
+  </div>
+
+  <div class="sec">// Domain — the product's nouns</div>
+  <div class="ig">
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-brain"/></svg><span class="id">ob-brain</span><span class="meaning">OneBrain</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-vault"/></svg><span class="id">ob-vault</span><span class="meaning">Obsidian vault</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-harness"/></svg><span class="id">ob-harness</span><span class="meaning">harness layer</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-memory"/></svg><span class="id">ob-memory</span><span class="meaning">persistent memory</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-skill"/></svg><span class="id">ob-skill</span><span class="meaning">skill / agent</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-link"/></svg><span class="id">ob-link</span><span class="meaning">wikilink</span></div>
+  </div>
+
+  <div class="sec">// Co-evolution skills — paths shared with command-palette.js</div>
+  <div class="ig">
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-capture"/></svg><span class="id">ob-capture</span><span class="meaning">/capture</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-braindump"/></svg><span class="id">ob-braindump</span><span class="meaning">/braindump</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-connect"/></svg><span class="id">ob-connect</span><span class="meaning">/connect</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-consolidate"/></svg><span class="id">ob-consolidate</span><span class="meaning">/consolidate</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-daily"/></svg><span class="id">ob-daily</span><span class="meaning">/daily</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-weekly"/></svg><span class="id">ob-weekly</span><span class="meaning">/weekly</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-recap"/></svg><span class="id">ob-recap</span><span class="meaning">/recap</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-research"/></svg><span class="id">ob-research</span><span class="meaning">/research</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-summarize"/></svg><span class="id">ob-summarize</span><span class="meaning">/summarize</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-learn"/></svg><span class="id">ob-learn</span><span class="meaning">/learn</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-tasks"/></svg><span class="id">ob-tasks</span><span class="meaning">/tasks</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-doctor"/></svg><span class="id">ob-doctor</span><span class="meaning">/doctor</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-moc"/></svg><span class="id">ob-moc</span><span class="meaning">/moc</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-bookmark"/></svg><span class="id">ob-bookmark</span><span class="meaning">/bookmark</span></div>
+  </div>
+
+  <div class="sec">// UI affordances — chrome the surfaces use</div>
+  <div class="ig">
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-search"/></svg><span class="id">ob-search</span><span class="meaning">vault search</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-command"/></svg><span class="id">ob-command</span><span class="meaning">⌘K palette</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-sidebar"/></svg><span class="id">ob-sidebar</span><span class="meaning">toggle rail</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-settings"/></svg><span class="id">ob-settings</span><span class="meaning">appearance</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-clock"/></svg><span class="id">ob-clock</span><span class="meaning">schedule</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-upload"/></svg><span class="id">ob-upload</span><span class="meaning">import / drop</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-send"/></svg><span class="id">ob-send</span><span class="meaning">composer send</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-plus"/></svg><span class="id">ob-plus</span><span class="meaning">new note</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-check"/></svg><span class="id">ob-check</span><span class="meaning">done</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-x"/></svg><span class="id">ob-x</span><span class="meaning">close</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-chevron-right"/></svg><span class="id">ob-chevron-right</span><span class="meaning">disclosure</span></div>
+    <div class="ic"><svg class="ob-icon ob-icon-24"><use href="#ob-chevron-down"/></svg><span class="id">ob-chevron-down</span><span class="meaning">expand</span></div>
+  </div>
+
+  <div class="sec">// In context — currentColor inherits text + accent</div>
+  <div class="inkrow">
+    <span class="chip-ic" style="color:var(--text-secondary)"><svg class="ob-icon ob-icon-16"><use href="#ob-vault"/></svg> Vault · 142 notes</span>
+    <span class="chip-ic" style="color:var(--color-accent-2)"><svg class="ob-icon ob-icon-16"><use href="#ob-skill"/></svg> 29 skills</span>
+    <span class="chip-ic" style="color:var(--color-success)"><svg class="ob-icon ob-icon-16"><use href="#ob-check"/></svg> Synced</span>
+    <span class="chip-ic" style="color:var(--color-accent-3)"><svg class="ob-icon ob-icon-16"><use href="#ob-link"/></svg> +4 wikilinks</span>
+    <button class="btn-tech" style="margin:0"><span class="btn-tech-inner"><svg class="ob-icon ob-icon-16"><use href="#ob-command"/></svg> Command</span></button>
+  </div>
+
+  <div class="sec">// Usage</div>
+  <div class="usage"><span class="c">&lt;svg</span> class=<span class="k">"ob-icon ob-icon-20"</span><span class="c">&gt;</span>
+  <span class="c">&lt;use</span> href=<span class="k">"assets/icons.svg#ob-vault"</span> /<span class="c">&gt;</span>
+<span class="c">&lt;/svg&gt;</span>
+
+<span class="meaning" style="color:var(--color-ghost)">/* size: add .ob-icon-16 / -20 / -24 · color: set `color` on the svg or a parent */</span></div>
+
+  <div class="sec">// Source basis — icons fronting the website's real modules (onebrain-ai/website)</div>
+  <ul class="modlist">
+    <li class="modrow"><svg class="ob-icon ob-icon-16"><use href="#ob-clock"/></svg><span><code>version.ts</code> — <b>ob-clock</b> fronts the build-time CLI version fetched from the GitHub Releases API; falls back to <code>3.0.0</code> offline, memoized so Hero + Footer share one fetch.</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-16"><use href="#ob-skill"/></svg><span><code>gh-stars.ts</code> — <b>ob-skill</b> marks the star badge baked in at build; returns <code>0</code> on any failure and the Cloud badge stays <i>hidden</i> on 0 (no "0 stars").</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-16"><use href="#ob-x"/></svg><span><code>disposable-domains.ts</code> — <b>ob-x</b> is the block mark for the ~150-domain waitlist blocklist; a match returns <code>200 OK</code> with no write, so the bot can't tell blocked from accepted.</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-16"><use href="#ob-brain"/></svg><span><code>brain-id.ts</code> — <b>ob-brain</b> is the wordmark; the module hands each <code>&lt;Brain/&gt;</code> a distinct SSR gradient id from a counter (no <code>Math.random</code>, so HTML stays edge-cacheable).</span></li>
+    <li class="modrow"><svg class="ob-icon ob-icon-16"><use href="#ob-harness"/></svg><span><code>middleware.ts</code> — <b>ob-harness</b> for the system layer that adds API security headers (<code>HSTS</code>, <code>nosniff</code>, <code>X-Frame-Options: DENY</code>, <code>strict-origin</code>, <code>COOP: same-origin</code>) — shipped even on a 500.</span></li>
+  </ul>
+
+  <p class="srcnote">Sprite: <code>assets/icons.svg</code> · class: <code>.ob-icon</code> in <code>components.css §9</code> ·
+    spec: <code>DESIGN.md §6</code> (Lucide line, viewBox 0 0 24 24, stroke-width 1.75, round caps). The 14
+    skill marks reuse the exact path data in <code>preview/command-palette.js</code> so the palette and the
+    sprite never diverge. Never emoji as a UI icon.</p>
+</body>
+</html>

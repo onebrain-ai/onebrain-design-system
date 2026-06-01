@@ -91,15 +91,52 @@ Never claim done without evidence. First run the token guard, then serve and che
 real render:
 
 ```bash
-npm test             # token drift check: css <-> json parity + dist freshness
+npm test             # token drift check (css <-> json parity + dist freshness) + WCAG AA contrast guard
 npm start            # or: npx serve .
 ```
+
+`npm test` runs two guards: `tokens/check.js` (drift) and `tokens/a11y.js` (asserts the
+documented text/accent pairs clear WCAG AA on both themes — re-ink a token below 4.5:1 and
+it fails). Both must be green before you commit.
 
 - Open the changed surface; confirm **0 console errors** (a root `/favicon.ico` 404 from
   the browser's auto-probe is the one allowed exception).
 - Check computed values for the thing you changed, not just that "it looks fine."
 - Run the `ACCESSIBILITY.md` "Verifying a change" checklist.
 - No horizontal scroll at 360 / 600 / 768 / 1024 / 1280 / 1440 / 1920.
+
+## Stability & deprecation
+
+Every public token and component carries a maturity level so consumers know what they can
+rely on. Mark new work in its `CHANGELOG.md` entry; default is **beta** until it's shipped on
+a real surface.
+
+| Level | Meaning | Change policy |
+|---|---|---|
+| **stable** | Used by ≥2 surfaces; API frozen. | No breaking change without a deprecation cycle + major bump. |
+| **beta** | Shipped, but the name/shape may still move. | May change in a minor with a `CHANGELOG` note. |
+| **experimental** | Preview-only, not on a product surface yet. | May change or be removed any release. |
+| **deprecated** | Superseded; scheduled for removal. | Kept ≥1 minor with a documented replacement, removed on the next major. |
+
+Current state: the token layer and the `components.css` kit (buttons, forms, nav, data,
+feedback, overlays, primitives, icons, accordion / segmented / dropzone, command palette,
+page states) are **stable**. New additions enter as **beta**.
+
+### Deprecating a token or component (semver)
+
+Never silently rename or delete a public token/class — consumers pin to them. Instead:
+
+1. **Add the replacement** alongside the old one (don't mutate in place).
+2. **Alias, don't orphan.** Point the old token at the new value (`--old: var(--new)`) or keep
+   the old class as a thin shim, so existing surfaces keep working.
+3. **Announce it.** Add a `### Deprecated` line to `CHANGELOG.md` naming the replacement and
+   the removal version; mark it `@deprecated` in any TS/`dist` surface.
+4. **Cycle then remove.** Keep the alias for at least one **minor**; remove only on the next
+   **major** (per [SemVer](https://semver.org)). Removing or renaming a public token/class is a
+   **major** change — a new additive token/component is a **minor**; a value/fix that doesn't
+   change any API is a **patch**.
+5. Run `npm test` after — the drift guard will catch a half-applied rename across the two
+   token sources.
 
 ## Commit & release
 

@@ -638,3 +638,217 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
   .cyber-select::after, .cyber-select .cs-list { transition: none; }
   .modal, .drawer.drawer-left, .drawer, .command-palette { transform: none; }
 }
+
+/* ---------------------------------------------------------------------------
+   9. ICONS — the shared Lucide-line sprite (assets/icons.svg, DESIGN.md §6).
+   .ob-icon sets fill/stroke/width/caps ONCE; the geometry-only <symbol>s
+   inherit it, and currentColor makes each icon follow the surrounding text or
+   accent color. Three fixed sizes (16 / 20 / 24) per the spec.
+     <svg class="ob-icon ob-icon-20"><use href="assets/icons.svg#ob-vault"/></svg>
+   --------------------------------------------------------------------------- */
+.ob-icon {
+  display: inline-block; width: 20px; height: 20px; flex: none; vertical-align: middle;
+  fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+}
+.ob-icon-16 { width: 16px; height: 16px; }
+.ob-icon-20 { width: 20px; height: 20px; }
+.ob-icon-24 { width: 24px; height: 24px; }
+
+/* ---------------------------------------------------------------------------
+   10. DISCLOSURE / ACCORDION — native <details>/<summary>, styled cyber-sharp.
+   Accessible by default (keyboard + screen reader come from the element). The
+   chevron rotates and the row keys to the section accent when open; an open
+   item gets the same 2px left accent bar the cards use.
+     <div class="accordion">
+       <details class="accordion-item"><summary>… <svg class="ob-icon ob-icon-16 accordion-chevron"><use href="#ob-chevron-right"/></svg></summary>
+         <div class="accordion-body">…</div></details>
+     </div>
+   --------------------------------------------------------------------------- */
+.accordion { border: 1px solid var(--border-default); background: var(--bg-surface); max-width: 640px; }
+.accordion-item { position: relative; border-bottom: 1px solid var(--border-subtle); }
+.accordion-item:last-child { border-bottom: 0; }
+.accordion-item > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.03em;
+  color: var(--text-primary); user-select: none; transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+.accordion-item > summary::-webkit-details-marker { display: none; }
+.accordion-item > summary:hover { background: var(--action-primary-weak); }
+.accordion-item > summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.accordion-chevron { margin-left: auto; color: var(--text-tertiary); transition: transform var(--dur-base) var(--ease-out-expo), color var(--dur-fast) ease; }
+.accordion-item[open] > summary { color: var(--section-accent, var(--color-accent-2)); }
+.accordion-item[open] > summary .accordion-chevron { transform: rotate(90deg); color: var(--section-accent, var(--color-accent-2)); }
+.accordion-item[open]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--section-accent, var(--color-accent-2)); box-shadow: var(--glow-accent); }
+.accordion-body { padding: 2px 16px 16px; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.65; }
+
+/* ---------------------------------------------------------------------------
+   11. SEGMENTED CONTROL — CSS-only radio group (no JS). The active segment
+   reads as accent TEXT on a weak tint + hairline accent ring, not a solid
+   accent fill (same anti-OS-blue rule as the select / command palette).
+     <div class="segmented" role="radiogroup" aria-label="View">
+       <input type="radio" id="seg-list" name="view" checked><label for="seg-list">List</label>
+       <input type="radio" id="seg-graph" name="view"><label for="seg-graph">Graph</label>
+     </div>
+   --------------------------------------------------------------------------- */
+.segmented { display: inline-flex; position: relative; background: var(--bg-elevated); border: 1px solid var(--border-default); padding: 3px; gap: 2px; }
+.segmented input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.segmented label {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 16px; min-height: var(--control-h-sm);
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-tertiary); cursor: pointer; white-space: nowrap; user-select: none;
+  transition: color var(--dur-fast) ease, background var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+.segmented label:hover { color: var(--text-secondary); }
+.segmented input:checked + label {
+  color: var(--section-accent, var(--color-accent-2)); background: var(--action-primary-weak);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--section-accent, var(--color-accent-2)) 42%, transparent);
+}
+.segmented input:focus-visible + label { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.segmented input:disabled + label { opacity: var(--disabled-opacity); cursor: not-allowed; }
+
+/* ---------------------------------------------------------------------------
+   12. DROPZONE — file upload, progressively enhanced (preview/dropzone.js).
+   Ships a real <input type="file"> so it works with no JS; the enhancer adds
+   click/drag-drop + a synced file list. Dashed border keys to the accent on
+   hover / drag-over; the chosen-file rows stay solid for legibility.
+   --------------------------------------------------------------------------- */
+.dropzone {
+  position: relative; display: grid; place-items: center; gap: 10px; text-align: center;
+  padding: 32px 24px; max-width: 520px; cursor: pointer;
+  border: 1px dashed var(--border-strong); background: var(--bg-surface);
+  transition: border-color var(--dur-fast) ease, background var(--dur-fast) ease;
+}
+.dropzone:hover, .dropzone:focus-visible { border-color: var(--section-accent, var(--color-accent-2)); outline: none; }
+.dropzone:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--focus-ring) 60%, transparent); }
+.dropzone.is-drag { border-style: solid; border-color: var(--section-accent, var(--color-accent-2)); background: var(--action-primary-weak); }
+.dropzone .ob-icon { color: var(--text-tertiary); transition: color var(--dur-fast) ease; }
+.dropzone.is-drag .ob-icon { color: var(--section-accent, var(--color-accent-2)); }
+.dropzone-title { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.03em; color: var(--text-secondary); }
+.dropzone-title b { color: var(--text-link); font-weight: 600; }
+.dropzone-hint { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ghost); }
+.dropzone input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.dz-files { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; max-width: 520px; }
+.dz-file { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: var(--bg-surface); border: 1px solid var(--border-default); font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.dz-file .dz-ic { color: var(--text-tertiary); display: inline-grid; place-content: center; flex: none; }
+.dz-file .dz-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dz-file .dz-size { color: var(--text-tertiary); font-variant-numeric: tabular-nums; flex: none; }
+.dz-file .dz-remove { flex: none; background: none; border: 0; color: var(--text-tertiary); cursor: pointer; padding: 4px; display: inline-grid; place-content: center; transition: color var(--dur-fast) ease; }
+.dz-file .dz-remove:hover { color: var(--fb-danger); }
+.dz-file .dz-remove:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+/* ---------------------------------------------------------------------------
+   12.5  PAGE STATES — full-page 404 / 500 / 403 / offline / loading templates.
+   A centered operator-console state over the HUD ground: a huge corner-cut mono
+   status code, an italic Chakra headline, a mono sub-paragraph, primary + ghost
+   actions, and a mono status line. Keyed to --section-accent, so each state
+   re-tints by setting that one var on the .page-state element (danger magenta
+   for 500, warning amber for 403, info cyan for 404 / offline / loading).
+   --------------------------------------------------------------------------- */
+.page-state {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-7, 64px) var(--space-5, 32px);
+  position: relative;
+}
+.page-state-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4, 24px);
+  max-width: 540px;
+  width: 100%;
+}
+.page-state-code {
+  font-family: var(--font-mono);
+  font-size: clamp(4rem, 16vw, 9rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--section-accent);
+  text-shadow: 0 0 28px color-mix(in oklab, var(--section-accent) 35%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+.page-state-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  margin: 0;
+}
+.page-state-sub {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  color: var(--color-faint);
+  max-width: 44ch;
+  margin: 0;
+}
+.page-state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 16px);
+  justify-content: center;
+  margin-top: var(--space-2);
+}
+.page-state-status {
+  font-family: var(--font-mono);
+  font-size: var(--eyebrow-size);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-ghost);
+  margin-top: var(--space-5, 32px);
+}
+.page-state-status .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--section-accent);
+  box-shadow: 0 0 8px var(--section-accent);
+  margin-inline-end: 8px;
+  vertical-align: middle;
+  animation: cyber-pulse 1.5s var(--ease-out-expo, ease) infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   13. INTERNATIONALIZATION / RTL — see DESIGN.md §10.
+   The font stacks (--font-sans / --font-display) carry Thai · Arabic · CJK
+   system fallbacks after the Latin faces, so non-Latin text renders instead of
+   tofu. New work should author with LOGICAL properties (margin-inline, inset-
+   inline, border-inline, text-align:start) so it mirrors for free. This block
+   flips the handful of components that still use PHYSICAL left/right
+   decorations under [dir="rtl"].
+   --------------------------------------------------------------------------- */
+[dir="rtl"] { } /* hook for app-level direction; components below mirror their physical bits */
+/* card / accordion accent bar: left -> right */
+[dir="rtl"] .cyber-card::before,
+[dir="rtl"] .accordion-item[open]::before { left: auto; right: 0; }
+/* alert state bar: border-left -> border-right */
+[dir="rtl"] .alert { border-left-width: 1px; border-right-width: 2px; }
+[dir="rtl"] .alert-success { border-left-color: var(--border-default); border-right-color: var(--fb-success); }
+[dir="rtl"] .alert-info    { border-left-color: var(--border-default); border-right-color: var(--fb-info); }
+[dir="rtl"] .alert-warning { border-left-color: var(--border-default); border-right-color: var(--fb-warning); }
+[dir="rtl"] .alert-danger  { border-left-color: var(--border-default); border-right-color: var(--fb-danger); }
+/* default drawer docks to the right; mirror it to the left edge */
+[dir="rtl"] .drawer { right: auto; left: 0; border-left: 0; border-right: 1px solid var(--border-default); transform: translateX(-100%); }
+[dir="rtl"] .drawer.is-open { transform: translateX(0); }
+/* fixed corner stacks: right -> left */
+[dir="rtl"] .toast-stack { right: auto; left: 20px; }
+/* nav-link bracket reveal + chevrons read direction-correct */
+[dir="rtl"] .accordion-item[open] > summary .accordion-chevron { transform: rotate(-90deg); }
+[dir="rtl"] .breadcrumb, [dir="rtl"] .pagination { direction: rtl; }
+
+/* a11y — the interactive components honor reduced motion too. */
+@media (prefers-reduced-motion: reduce) {
+  .accordion-item > summary, .accordion-chevron, .segmented label,
+  .dropzone, .dropzone .ob-icon, .dz-file .dz-remove { transition: none; }
+  .page-state-status .dot { animation: none; }
+}

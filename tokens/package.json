@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "build": "node build.js",
-    "test": "node check.js"
+    "check:a11y": "node a11y.js",
+    "test": "node check.js && node a11y.js"
   },
   "keywords": [
     "design-tokens",

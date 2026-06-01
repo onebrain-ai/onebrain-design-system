@@ -400,6 +400,17 @@ previews, and the UI kit reproduce them.
 - **Icons.** Inline SVG only, in the Lucide line style — `viewBox="0 0 24 24"`,
   `fill="none" stroke="currentColor" stroke-width="1.75"`, round caps/joins, sized
   16 / 20 / 24. `currentColor` so they inherit text/accent color. Never emoji as UI icons.
+  The shared set ships as a `<symbol>` sprite in [`assets/icons.svg`](assets/icons.svg) —
+  geometry only; `.ob-icon` (`components.css`) sets fill/stroke/width/caps once and the
+  symbols inherit it. Reference with `<svg class="ob-icon ob-icon-20"><use href="assets/icons.svg#ob-vault"/></svg>`;
+  names use the real product vocabulary (`ob-vault`, `ob-skill`, `ob-harness`, `ob-memory`,
+  `ob-capture`, the co-evolution skills) and the 14 skill marks reuse the exact paths in
+  `preview/command-palette.js`. See `preview/components-icons.html`.
+- **Disclosure / accordion** (`.accordion` over native `<details>`/`<summary>`),
+  **segmented control** (`.segmented`, CSS-only radio group — active segment is accent text +
+  weak tint + hairline ring, never a solid fill), and **file dropzone** (`.dropzone`,
+  progressively enhanced by `preview/dropzone.js` — real `<input type="file">`, drag-drop, a
+  synced file list). See `preview/components-interactive.html`.
 
 ---
 
@@ -459,3 +470,112 @@ Do **not**:
 - Expose designer/demo controls (viewport pickers, theme knobs, target-count badges) inside
   product UI. Navigation must be real product navigation.
 - Recolor the brand logo or redraw it — use the preserved `assets/brain.svg`.
+
+---
+
+## 10. Internationalization & RTL
+
+The system is dark-first and English-led, but the type and layout primitives are built so
+non-Latin and right-to-left content render correctly without a re-skin.
+
+### Non-Latin fallback
+`--font-sans` and `--font-display` carry **Thai · Arabic · CJK** system fallbacks after the
+Latin faces, so text in those scripts renders through the platform font instead of tofu:
+
+```css
+--font-sans:    "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", "Noto Sans Thai", "Noto Sans Arabic", "Noto Sans CJK SC", sans-serif;
+--font-display: "Chakra Petch", "Inter", ui-sans-serif, system-ui, "Noto Sans Thai", sans-serif;
+```
+
+- **Chakra Petch is Latin-only by design** — non-Latin headlines fall through to the system
+  UI face (+ Noto Sans Thai), which is intended; don't force the display face onto scripts it
+  doesn't cover.
+- `--font-mono` stays Latin (code, IDs, hashes). These fallbacks are exported to every
+  platform from the one DTCG source, so native (Swift / Android / TS) inherits them, and the
+  drift-check asserts `colors_and_type.css` ↔ `tokens.json` agree on the stacks.
+- Keep the mono **eyebrow** tracking (`.4em`) for Latin only — wide letter-spacing breaks
+  Thai/Arabic shaping. Reset `letter-spacing` on non-Latin eyebrow/label text.
+
+### Right-to-left
+Author new components with **logical properties** so they mirror for free:
+`margin-inline` / `padding-inline`, `inset-inline-start/end`, `border-inline`,
+`text-align: start/end`, and flex/grid (which already follow `direction`). Set
+`dir="rtl"` on the surface root (`<html>` or the app shell) and the layout flips.
+
+`components.css` §13 ships a focused `[dir="rtl"]` block that mirrors the handful of
+components still using **physical** left/right decorations — the card / accordion accent bar
+(left → right), the alert state bar (`border-left` → `border-right`), the default drawer
+(docks right → left), the toast stack (bottom-right → bottom-left), and the open-accordion
+chevron. Everything else (tabs, badges, inputs, segmented control, dropzone, command palette)
+is symmetric or already logical. Verify a surface at `dir="rtl"` with Arabic and at `dir="ltr"`
+with Thai; see `preview/i18n-rtl.html`.
+
+- Mirror **directional glyphs** (chevrons, send/▸, back arrows) under RTL; leave
+  non-directional icons (search, settings, vault) unflipped.
+- Numerals, code, `[[wikilinks]]`, and `/slash-commands` stay LTR even inside RTL prose —
+  wrap them in an LTR span (`unicode-bidi: isolate; direction: ltr`) if they sit in a run of
+  RTL text.
+
+---
+
+## 11. Content & microcopy
+
+§8 sets the *voice* (confident, technical, minimal — a "personal chief of staff"). This
+section is the *grammar*: reusable copy formulas so every surface reads as one product, not
+a dozen authors. The component layer renders these; this is what to write inside it.
+
+### Tone in one line
+Address the operator directly ("Search the vault", not "The vault can be searched"). State
+what happened and the one next move. No exclamation marks, no apologies-as-filler ("Oops!",
+"Uh-oh!"), no marketing adjectives, **no invented metrics**. When a value is unknown, show an
+honest placeholder (`—`), never a fabricated one.
+
+### Error messages — `[what failed] · [why, if known] · [the fix]`
+One mono line, calm, actionable. Pair with the semantic state color + a label/icon (never
+color alone). The fix is a real action the operator can take here.
+
+- ✅ `Couldn't reach the vault — connection lost. Working locally; changes will sync.`
+- ✅ `Note not found at /00-inbox/draft-x. It may have been consolidated or renamed.`
+- ❌ `Oops! Something went wrong.` · ❌ `Error 0x80.` · ❌ `Failed.` (no cause, no fix)
+
+Form-field errors sit **below** the field, set `aria-invalid`, and name the constraint:
+`Vault name must be lowercase, no spaces.` — not `Invalid input.`
+
+### Empty states — `[what lives here] · [why it's empty] · [the first action]`
+Never a blank panel. Name the surface, then offer the one command that fills it. The
+`.empty-state` component carries an icon + this copy + a primary `.btn-tech`.
+
+- Inbox: **"Inbox is clear."** / `Captured notes land here before you /consolidate them.` / **Run /capture**
+- Tasks: **"No tasks due."** / `Tasks you add inside project notes surface here by date.` / **Open a project**
+- Search: **"No matches for "X"."** / `Try a broader term, or capture it as a new note.` / **Capture "X"**
+
+### Page-level states (see `preview/page-states.html`)
+404 **"Signal lost"** · 500 **"Harness fault"** (+ a traceable request id, e.g. `#brain-7f3a-c2`) ·
+403 **"Access denied"** · offline **"Vault offline"** (lead with local-first reassurance) ·
+loading **"Initializing session"**. The status code stays as the mono numeral; the headline is
+the italic Chakra phrase; the body is one calm mono sentence + the fix.
+
+### Action / button labels
+Verb-first, specific, Title Case for buttons. Prefer the real command when the action *is* a
+command. Destructive actions name the object.
+
+- ✅ `Run /capture` · `Search vault` · `Reconnect` · `Delete note` · `Switch vault`
+- ❌ `Submit` · `OK` · `Click here` · `Yes` (name the outcome instead — `Save`, `Discard`)
+
+Slash-commands are always lowercase with the leading slash (`/consolidate`), set in mono.
+Confirm-dialog buttons echo the verb: **"Delete 3 notes?"** → `Delete` / `Cancel` (not `Yes`/`No`).
+
+### Numbers, dates & time
+- **Numerals are tabular mono** (`font-variant-numeric: tabular-nums`) in data / HUD contexts.
+- **Counts** abbreviate at scale via `formatStars()`-style rules: `1200 → 1.2k`, `< 1000` shown
+  whole; **hide a zero count** rather than printing `0`.
+- **Dates** use Obsidian task syntax in vault content — `📅 YYYY-MM-DD` — and ISO `YYYY-MM-DD`
+  in metadata / logs. Relative time in activity logs (`2m ago`, `Yesterday`), absolute on hover.
+- **Status lines** are uppercase wide-tracked mono: `NODE · NETWORK :: ONLINE · LAT 14ms`,
+  `HARNESS :: FAULT · 500`, `SYSTEM :: BOOTING`. Segment with ` · ` and ` :: `.
+
+### Capitalization
+Headlines: italic UPPERCASE display (`UNIFIED INTELLIGENCE`). Eyebrows / labels / status:
+UPPERCASE mono. Buttons: Title Case. Body & descriptions: sentence case. Product name is always
+`OneBrain` (one word, camel B) — never derived from a URL or protocol string.

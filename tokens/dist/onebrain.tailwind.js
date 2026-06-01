@@ -60,9 +60,9 @@ module.exports = {
       "focusRing": 'var(--ob-intent-focusRing)',
       },
       fontFamily: {
-      "sans": ["Inter","ui-sans-serif","system-ui","-apple-system","BlinkMacSystemFont","Segoe UI","sans-serif"],
+      "sans": ["Inter","ui-sans-serif","system-ui","-apple-system","BlinkMacSystemFont","Segoe UI","Noto Sans Thai","Noto Sans Arabic","Noto Sans CJK SC","sans-serif"],
       "mono": ["JetBrains Mono","ui-monospace","SF Mono","Menlo","Consolas","monospace"],
-      "display": ["Chakra Petch","Inter","ui-sans-serif","system-ui","sans-serif"],
+      "display": ["Chakra Petch","Inter","ui-sans-serif","system-ui","Noto Sans Thai","sans-serif"],
       },
       fontSize: {
       "eyebrow": '10px',

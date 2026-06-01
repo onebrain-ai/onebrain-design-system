@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Interactive components</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .segrow{ display:flex; flex-wrap:wrap; gap:14px 22px; align-items:center; }
+  .seglabel{ font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--color-ghost); display:block; margin-bottom:8px; }
+  .panel{ background:var(--bg-elevated); border:1px solid var(--border-default); padding:18px; max-width:560px; font-family:var(--font-mono); font-size:12px; color:var(--text-secondary); }
+  .out{ font-family:var(--font-mono); font-size:11px; color:var(--color-muted); letter-spacing:.04em; margin-top:10px; }
+  .out b{ color:var(--color-accent-2); }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent)"></div>
+  <div class="pv-grid-bg"></div>
+
+  <!-- minimal inline sprite so markup icons render standalone -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="ob-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+    <symbol id="ob-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+    <symbol id="ob-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="ob-summarize" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></symbol>
+  </svg>
+
+  <span class="cyber-pill" style="--section-accent:var(--color-accent)"><span class="cyber-dot is-pulse"></span> COMPONENTS · INTERACTIVE</span>
+  <h1>Interactive</h1>
+  <p class="lede">Three controls the kit was missing — all keyed to <code>components.css</code> and the semantic
+    intent tokens. The accordion is native <code>&lt;details&gt;</code> (keyboard + a11y for free); the segmented
+    control is a CSS-only radio group; the dropzone progressively enhances a real <code>&lt;input type="file"&gt;</code>.</p>
+
+  <!-- ── Segmented control ─────────────────────────────────────────────── -->
+  <div class="sec">// Segmented control (CSS-only · active = accent text + tint + ring, never solid fill)</div>
+  <div class="segrow">
+    <div>
+      <span class="seglabel">Vault view</span>
+      <div class="segmented" role="radiogroup" aria-label="Vault view">
+        <input type="radio" id="v-list" name="vview" checked><label for="v-list">List</label>
+        <input type="radio" id="v-graph" name="vview"><label for="v-graph">Graph</label>
+        <input type="radio" id="v-time" name="vview"><label for="v-time">Timeline</label>
+      </div>
+    </div>
+    <div>
+      <span class="seglabel">Density</span>
+      <div class="segmented" role="radiogroup" aria-label="Density" style="--section-accent:var(--color-accent-3)">
+        <input type="radio" id="d-comfy" name="dens" checked><label for="d-comfy">Comfortable</label>
+        <input type="radio" id="d-compact" name="dens"><label for="d-compact">Compact</label>
+      </div>
+    </div>
+    <div>
+      <span class="seglabel">Theme</span>
+      <div class="segmented" role="radiogroup" aria-label="Theme" style="--section-accent:var(--color-accent-4)">
+        <input type="radio" id="t-dark" name="thm" checked><label for="t-dark">Dark</label>
+        <input type="radio" id="t-light" name="thm"><label for="t-light">Light</label>
+        <input type="radio" id="t-auto" name="thm" disabled><label for="t-auto">Auto</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Accordion ─────────────────────────────────────────────────────── -->
+  <div class="sec">// Disclosure / accordion (native &lt;details&gt; · open item keys to accent + left bar)</div>
+  <div class="accordion" style="--section-accent:var(--color-accent-2)">
+    <details class="accordion-item" open>
+      <summary>PARA folders
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">Eight numbered buckets the vault routes into: <code>00-inbox</code>, <code>01-projects</code>,
+        <code>02-areas</code>, <code>03-resources</code> … <code>07-logs</code>. Capture lands in <code>00-inbox</code>;
+        <code>/consolidate</code> files it onward.</div>
+    </details>
+    <details class="accordion-item">
+      <summary>The co-evolution loop
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">Every session runs <b>CAPTURE → EVOLVE → WRAPUP</b>: notes come in, the agent connects and
+        distills them, then writes a session log so the next session picks up where this one left off.</div>
+    </details>
+    <details class="accordion-item">
+      <summary>Sub-agents
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">Five specialists run under the harness: Inbox Classifier, Knowledge Linker, Link Suggester,
+        Tag Suggester, Task Extractor — each keyed to its own source color.</div>
+    </details>
+  </div>
+
+  <!-- ── Dropzone ──────────────────────────────────────────────────────── -->
+  <div class="sec">// File dropzone (progressive enhancement · real &lt;input type="file"&gt; + drag-drop)</div>
+  <div class="dropzone" data-dropzone>
+    <svg class="ob-icon ob-icon-24" aria-hidden="true"><use href="#ob-upload"/></svg>
+    <span class="dropzone-title"><b>Choose files</b> or drop them here</span>
+    <span class="dropzone-hint">Markdown · PDF · images → import to vault</span>
+    <input type="file" id="dz-import" name="import" multiple accept=".md,.pdf,.png,.jpg,.txt" aria-label="Import files to vault" />
+  </div>
+
+  <!-- ── Source basis ──────────────────────────────────────────────────── -->
+  <div class="sec">// Source basis — the accordion documenting the website's real modules (onebrain-ai/website)</div>
+  <div class="accordion" style="--section-accent:var(--color-accent-3); max-width:760px">
+    <details class="accordion-item">
+      <summary><code>version.ts</code> · build-time CLI version
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">Fetches the latest version from the GitHub Releases API at prerender (no runtime cost), memoized so Hero and Footer share one in-flight fetch. Falls back to <code>3.0.0</code> on an offline / rate-limited build.</div>
+    </details>
+    <details class="accordion-item">
+      <summary><code>gh-stars.ts</code> · star count, baked at build
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">Reads <code>stargazers_count</code> for <code>onebrain-ai/onebrain</code> at build. Returns <code>0</code> on any failure and the Cloud badge hides on 0 — "0 stars" as social proof is worse than none.</div>
+    </details>
+    <details class="accordion-item">
+      <summary><code>disposable-domains.ts</code> · waitlist email guard
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">A ~150-domain inline blocklist. On a match the server returns <code>200 OK</code> with no D1 write, so a bot can't distinguish "blocked" from "accepted" and stops retrying — protecting sender reputation.</div>
+    </details>
+    <details class="accordion-item">
+      <summary><code>brain-id.ts</code> · stable SSR gradient ids
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">A module-scope counter (<code>nextBrainId() =&gt; ++counter</code>) gives two <code>&lt;Brain/&gt;</code> on a page distinct gradient/filter ids without <code>Math.random</code> — which would byte-shift the HTML every request and break edge caching.</div>
+    </details>
+    <details class="accordion-item">
+      <summary><code>middleware.ts</code> · API security headers
+        <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
+      </summary>
+      <div class="accordion-body">Adds <code>HSTS</code>, <code>X-Content-Type-Options: nosniff</code>, <code>Referrer-Policy: strict-origin</code>, <code>X-Frame-Options: DENY</code>, and <code>COOP: same-origin</code> to dynamic routes — wrapped so the headers ship even when a downstream handler throws a 500.</div>
+    </details>
+  </div>
+
+  <p class="srcnote">Classes: <code>.segmented</code> · <code>.accordion</code> / <code>.accordion-item</code> ·
+    <code>.dropzone</code> / <code>.dz-files</code> in <code>components.css §10–§12</code>. Dropzone enhancer:
+    <code>preview/dropzone.js</code> (zero dependency — file name / size via <code>textContent</code>, sync back to
+    the input via <code>DataTransfer</code> so form submit carries the files). No-JS fallback: the bare
+    <code>&lt;input type="file"&gt;</code> still works.</p>
+
+  <script src="dropzone.js"></script>
+</body>
+</html>
