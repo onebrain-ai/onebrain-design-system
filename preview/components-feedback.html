@@ -23,9 +23,9 @@
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-3)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
-  <span class="cyber-pill" style="--section-accent:var(--color-accent-3)"><span class="cyber-dot is-pulse"></span> COMPONENTS · FEEDBACK &amp; OVERLAYS</span>
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> COMPONENTS · FEEDBACK &amp; OVERLAYS</span>
   <h1>Feedback &amp; Overlays</h1>
   <p class="lede">Status, alerts, and overlays from <code>components.css</code> — built on the four semantic
     states (success lime · info cyan · warning amber · danger magenta). Open the modal and dropdown below;
@@ -74,7 +74,7 @@
 
   <div class="sec">// Empty state</div>
   <div class="empty-state" style="max-width:520px">
-    <span class="cyber-dot" style="color:var(--color-accent-2);width:10px;height:10px"></span>
+    <span class="cyber-dot" style="color:var(--section-accent);width:10px;height:10px"></span>
     <div class="es-title">Inbox clear</div>
     <div class="es-desc">Nothing to consolidate. New captures land in <code>00-inbox</code> — run <code>/capture</code> to add one.</div>
     <button class="btn-ghost btn-sm">Run /capture</button>
@@ -119,6 +119,6 @@
   var dd = document.getElementById('dd');
   document.getElementById('open-dd').addEventListener('click', function(){ dd.style.display = dd.style.display === 'none' ? 'block' : 'none'; });
 </script>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

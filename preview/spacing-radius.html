@@ -11,7 +11,7 @@
   .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
     background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
     background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
-  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent); background:color-mix(in srgb,var(--color-accent) 6%,transparent); border:1px solid color-mix(in srgb,var(--color-accent) 35%,transparent); position:relative; }
+  .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--section-accent); background:color-mix(in srgb,var(--section-accent) 6%,transparent); border:1px solid color-mix(in srgb,var(--section-accent) 35%,transparent); position:relative; }
   .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
   .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
   .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
@@ -20,8 +20,8 @@
   .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:34px 0 16px; }
   .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:18px; }
   .tile{ text-align:center; }
-  .box{ height:110px; background:var(--color-surface); border:1px solid var(--color-accent-2);
-    box-shadow:inset 0 0 30px color-mix(in srgb,var(--color-accent-2) 12%,transparent); }
+  .box{ height:110px; background:var(--color-surface); border:1px solid var(--section-accent);
+    box-shadow:inset 0 0 30px color-mix(in srgb,var(--section-accent) 12%,transparent); }
   .cap{ font-family:var(--font-mono); font-size:11px; color:var(--color-muted); margin-top:10px; }
   .cap b{ color:var(--color-text); display:block; font-weight:500; letter-spacing:.03em; }
   .clip{ height:110px; background:var(--grad-button); padding:1.5px; clip-path:var(--clip-tech); }
@@ -31,7 +31,7 @@
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
   <span class="pill"><span class="dot"></span> RADIUS · DELIBERATELY SHARP</span>
   <h1>Corner Geometry</h1>
@@ -62,6 +62,6 @@
     (<code>.btn-tech</code>); build-time libs <code>gh-stars.ts</code>, <code>version.ts</code>,
     <code>brain-id.ts</code>, <code>middleware.ts</code>, <code>waitlist.ts</code> preserved in
     <code>source_examples/</code>.</p>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

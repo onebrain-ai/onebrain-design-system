@@ -16,8 +16,8 @@
             mask-image:radial-gradient(ellipse 80% 70% at 50% 30%,#000 30%,transparent 100%); }
   .pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono);
     font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase;
-    color:var(--color-accent-2); background:color-mix(in srgb,var(--color-accent-2) 4%,transparent);
-    border:1px solid color-mix(in srgb,var(--color-accent-2) 30%,transparent); position:relative; }
+    color:var(--section-accent); background:color-mix(in srgb,var(--section-accent) 4%,transparent);
+    border:1px solid color-mix(in srgb,var(--section-accent) 30%,transparent); position:relative; }
   .pill::before,.pill::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
   .pill::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .pill::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
   .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
@@ -35,10 +35,10 @@
   .meta{ font-family:var(--font-mono); font-size:9px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); }
   .row{ display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid var(--color-border-2);
     font-family:var(--font-mono); font-size:12.5px; color:var(--color-muted); }
-  .row:last-child{ border-bottom:0; } .row .ix{ color:var(--color-accent-2); }
+  .row:last-child{ border-bottom:0; } .row .ix{ color:var(--section-accent); }
   .row b{ color:var(--color-text); font-weight:500; }
-  .row.active{ background:color-mix(in srgb,var(--color-accent-2) 6%,transparent); color:var(--color-text);
-    border-left:2px solid var(--color-accent-2); }
+  .row.active{ background:color-mix(in srgb,var(--section-accent) 6%,transparent); color:var(--color-text);
+    border-left:2px solid var(--section-accent); }
   .stamp{ margin-left:auto; }
   .swrow{ display:flex; gap:1px; background:var(--color-border-2); border:1px solid var(--color-border-2); }
   .swrow div{ flex:1; height:54px; }
@@ -50,7 +50,7 @@
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
   <span class="pill"><span class="dot"></span> THEME · DARK · DEFAULT</span>
   <h1>Dark Theme</h1>
@@ -92,6 +92,6 @@
       </div>
     </div>
   </div>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

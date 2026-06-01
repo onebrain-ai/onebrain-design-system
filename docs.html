@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>OneBrain Design System — Docs</title>
 <meta name="description" content="In-system reader for the OneBrain design-system docs — rendered on the operator-console canvas so the text is always legible." />
+<!-- When embedded in the showcase iframe, render content-only (the showcase
+     supplies the top bar + rail). Set before paint to avoid a flash of the bar. -->
+<script>if (window.self !== window.top) { document.documentElement.classList.add("embedded"); }</script>
 <link rel="icon" href="assets/favicon.ico" sizes="any" />
 <link rel="stylesheet" href="colors_and_type.css" />
 <link rel="stylesheet" href="components.css" />
@@ -25,11 +28,6 @@
   /* ---- Sticky top bar ---- */
   header.bar{ position:sticky; top:0; z-index:var(--z-nav); display:flex; align-items:center; gap:16px; flex-wrap:wrap;
     padding:14px clamp(16px,4vw,40px); background:var(--color-bg-deep); border-bottom:1px solid var(--color-border); }
-  .back{ display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:8px 12px;
-    font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--color-muted);
-    border:1px solid var(--color-border); transition:border-color var(--dur-base) ease, color var(--dur-base) ease; }
-  .back:hover{ border-color:var(--section-accent); color:var(--color-text); }
-  .back:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:3px; }
   .bar .brand{ display:flex; align-items:center; gap:11px; margin-right:auto; }
   .bar .brand img{ width:30px; height:30px; filter:var(--glow-brand); }
   .bar .wm{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase;
@@ -37,30 +35,18 @@
   .bar .wm small{ display:block; font-family:var(--font-mono); font-style:normal; font-weight:400; font-size:8.5px;
     letter-spacing:.4em; color:var(--color-muted); margin-top:5px; }
 
-  /* ---- Layout ---- */
-  .wrap{ display:grid; grid-template-columns:236px minmax(0,1fr); gap:0;
-    max-width:1180px; margin:0 auto; }
+  /* ---- Embedded in the showcase iframe — content-only ----
+     The showcase already provides a top bar (brand + theme customizer) and the
+     rail handles doc navigation, so the local bar would just stack on top of it.
+     Drop it and reclaim its spacing; the faint HUD canvas stays as the ground. */
+  html.embedded header.bar{ display:none; }
+  html.embedded main.doc{ padding-top:clamp(20px,4vw,40px); }
 
-  /* ---- Doc rail ---- */
-  nav.rail{ position:sticky; top:73px; align-self:start; height:max-content;
-    padding:26px 14px 26px clamp(16px,4vw,40px); display:flex; flex-direction:column; gap:4px; }
-  .rail .rh{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.3em; text-transform:uppercase;
-    color:var(--color-ghost); padding:0 12px 10px; }
-  a.rl{ position:relative; display:flex; align-items:baseline; justify-content:space-between; gap:10px; text-decoration:none;
-    padding:9px 12px; border:1px solid transparent; transition:background var(--dur-base) ease, border-color var(--dur-base) ease; }
-  a.rl .rn{ font-family:var(--font-mono); font-size:12px; color:var(--color-muted); }
-  a.rl .rx{ font-family:var(--font-mono); font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--color-ghost); }
-  a.rl::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--section-accent); transform:scaleY(0); transform-origin:top; transition:transform var(--dur-base) var(--ease-out-expo); }
-  a.rl:hover{ background:color-mix(in srgb,var(--section-accent) 6%,transparent); }
-  a.rl:hover .rn{ color:var(--color-text); }
-  a.rl:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:-2px; }
-  a.rl.is-active{ background:var(--action-primary-weak); border-color:color-mix(in srgb,var(--section-accent) 30%,transparent); }
-  a.rl.is-active::before{ transform:scaleY(1); }
-  a.rl.is-active .rn{ color:var(--color-white); }
-  a.rl.is-active .rx{ color:var(--section-accent); }
+  /* ---- Layout — single column; doc navigation lives in the showcase rail. ---- */
+  .wrap{ max-width:900px; margin:0 auto; }
 
   /* ---- Article ---- */
-  main.doc{ min-width:0; padding:30px clamp(16px,4vw,48px) 96px; border-left:1px solid var(--color-border-2); }
+  main.doc{ min-width:0; padding:30px clamp(16px,4vw,48px) 96px; }
   .loading{ font-family:var(--font-mono); font-size:13px; color:var(--color-muted); letter-spacing:.04em; padding:20px 0; }
   .loading::after{ content:'_'; animation:cb .7s steps(2) infinite; }
   @keyframes cb{ 50%{ opacity:0; } }
@@ -119,13 +105,7 @@
   .prose td code,.prose th code{ font-size:11px; }
 
   @media (max-width:860px){
-    .wrap{ grid-template-columns:1fr; }
-    nav.rail{ position:static; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; gap:8px;
-      padding:14px clamp(16px,4vw,40px); border-bottom:1px solid var(--color-border-2); }
-    .rail .rh{ display:none; }
-    a.rl{ flex:0 0 auto; flex-direction:column; gap:2px; border:1px solid var(--color-border-2); }
-    a.rl::before{ display:none; }
-    main.doc{ border-left:0; }
+    main.doc{ padding-top:18px; }
   }
   @media (prefers-reduced-motion:reduce){ .loading::after{ animation:none; } }
 </style>
@@ -135,7 +115,6 @@
   <div class="bg-orb"></div>
 
   <header class="bar">
-    <a class="back" href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Index</a>
     <div class="brand">
       <img src="assets/brain.svg" alt="OneBrain logo" />
       <span class="wm">Docs<small>OneBrain Design System</small></span>
@@ -150,18 +129,6 @@
   </header>
 
   <div class="wrap">
-    <nav class="rail" aria-label="Documents">
-      <span class="rh">// Docs &amp; source</span>
-      <a class="rl" data-doc="DESIGN.md" href="?doc=DESIGN.md"><span class="rn">DESIGN.md</span><span class="rx">rules</span></a>
-      <a class="rl" data-doc="README.md" href="?doc=README.md"><span class="rn">README.md</span><span class="rx">guide</span></a>
-      <a class="rl" data-doc="CONTRIBUTING.md" href="?doc=CONTRIBUTING.md"><span class="rn">CONTRIBUTING.md</span><span class="rx">extend</span></a>
-      <a class="rl" data-doc="ACCESSIBILITY.md" href="?doc=ACCESSIBILITY.md"><span class="rn">ACCESSIBILITY.md</span><span class="rx">a11y</span></a>
-      <a class="rl" data-doc="PROVENANCE.md" href="?doc=PROVENANCE.md"><span class="rn">PROVENANCE.md</span><span class="rx">source</span></a>
-      <a class="rl" data-doc="CHANGELOG.md" href="?doc=CHANGELOG.md"><span class="rn">CHANGELOG.md</span><span class="rx">history</span></a>
-      <a class="rl" data-doc="SKILL.md" href="?doc=SKILL.md"><span class="rn">SKILL.md</span><span class="rx">skill</span></a>
-      <a class="rl" data-doc="tokens/README.md" href="?doc=tokens/README.md"><span class="rn">tokens/README.md</span><span class="rx">tokens</span></a>
-    </nav>
-
     <main class="doc" id="doc"><div class="loading">Loading</div></main>
   </div>
 
@@ -172,7 +139,6 @@
     var KNOWN = ["DESIGN.md","README.md","CONTRIBUTING.md","ACCESSIBILITY.md","PROVENANCE.md","CHANGELOG.md","SKILL.md","tokens/README.md"];
     var DEFAULT = "DESIGN.md";
     var docEl = document.getElementById("doc");
-    var rails = Array.prototype.slice.call(document.querySelectorAll("a.rl"));
 
     function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
@@ -288,14 +254,6 @@
       });
     }
 
-    function setActive(file){
-      rails.forEach(function (r){
-        var on = r.getAttribute("data-doc") === file;
-        r.classList.toggle("is-active", on);
-        if (on){ r.setAttribute("aria-current", "page"); } else { r.removeAttribute("aria-current"); }
-      });
-    }
-
     function fallback(file, reason){
       return '<div class="fallback"><h3>Open ' + esc(file) + " directly</h3>" +
         "<p>This reader couldn't inline the file in the current preview (" + esc(reason) +
@@ -304,7 +262,6 @@
     }
 
     function load(file){
-      setActive(file);
       docEl.innerHTML = '<div class="loading">Loading ' + esc(file) + "</div>";
       document.title = "OneBrain Docs — " + file;
       fetch(file, { cache: "no-cache" })
@@ -324,16 +281,11 @@
       return (p && KNOWN.indexOf(p) > -1) ? p : DEFAULT;
     }
 
-    rails.forEach(function (r){
-      r.addEventListener("click", function (e){
-        if (e.metaKey || e.ctrlKey || e.shiftKey){ return; }
-        e.preventDefault(); go(r.getAttribute("data-doc"));
-      });
-    });
     window.addEventListener("popstate", function (){ load(fromUrl()); });
 
     go(fromUrl(), true);
   })();
   </script>
+<script src="preview/showcase-prefs.js"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@
   .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
     background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
     background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 20%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 85% 70% at 50% 20%,#000 30%,transparent 100%); }
-  .eb{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--color-accent-3); background:color-mix(in srgb,var(--color-accent-3) 5%,transparent); border:1px solid color-mix(in srgb,var(--color-accent-3) 30%,transparent); position:relative; }
+  .eb{ display:inline-flex; align-items:center; gap:10px; padding:8px 14px; font-family:var(--font-mono); font-size:var(--eyebrow-size); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--section-accent); background:color-mix(in srgb,var(--section-accent) 5%,transparent); border:1px solid color-mix(in srgb,var(--section-accent) 30%,transparent); position:relative; }
   .eb::before,.eb::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;}
   .eb::before{top:-2px;left:-2px;border-right:0;border-bottom:0;} .eb::after{bottom:-2px;right:-2px;border-left:0;border-top:0;}
   .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:var(--glow-sm);}
@@ -26,7 +26,7 @@
   .wordmark.ui{ color:var(--color-white); text-shadow:0 0 22px rgba(255,255,255,.18); }
   .lockup{ display:flex; flex-direction:column; gap:7px; }
   .lockup + .lockup{ margin-top:22px; padding-top:22px; border-top:1px solid var(--color-border-2); }
-  .lockup-label{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.32em; text-transform:uppercase; color:var(--color-accent-2); }
+  .lockup-label{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.32em; text-transform:uppercase; color:var(--section-accent); }
   .lockup-label .use{ color:var(--color-muted); }
   .tagline{ font-family:var(--font-mono); font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--color-muted); margin-top:8px; }
 
@@ -51,14 +51,14 @@
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-3)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
   <span class="eb"><span class="dot"></span> BRAND ASSETS · PRESERVED SOURCE FILES</span>
   <h1>Brand Assets</h1>
   <p class="lede">Every mark below is a <b style="color:var(--color-text)">real package file</b> from
     <code>assets/</code> and <code>build/</code>. The vector mark (<code>brain.svg</code> = <code>logo.svg</code>)
     is the OneBrain source brain, now carrying a <b style="color:var(--color-text)">live neuron-spark layer</b> —
-    every one of its 31 nodes flashes on its own random cycle (frozen to a steady glow under
+    every one of its 36 nodes flashes on its own random cycle (frozen to a steady glow under
     <code>prefers-reduced-motion</code>). The two <b style="color:var(--color-text)">raster</b> marks —
     <code>favicon.ico</code> and the app-icon <code>PNG</code> — are rendered from <code>brain.svg</code> so the
     browser-tab and home-screen marks are the brand brain, not the framework's default starter favicon.</p>
@@ -86,7 +86,7 @@
   <div class="sec">// App &amp; runtime icons — build/ + assets/</div>
   <div class="grid">
     <div class="acard"><div class="frame"><img src="../build/logo.svg" alt="brand logo svg — animated neuron spark" style="width:84px;filter:var(--glow-brand)" /></div>
-      <div class="nm">Brand logo (SVG)</div><div class="pth">build/logo.svg · assets/brain.svg<br>live neuron spark · 31 nodes</div></div>
+      <div class="nm">Brand logo (SVG)</div><div class="pth">build/logo.svg · assets/brain.svg<br>live neuron spark · 36 nodes</div></div>
     <div class="acard"><div class="frame"><img src="../build/icon.png" alt="app icon 180px — gradient brain" style="width:90px" /></div>
       <div class="nm">App icon (PNG)</div><div class="pth">build/icon.png · assets/apple-touch-icon.png<br>180px · rendered from brain.svg</div></div>
     <div class="acard"><div class="frame"><img src="../assets/favicon.ico" alt="OneBrain favicon — gradient brain mark" style="width:52px" /></div>
@@ -112,6 +112,6 @@
     <div class="fcard"><p class="big" style="font-family:var(--font-sans)">Inter</p>
       <div class="files">system / Google fallback<br>(not shipped as a file) · body</div></div>
   </div>
-  <script src="_home.js"></script>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

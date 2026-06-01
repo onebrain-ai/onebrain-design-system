@@ -20,7 +20,7 @@
   .langcard .scr{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--color-ghost); display:block; margin-bottom:12px; }
   .langcard .hd{ font-family:var(--font-display); font-style:italic; font-weight:700; font-size:1.5rem; line-height:1.15; color:var(--color-white); margin:0 0 8px; }
   .langcard .bd{ font-family:var(--font-sans); font-size:15px; line-height:1.7; color:var(--text-secondary); margin:0; }
-  .langcard .mt{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; color:var(--color-accent-2); margin-top:14px; }
+  .langcard .mt{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; color:var(--section-accent); margin-top:14px; }
   .mirror{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; align-items:start; }
   .frame{ border:1px dashed var(--border-default); padding:16px; }
   .frame > .tag-dir{ font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--color-ghost); display:block; margin-bottom:14px; }
@@ -34,14 +34,14 @@
 </style>
 </head>
 <body class="ob-root pv-boot">
-  <div class="pv-orb" style="--pv-orb-accent: var(--color-accent-2)"></div>
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
   <div class="pv-grid-bg"></div>
 
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
     <symbol id="ob-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
   </svg>
 
-  <span class="cyber-pill" style="--section-accent:var(--color-accent-2)"><span class="cyber-dot is-pulse"></span> FOUNDATION · I18N &amp; RTL</span>
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> FOUNDATION · I18N &amp; RTL</span>
   <h1>i18n &amp; RTL</h1>
   <p class="lede">The type stacks carry Thai · Arabic · CJK system fallbacks after the Latin faces, so non-Latin
     text renders instead of tofu, and the layout primitives mirror under <code>dir="rtl"</code>. See <code>DESIGN.md §10</code>.</p>
@@ -73,13 +73,13 @@
     <div class="frame">
       <span class="tag-dir">dir="ltr" · Thai</span>
       <div class="stack">
-        <div class="cyber-card" style="--section-accent:var(--color-accent-2)">
+        <div class="cyber-card">
           <div class="card-meta">บันทึก</div>
           <div class="card-title">Capture</div>
           <p class="card-desc" style="font-family:var(--font-sans);font-size:13px">บันทึกไอเดียเดียว แล้วระบบจะเสนอ wikilink ไปยังโน้ตที่เกี่ยวข้อง</p>
         </div>
         <div class="alert alert-info"><div><div class="alert-title">◐ กำลังจัดทำดัชนี</div><div class="alert-body lbd">qmd กำลังฝังโน้ต 142 รายการ — ค้นหายังใช้งานได้</div></div></div>
-        <div class="accordion" style="--section-accent:var(--color-accent-2)">
+        <div class="accordion">
           <details class="accordion-item" open>
             <summary>โฟลเดอร์ PARA
               <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
@@ -93,13 +93,13 @@
     <div class="frame" dir="rtl">
       <span class="tag-dir" style="text-align:right">dir="rtl" · Arabic</span>
       <div class="stack">
-        <div class="cyber-card" style="--section-accent:var(--color-accent-2)">
+        <div class="cyber-card">
           <div class="card-meta">التقاط</div>
           <div class="card-title">Capture</div>
           <p class="card-desc" style="font-family:var(--font-sans);font-size:13px">سجّل فكرة واحدة وسيقترح النظام روابط wiki إلى الملاحظات ذات الصلة</p>
         </div>
         <div class="alert alert-info"><div><div class="alert-title">◐ جارٍ الفهرسة</div><div class="alert-body lbd">يقوم qmd بفهرسة 142 ملاحظة — البحث ما زال متاحًا</div></div></div>
-        <div class="accordion" style="--section-accent:var(--color-accent-2)">
+        <div class="accordion">
           <details class="accordion-item" open>
             <summary>مجلدات PARA
               <svg class="ob-icon ob-icon-16 accordion-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg>
@@ -126,5 +126,6 @@
     they match, and the fallbacks export to every native platform). RTL mirror block: <code>components.css §13</code>.
     Fallback families (<code>Noto Sans Thai / Arabic / CJK SC</code>) are system/Google faces — not shipped here —
     so rendering depends on the platform having them; Apple platforms also cover these via <code>system-ui</code>.</p>
+<script src="showcase-prefs.js"></script>
 </body>
 </html>

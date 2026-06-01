@@ -204,11 +204,15 @@ The dark-first product surfaces are untouched.
   color. Shipped as a reusable component: the `.accent-dots` chrome strip (`components.css`)
   driven by the shared, dependency-free `preview/accent-picker.js` (per-group config via
   `data-accent-target` / `data-accent-key` / `data-accent-default`; the default key
-  `ob-accent` is shared so a chosen accent follows the user across surfaces). It is wired into
-  every surface at its natural settings home — the mobile **You / Appearance** screen, the
-  dashboard top bar, the desktop sidebar, the landing nav, and the deck presenter chrome —
-  and re-keys `<html>` (overriding `:root`, so even fixed chrome follows). Reference:
-  `preview/surface-mobile.html` → "You / Appearance".
+  `ob-accent` is shared so a chosen accent follows the user across surfaces), re-keying
+  `<html>` so even fixed chrome follows. **Where the control lives is a product decision.**
+  In this package the accent (plus theme / density / direction) is centralized in the
+  **showcase shell** (`index.html`) — its right-hand *Theme customizer* re-keys whichever
+  surface is in the preview canvas, so the individual surfaces stay clean product UI with no
+  embedded designer controls. The surfaces receive those prefs via `preview/showcase-prefs.js`
+  (postMessage + URL hash), which works even when the preview pane sandboxes the iframe and
+  blocks cross-origin DOM access. Drop a standalone `.accent-dots` group into a real product's
+  own settings screen when that product genuinely wants a user-facing accent picker.
 
 ---
 
@@ -440,7 +444,7 @@ previews, and the UI kit reproduce them.
 - **Logo & wordmark lockups**: the **mark** is always the preserved gradient neural-network
   brain — `assets/brain.svg` (= byte-identical `build/logo.svg`); never redraw or recolor it
   (§9). The mark carries one sanctioned, purely **additive** motion layer: a **neuron-spark
-  animation** — each of its 31 nodes flashes (opacity + a small scale pop) on its own random
+  animation** — each of its 36 nodes flashes (opacity + a small scale pop) on its own random
   cycle so the network reads as *firing*. It is opacity/transform-only (cheap), self-contained
   in the SVG so it plays even when the mark is an `<img>`, and frozen to a steady faint glow
   under `prefers-reduced-motion`. The spark never alters the mark's geometry or gradient; the
