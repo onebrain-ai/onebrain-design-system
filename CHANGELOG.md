@@ -44,6 +44,18 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Web fonts fell back to a generic sans on GitHub Pages (Chakra Petch / JetBrains Mono).** All 12
+  bundled TTFs in `fonts/` were corrupted by a UTF-8 round-trip during initial packaging — every byte
+  ≥ `0x80` was rewritten to the replacement-character sequence `EF BF BD` (≈9,330 hits per file), so
+  the `@font-face` resources failed to parse (`document.fonts.load` → `NetworkError`). It was masked
+  locally because the machine had the fonts installed system-wide and the WebView substituted them,
+  but GitHub Pages served the broken bytes to clients with no local copy, so display/mono text fell
+  through to the Inter / system fallback. This is the same corruption class that hit the icon PNG/ICO
+  binaries earlier. Replaced all 12 files with clean OFL originals from the canonical `google/fonts`
+  source, under their existing filenames (so the relative `url()` refs are unchanged). The `.nojekyll`
+  marker and relative `url()` paths were already correct, so no markup change was needed. Verified
+  before/after with the `FontFace` API (error → loaded) and a render screenshot; a repo-wide sweep
+  confirms **zero** remaining corrupted binaries.
 - **Foundation previews and the sidebar didn't follow the accent.** Two more instances of the same
   chrome-reads-primitive root cause. (1) The Foundation preview pages (`colors-primary`, `colors-theme-dark`,
   `typography-specimens`, `spacing-radius`, `spacing-shadows`, plus the `spacing-tokens` scale bars) pinned
