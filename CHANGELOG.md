@@ -120,6 +120,12 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   (above), and **Open** uses `window.open` with a clipboard-copy fallback (flashes "Link copied")
   when popups are blocked. The viewport selector's device-width also sets an explicit `width` so a
   framed preview no longer collapses to the iframe's default.
+- **`--glow-brand` demo showed a meaningless glyph.** The "logo halo" tile in `spacing-shadows.html`
+  rendered two stacked geometric triangles (`◢◤`) under the glow filter instead of the actual logo —
+  unreadable as a brand halo (a reviewer asked "what is this?"). Swapped it for the real
+  `assets/brain.svg` mark under `filter:var(--glow-brand)`, so the token now demonstrates exactly what
+  it names: the gradient brain mark with its magenta + cyan halo. Verified in-browser (mark loads, glow
+  applied).
 - **CI workflow** — `.github/workflows/ci.yml` runs the two guards (`tokens/check.js`
   token-drift + `tokens/a11y.js` WCAG AA contrast) on every push to `main` and every PR,
   as separate named steps for a readable pass/fail signal. Both are zero-dependency Node
