@@ -143,3 +143,24 @@ Never silently rename or delete a public token/class — consumers pin to them. 
 - Small, focused commits; subject says what changed and why. No `Co-Authored-By` line.
 - Bump `version` in `package.json` (+ `tokens/package.json` if the token API changed) and
   add a `CHANGELOG.md` entry following [Semantic Versioning](https://semver.org).
+
+## Branch protection — `main` is gated
+
+`main` is protected: **every change lands through a pull request**, and a PR can't merge
+until CI is green. Direct pushes to `main` are rejected — the rule applies to admins too,
+so there is no bypass.
+
+- **Open a PR from a feature branch.** `git push -u origin <branch>` then `gh pr create`.
+  A push straight to `main` is rejected; move the commit onto a branch and PR it.
+- **CI must pass.** The required check is **`Token drift + a11y guards`** — the workflow in
+  `.github/workflows/ci.yml` (token drift + WCAG AA contrast). A red check disables the
+  merge button; fix and push until it's green.
+- **Keep the branch up to date.** "Strict" mode is on: if `main` moved after your last CI
+  run, merge/rebase `main` into the branch and let CI re-run before merging, so the check
+  reflects the actual post-merge result.
+- **Reviews:** zero approvals are required (solo-maintainer friendly) — once CI is green you
+  can self-merge. The gate is CI, not a reviewer; raise `required_approving_review_count`
+  when the team grows.
+
+Run `npm test` locally first (the same two guards CI runs) so the PR goes green on the
+first push.
