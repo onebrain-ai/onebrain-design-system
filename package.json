@@ -44,6 +44,8 @@
   ],
   "scripts": {
     "build:tokens": "node tokens/build.js",
+    "check:tokens": "node tokens/check.js",
+    "test": "node tokens/check.js",
     "start": "npx --yes serve ."
   }
 }

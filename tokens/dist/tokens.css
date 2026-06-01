@@ -133,6 +133,11 @@
   --ob-zIndex-spine: 30;
   --ob-zIndex-warp: 45;
   --ob-zIndex-nav: 50;
+  --ob-zIndex-dropdown: 60;
+  --ob-zIndex-overlay: 70;
+  --ob-zIndex-modal: 80;
+  --ob-zIndex-toast: 90;
+  --ob-zIndex-tooltip: 100;
   --ob-zIndex-counter: 1000;
 }
 

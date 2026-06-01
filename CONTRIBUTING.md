@@ -31,6 +31,13 @@ node tokens/build.js      # or: npm run build:tokens
 `tokens/dist/` is committed so consumers don't need Node — never hand-edit files in
 `dist/`; regenerate them.
 
+**A guard enforces the hand-sync.** `npm test` (→ `node tokens/check.js`) fails if
+`colors_and_type.css` and `tokens.json` disagree on any shared primitive (dark **or**
+light theme), or if `dist/` is stale vs. `tokens.json`. Run it before every commit — it's
+how you catch "changed one source, forgot the other" before it ships. When you add a brand
+**new** primitive, also add its `tokens.json`-path → `--css-var` row to the `MAP` table in
+`tokens/check.js` so the guard covers it.
+
 ---
 
 ## Add or change a token
@@ -80,9 +87,11 @@ A change isn't done until these point at the real file structure:
 
 ## Verify before you commit
 
-Never claim done without evidence. Serve the package and check the real render:
+Never claim done without evidence. First run the token guard, then serve and check the
+real render:
 
 ```bash
+npm test             # token drift check: css <-> json parity + dist freshness
 npm start            # or: npx serve .
 ```
 

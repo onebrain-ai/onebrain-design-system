@@ -307,6 +307,28 @@ border or a neon glow:
   used an opaque tint (above) to dodge a Safari sticky-scroll repaint, so for a long sticky nav
   override `.nav-glass` back to the solid `--bg-sunken` fill if Safari perf matters.
 
+### Stacking order (z-index)
+One shared z-scale (tokens `--z-*` in `colors_and_type.css`, `zIndex` in `tokens.json`).
+**Overlays sit above the sticky nav** — never reuse `--z-nav` for a scrim or dialog, or
+the nav can paint over an open modal:
+
+| Token | Value | Layer |
+|---|---|---|
+| `--z-bg` / `--z-grid` | `-1` / `1` | HUD backdrop + lattice |
+| `--z-content` | `10` | page content |
+| `--z-spine` / `--z-warp` | `30` / `45` | page-spine dots / warp transition |
+| `--z-nav` | `50` | sticky glass nav |
+| `--z-dropdown` | `60` | menus / select popovers |
+| `--z-overlay` | `70` | scrim / dimming layer |
+| `--z-modal` | `80` | modal + drawer (above their scrim) |
+| `--z-toast` | `90` | transient notifications (above modals) |
+| `--z-tooltip` | `100` | tooltips / hints (always on top) |
+| `--z-counter` | `1000` | deck presenter chrome |
+
+`.scrim` reads `--z-overlay`, `.drawer` `--z-modal`, `.dropdown` `--z-dropdown`,
+`.toast-stack` `--z-toast`, `.tooltip .tip` `--z-tooltip`. A modal nested in `.scrim`
+inherits the scrim's tier; a stand-alone dialog should use `--z-modal`.
+
 ---
 
 ## 5. Layout & composition

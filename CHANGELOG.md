@@ -7,6 +7,51 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 > This is the design system's **own** version, independent of the OneBrain product
 > (plugin `3.1.6` / CLI `≥3.1.0`).
 
+## [Unreleased]
+
+### Added
+
+- **Token drift check** — `tokens/check.js` (run via `npm test` from the root or `tokens/`).
+  A zero-dependency guard that fails CI/commit when (a) `colors_and_type.css` and
+  `tokens.json` disagree on any shared primitive in the **dark or light** theme, or (b)
+  `tokens/dist/` is stale vs. `tokens.json`. Closes the "two sources kept in sync by hand"
+  gap from `CONTRIBUTING.md`. `tokens/build.js` is now importable (guarded by
+  `require.main === module`) so the checker regenerates `dist/` in memory without touching
+  the tree.
+- **Overlay stacking tier** — new z-index tokens above `--z-nav` (50) in both token
+  sources: `--z-dropdown` (60), `--z-overlay` (70), `--z-modal` (80), `--z-toast` (90),
+  `--z-tooltip` (100). Documented as a table in `DESIGN.md` §4. Plus a `.toast-stack`
+  fixed-region helper in `components.css` that owns the toast tier.
+- **Custom `<select>` listbox** — `.cyber-select` now has an on-brand OPEN state. A native
+  `<select>`'s option popup is painted by the OS and can't be styled (the bright OS-blue,
+  rounded, system-font list), so `preview/cyber-select.js` progressively enhances any
+  `.cyber-select` wrapping a `<select>`: it keeps the real control for form submit + a
+  no-JS fallback, then renders a `.cs-list` popup keyed to the design tokens (frosted
+  near-opaque menu fill, sharp corners, mono type, accent **check + 2px left bar + weak tint**
+  for selected/active — never a solid accent fill). Full WAI-ARIA collapsed-combobox
+  pattern: `aria-activedescendant`, keyboard (↑ ↓ Home End Enter Space Esc Tab) +
+  first-letter typeahead, click-outside close, selection mirrored back to the native
+  `<select>` (re-fires `input` + `change`). Honors reduced-motion / reduced-transparency;
+  scrolls via `scrollTop` (never `scrollIntoView`). Demoed in `preview/components-forms.html`.
+- **`--glass-fill-menu` token** (dark + light) — a near-opaque frosted fill for scrim-less
+  popup menus that float directly over live page content.
+
+### Changed
+
+- `.scrim` → `--z-overlay`, `.drawer` → `--z-modal`; `.dropdown` and `.tooltip .tip` now
+  carry `--z-dropdown` / `--z-tooltip` so menus and hints layer correctly.
+
+### Fixed
+
+- Overlays (`.scrim`, `.modal`, `.drawer`) previously shared `--z-nav`, so the sticky glass
+  nav could paint over an open modal/drawer; toast, tooltip, and dropdown had no defined
+  stacking order. The new tier resolves both.
+- Select listbox / dropdown popups were too translucent (`--glass-fill-elevated`, 0.72) — with
+  no scrim behind them, live page content (disabled rows, checkboxes) bled through and
+  clashed with the option labels, hurting readability. Scrim-less menus (`.dropdown`,
+  `.cyber-select .cs-list`) now use the near-opaque `--glass-fill-menu`; modal/drawer keep
+  the lighter elevated fill since their scrim already hides what's behind them.
+
 ## [1.0.0] — 2026-06-01
 
 First complete, audit-clean package. Every token, asset, and component class is

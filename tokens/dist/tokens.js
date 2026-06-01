@@ -201,6 +201,11 @@ const tokens = {
       "spine": 30,
       "warp": 45,
       "nav": 50,
+      "dropdown": 60,
+      "overlay": 70,
+      "modal": 80,
+      "toast": 90,
+      "tooltip": 100,
       "counter": 1000
     }
   },
@@ -399,6 +404,11 @@ const tokens = {
       "spine": 30,
       "warp": 45,
       "nav": 50,
+      "dropdown": 60,
+      "overlay": 70,
+      "modal": 80,
+      "toast": 90,
+      "tooltip": 100,
       "counter": 1000
     }
   },

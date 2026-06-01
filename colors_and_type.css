@@ -288,8 +288,18 @@
   --bp-wide:  1440px;  /* desktop                                           */
   --bp-ultra: 1920px;  /* wide                                              */
 
-  /* -- Z layers ------------------------------------------------------------ */
-  --z-bg: -1; --z-grid: 1; --z-content: 10; --z-spine: 30; --z-warp: 45; --z-nav: 50; --z-counter: 1000;
+  /* -- Z layers ------------------------------------------------------------
+     Overlays sit ABOVE the sticky nav (50). Order: dropdown < overlay(scrim)
+     < modal/drawer < toast < tooltip. counter (deck presenter chrome) is top.
+     Without this tier, scrim/modal/drawer shared --z-nav and a sticky nav could
+     paint over an open modal; menus/toasts/tooltips had no defined order. */
+  --z-bg: -1; --z-grid: 1; --z-content: 10; --z-spine: 30; --z-warp: 45; --z-nav: 50;
+  --z-dropdown: 60;  /* menus / select popovers          */
+  --z-overlay:  70;  /* scrim / dimming layer            */
+  --z-modal:    80;  /* modal + drawer (above scrim)     */
+  --z-toast:    90;  /* transient notifications          */
+  --z-tooltip: 100;  /* tooltips / hints (always on top) */
+  --z-counter: 1000; /* deck presenter chrome            */
 }
 
 /* ---------------------------------------------------------------------------
@@ -374,7 +384,8 @@
   --glass-blur:          blur(16px) saturate(1.4);   /* panels (cards / nav)  */
   --glass-blur-strong:   blur(26px) saturate(1.7);   /* overlays over content */
   --glass-fill:          rgba(12, 12, 20, 0.55);     /* card / stat / list    */
-  --glass-fill-elevated: rgba(14, 14, 24, 0.72);     /* modal / drawer / menu */
+  --glass-fill-elevated: rgba(14, 14, 24, 0.72);     /* modal / drawer (scrim-backed) */
+  --glass-fill-menu:     rgba(10, 10, 18, 0.97);     /* scrim-less popup menus (select / dropdown) — near-opaque so live page content can't bleed through and clash with the list */
   --glass-fill-nav:      rgba(2, 2, 4, 0.6);         /* sticky nav / tab bar  */
   --glass-highlight:     inset 0 1px 0 rgba(255, 255, 255, 0.07); /* top sheen */
 }
@@ -436,6 +447,7 @@
   /* Glass on white = translucent light fills (the dark fills would muddy). */
   --glass-fill:          rgba(255, 255, 255, 0.6);
   --glass-fill-elevated: rgba(255, 255, 255, 0.78);
+  --glass-fill-menu:     rgba(255, 255, 255, 0.98);  /* scrim-less popup menus — near-opaque on white too */
   --glass-fill-nav:      rgba(255, 255, 255, 0.68);
   --glass-highlight:     inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
