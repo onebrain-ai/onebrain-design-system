@@ -11,6 +11,16 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **Animated brand mark (neuron spark)** — `assets/brain.svg` (= byte-identical `build/logo.svg`)
+  now carries a self-contained, additive **neuron-spark layer**: 36 node centers, auto-detected
+  from the mark by morphological **opening** (erode→dilate, which deletes the thin connectors and
+  keeps only the fat vertex discs) + connected-components + a circularity test, so every spark is
+  locked to a real node disc — never an edge mid-span or a line crossing (those read as arcing
+  "lightning" and are excluded). Each flashes (opacity + a small scale pop) on its own
+  deterministic pseudo-random cycle so the network reads as *firing*. White core + cyan halo
+  (halo scales subtly with node size), opacity/transform-only, plays even as an `<img>`, and
+  frozen to a steady faint glow under `prefers-reduced-motion`. The mark's geometry/gradient is
+  untouched (`DESIGN.md` §8/§9).
 - **Token drift check** — `tokens/check.js` (run via `npm test` from the root or `tokens/`).
   A zero-dependency guard that fails CI/commit when (a) `colors_and_type.css` and
   `tokens.json` disagree on any shared primitive in the **dark or light** theme, or (b)
@@ -108,6 +118,28 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `--glass-fill-menu` — it's a dense pick-list like the select/dropdown, so its rows now read
   as crisply as theirs over the blurred scrim. `--glass-fill-menu` itself was nudged 0.97 → 0.99
   (dark) / 0.98 → 0.99 (light) to remove the last trace of bleed-through from the scrim-less menus.
+- **App-icon PNG is now the gradient brain** — `assets/apple-touch-icon.png` + `build/icon.png`
+  re-rendered from `brain.svg` at 180×180 (byte-identical pair), so the home-screen mark matches
+  the favicon and logo instead of the preserved monochrome source tile. `preview/brand-assets.html`
+  lede + cards updated to reflect the two raster marks rendering from `brain.svg`.
+- **Architecture diagrams are now outlined, not filled** — `assets/diagrams/{harness-os-stack,
+  coevo-loop,vault-hub}.svg` previously rendered their layers/nodes/core as large solid accent
+  fills (teal gradient rects, lime discs, a purple core), violating `DESIGN.md` §2/§9 ("never put
+  an accent on a large fill — accents are strokes, glows, bars, dots"). They now read in the
+  `.cyber-card` language: dark recessed shapes (`#0c0c15` / `#070709`) + an accent **stroke**, with
+  the harness layers carrying the 2px solid left accent bar and the loop/vault nodes a static
+  blurred glow halo (kept off the breathing element so no filter re-rasterizes during animation).
+  The harness stack's four emoji icons (🧠🤖✨💎) are replaced with inline **Lucide-line icons**
+  (`ob-brain` / `ob-harness` / `ob-skill` / `ob-vault`, paths from `assets/icons.svg`) per §6. All
+  SMIL/CSS motion (layer flow, particle travel, breathe, icon pulse) and the `prefers-reduced-motion`
+  fallbacks are preserved; unused fill gradients (`g-layer`, `g-node-fill`, `g-core-fill`) removed.
+- **Harness-stack brain icon sized to match its peers** — the `ob-brain` glyph in
+  `harness-os-stack.svg` only fills ~11.5×14 of the Lucide 24-grid (vs 18–22 for the chip /
+  sparkle / vault marks), so at the shared `scale(1.25)` it rendered visibly smaller and lighter
+  than the other three layer icons. It's now scaled ×1.4 about its own center (so placement and
+  the pulse animation are unchanged) with `stroke-width` dropped to `0.93` to hold the line weight
+  equal to the others — measured rendered heights are now brain 18.7 / llm 17.1 / vault 19.0 /
+  harness 20.9, a consistent set.
 
 ### Fixed
 

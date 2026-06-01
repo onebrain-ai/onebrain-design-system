@@ -31,7 +31,11 @@
     background-size: var(--grid-size) var(--grid-size);
     -webkit-mask-image: radial-gradient(ellipse 90% 80% at 60% 30%, #000 20%, transparent 100%);
             mask-image: radial-gradient(ellipse 90% 80% at 60% 30%, #000 20%, transparent 100%); }
-  .ob-shell > * { position: relative; z-index: 1; }
+  /* Lift real regions above the backdrop. Exclude .ob-grid-bg — it must keep
+     its own position:absolute (equal-specificity `> *` would otherwise override
+     it to relative, making the backdrop an in-flow grid item that eats column 1
+     and wraps .ob-main to a second row). */
+  .ob-shell > *:not(.ob-grid-bg) { position: relative; z-index: 1; }
 
   /* ── Sidebar ───────────────────────────────────────────────────────── */
   .ob-sidebar { display: flex; flex-direction: column; background: rgba(2,2,4,.92);

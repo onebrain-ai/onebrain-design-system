@@ -437,6 +437,29 @@ previews, and the UI kit reproduce them.
 
 - **Product name**: always `OneBrain` (one word, camel-cased B). Never title anything from
   a URL/protocol string.
+- **Logo & wordmark lockups**: the **mark** is always the preserved gradient neural-network
+  brain — `assets/brain.svg` (= byte-identical `build/logo.svg`); never redraw or recolor it
+  (§9). The mark carries one sanctioned, purely **additive** motion layer: a **neuron-spark
+  animation** — each of its 31 nodes flashes (opacity + a small scale pop) on its own random
+  cycle so the network reads as *firing*. It is opacity/transform-only (cheap), self-contained
+  in the SVG so it plays even when the mark is an `<img>`, and frozen to a steady faint glow
+  under `prefers-reduced-motion`. The spark never alters the mark's geometry or gradient; the
+  two **raster** marks (`favicon.ico`, app-icon `PNG`) are rendered from `brain.svg` as static
+  gradient brains. The wordmark text comes in **two sanctioned forms**, and the mark is identical in both:
+  - **UI wordmark (default)** — mark + the word `OneBrain` in Chakra Petch italic uppercase,
+    solid `--color-white` + the soft white halo. This is the source-true treatment (matches
+    `.brand` in `global.css`) and is what every product surface uses: nav, sidebars, title
+    bars, app chrome, dense screens. When in doubt, use this.
+  - **Primary lockup (brand contexts only)** — mark + `One` in `--color-white` and `Brain`
+    filled with `--grad-brand` (`#ff2d92 → #ff5aa3 → #00f3ff`), Chakra Petch italic uppercase.
+    The gradient appears on the wordmark **here and only here** — reserved for brand/marketing
+    moments: the brand-assets sheet, a hero/splash, a cover slide, an OG image. Use at most
+    once per surface; never inside UI chrome (it competes with section accents). Reference:
+    `preview/brand-assets.html`.
+
+  Rule of thumb: the brand **gradient lives in the mark by default**; it only spills onto the
+  *wordmark* in the primary lockup. Inline "OneBrain" mentions in prose stay solid white +
+  bold + halo (§2) — never gradient-split.
 - **Tone**: confident, technical, minimal — a "personal chief of staff." Concise and
   proactive; no marketing fluff, no invented metrics.
 - **Eyebrows & status lines**: uppercase mono, wide-tracked (`LAYER_01`, `SYSTEM ONLINE`,
@@ -469,7 +492,9 @@ Do **not**:
   CLI `≥3.1.0`. If a value is unknown, use an honest placeholder.
 - Expose designer/demo controls (viewport pickers, theme knobs, target-count badges) inside
   product UI. Navigation must be real product navigation.
-- Recolor the brand logo or redraw it — use the preserved `assets/brain.svg`.
+- Recolor the brand logo or redraw it — use the preserved `assets/brain.svg`. (Its additive
+  neuron-spark layer is the one sanctioned motion; never restyle the mark's geometry or gradient,
+  and always keep the `prefers-reduced-motion` freeze.)
 
 ---
 

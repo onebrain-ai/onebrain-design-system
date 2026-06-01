@@ -21,8 +21,13 @@
 
   .hero-logo{ display:flex; align-items:center; gap:28px; flex-wrap:wrap; background:var(--color-surface); border:1px solid var(--color-border); padding:34px clamp(20px,4vw,44px); }
   .hero-logo img{ width:120px; height:auto; filter:var(--glow-brand); }
-  .wordmark{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:.01em; font-size:clamp(2rem,6vw,3.4rem); color:#fff; }
+  .wordmark{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:.01em; font-size:clamp(2rem,6vw,3.4rem); color:#fff; line-height:1; }
   .wordmark .b{ background:var(--grad-brand); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .wordmark.ui{ color:var(--color-white); text-shadow:0 0 22px rgba(255,255,255,.18); }
+  .lockup{ display:flex; flex-direction:column; gap:7px; }
+  .lockup + .lockup{ margin-top:22px; padding-top:22px; border-top:1px solid var(--color-border-2); }
+  .lockup-label{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.32em; text-transform:uppercase; color:var(--color-accent-2); }
+  .lockup-label .use{ color:var(--color-muted); }
   .tagline{ font-family:var(--font-mono); font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--color-muted); margin-top:8px; }
 
   .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; }
@@ -50,26 +55,40 @@
   <div class="pv-grid-bg"></div>
   <span class="eb"><span class="dot"></span> BRAND ASSETS · PRESERVED SOURCE FILES</span>
   <h1>Brand Assets</h1>
-  <p class="lede">Every mark below is a <b style="color:var(--color-text)">real preserved file</b> from
-    <code>assets/</code> and <code>build/</code>, copied byte-for-byte from the OneBrain source — not redrawn.
-    The one exception: <code>favicon.ico</code> is rebuilt from <code>brain.svg</code> so the browser-tab
-    mark is the brand brain, not the framework's default starter favicon the source had shipped.</p>
+  <p class="lede">Every mark below is a <b style="color:var(--color-text)">real package file</b> from
+    <code>assets/</code> and <code>build/</code>. The vector mark (<code>brain.svg</code> = <code>logo.svg</code>)
+    is the OneBrain source brain, now carrying a <b style="color:var(--color-text)">live neuron-spark layer</b> —
+    every one of its 31 nodes flashes on its own random cycle (frozen to a steady glow under
+    <code>prefers-reduced-motion</code>). The two <b style="color:var(--color-text)">raster</b> marks —
+    <code>favicon.ico</code> and the app-icon <code>PNG</code> — are rendered from <code>brain.svg</code> so the
+    browser-tab and home-screen marks are the brand brain, not the framework's default starter favicon.</p>
 
-  <div class="sec">// Logo &amp; wordmark — assets/brain.svg</div>
+  <div class="sec">// Logo &amp; wordmark — assets/brain.svg · two sanctioned lockups</div>
   <div class="hero-logo">
     <img src="../assets/brain.svg" alt="OneBrain neural-network logo" />
     <div>
-      <div class="wordmark">One<span class="b">Brain</span></div>
+      <div class="lockup">
+        <div class="lockup-label">UI wordmark <span class="use">— default · nav / chrome / dense surfaces</span></div>
+        <div class="wordmark ui">OneBrain</div>
+      </div>
+      <div class="lockup">
+        <div class="lockup-label">Primary lockup <span class="use">— brand / hero / cover only · gradient on the word once</span></div>
+        <div class="wordmark">One<span class="b">Brain</span></div>
+      </div>
       <div class="tagline">Your AI Thinking Partner · onebrain.run</div>
     </div>
   </div>
+  <p class="lede" style="margin-top:14px">The <b style="color:var(--color-text)">mark</b> is identical in both — only the
+    wordmark differs. The gradient lives in the mark by default and spills onto the word <em>only</em> in the
+    primary lockup; UI chrome always uses the solid-white wordmark (source-true <code>.brand</code>). See
+    <code>DESIGN.md §8</code>.</p>
 
   <div class="sec">// App &amp; runtime icons — build/ + assets/</div>
   <div class="grid">
-    <div class="acard"><div class="frame"><img src="../build/logo.svg" alt="brand logo svg" style="width:84px;filter:var(--glow-brand)" /></div>
-      <div class="nm">Brand logo (SVG)</div><div class="pth">build/logo.svg · assets/brain.svg</div></div>
-    <div class="acard"><div class="frame"><img src="../build/icon.png" alt="app icon 180px" style="width:90px" /></div>
-      <div class="nm">App icon (PNG)</div><div class="pth">build/icon.png · assets/apple-touch-icon.png</div></div>
+    <div class="acard"><div class="frame"><img src="../build/logo.svg" alt="brand logo svg — animated neuron spark" style="width:84px;filter:var(--glow-brand)" /></div>
+      <div class="nm">Brand logo (SVG)</div><div class="pth">build/logo.svg · assets/brain.svg<br>live neuron spark · 31 nodes</div></div>
+    <div class="acard"><div class="frame"><img src="../build/icon.png" alt="app icon 180px — gradient brain" style="width:90px" /></div>
+      <div class="nm">App icon (PNG)</div><div class="pth">build/icon.png · assets/apple-touch-icon.png<br>180px · rendered from brain.svg</div></div>
     <div class="acard"><div class="frame"><img src="../assets/favicon.ico" alt="OneBrain favicon — gradient brain mark" style="width:52px" /></div>
       <div class="nm">Favicon (ICO)</div><div class="pth">build/favicon.ico · assets/favicon.ico<br>16·32·48 · synced from brain.svg</div></div>
   </div>
