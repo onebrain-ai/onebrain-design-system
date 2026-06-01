@@ -434,7 +434,7 @@
   /* --section-accent, --color-info/-warning/-danger reference the accent
      vars above, so they inherit the inked values automatically. --color-success
      points at --color-loop (a diagram color we keep neon), so re-ink it here. */
-  --color-success:   #5f7d00;  /* lime -> moss ink (states only) */
+  --color-success:   #5f7d00;  /* lime -> moss ink (states + section-05 / green accent) */
 
   /* Chart: categorical c1–c5 inherit the re-inked accents/success above;
      only the vault purple + low-contrast chrome need a white-ground tune. */

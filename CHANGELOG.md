@@ -30,8 +30,19 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   shell in a **sandboxed iframe** (opaque/cross-origin), where the old `contentDocument` write is
   blocked. A same-origin `contentDocument` fast path is kept as a bonus; a preview opened standalone
   reads the hash, then the shell's stored prefs, so it remembers the last choice.
+- **Two section-identity accents in the showcase customizer** — `green` and `grey`, added beside the
+  four brand accents (cyan / violet / magenta / amber) so the customizer offers six. They reuse the
+  existing category colors rather than new hexes — `green` = group 05's lime `--color-success`,
+  `grey` = group 06's `--color-muted` (both already light-re-inked) — mirrored across `index.html`
+  and `showcase-prefs.js`. The reusable product `.accent-dots` (`accent-picker.js`) stays at the four
+  brand signals, and groups 05 / 06 keep their original `--color-success` / `--color-muted` marks.
 
 ### Changed
+
+- **Viewport (resolution) selector is desktop-only** — the showcase's `Full · 1440 · 1024 · 768 ·
+  390 · 360` bar is hidden at ≤1024px (tablet + mobile), where the canvas is always full-width and
+  responsive; any stored desktop device width is ignored at those sizes so a small screen never pins
+  the preview to a narrow frame.
 
 - **Surfaces no longer embed their own accent / density controls** — the in-surface accent-picker
   strips (landing nav, dashboard top bar, desktop sidebar, deck presenter chrome) and the dashboard
