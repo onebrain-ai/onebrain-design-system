@@ -1,0 +1,36 @@
+name: CI
+
+# Runs the design-system guards on every push to main and every PR.
+# Both guards are zero-dependency Node scripts (no package-lock, no npm install
+# needed), so the job just checks out, sets up Node, and runs them directly.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  guards:
+    name: Token drift + a11y guards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Asserts dist/ is freshly built from tokens.json AND that
+      # colors_and_type.css <-> tokens.json stay in sync (dark + light).
+      - name: Token drift check
+        run: node tokens/check.js
+
+      # Asserts every text/accent pair clears WCAG 2.1 AA contrast,
+      # parsing the real hex values out of colors_and_type.css.
+      - name: WCAG AA contrast guard
+        run: node tokens/a11y.js

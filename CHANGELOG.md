@@ -11,6 +11,11 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **CI workflow** — `.github/workflows/ci.yml` runs the two guards (`tokens/check.js`
+  token-drift + `tokens/a11y.js` WCAG AA contrast) on every push to `main` and every PR,
+  as separate named steps for a readable pass/fail signal. Both are zero-dependency Node
+  scripts, so the job needs no `npm install`/lockfile. This gives the local `npm test`
+  guards real teeth — drift or a contrast regression can no longer reach `main` silently.
 - **Animated brand mark (neuron spark)** — `assets/brain.svg` (= byte-identical `build/logo.svg`)
   now carries a self-contained, additive **neuron-spark layer**: 36 node centers, auto-detected
   from the mark by morphological **opening** (erode→dilate, which deletes the thin connectors and
