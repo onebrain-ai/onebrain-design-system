@@ -22,12 +22,15 @@
   "use strict";
 
   /* Accent name -> the section/action intents + button-frame gradient.
-     Mirrors accent-picker.js and the shell so any choice stays on-palette. */
+     Mirrors the showcase shell: four brand accents + two section-identity
+     accents (green = success, grey = muted) so any choice stays on-palette. */
   var ACCENTS = {
     cyan:    { c: "var(--color-accent-2)", g: "linear-gradient(135deg, var(--color-accent-2), var(--color-accent))" },
     violet:  { c: "var(--color-accent)",   g: "linear-gradient(135deg, var(--color-accent), var(--color-accent-2))" },
     magenta: { c: "var(--color-accent-3)", g: "linear-gradient(135deg, var(--color-accent-3), var(--color-accent))" },
-    amber:   { c: "var(--color-accent-4)", g: "linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3))" }
+    amber:   { c: "var(--color-accent-4)", g: "linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3))" },
+    green:   { c: "var(--color-success)",  g: "linear-gradient(135deg, var(--color-success), var(--color-accent-2))" },
+    grey:    { c: "var(--color-muted)",    g: "linear-gradient(135deg, var(--color-muted), var(--color-text))" }
   };
 
   var root = document.documentElement;

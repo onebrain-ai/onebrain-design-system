@@ -198,8 +198,14 @@ The dark-first product surfaces are untouched.
   than a raw hex, a surface's accent can be exposed as a real product setting: one control
   rewrites those four variables on the surface root and the whole surface re-keys from a
   single source of truth — eyebrows, active tabs, the corner-cut `+` tile, chips, composer
-  focus, streak pips, glows. Offer only the four brand accents (cyan / violet / magenta /
-  amber) so any choice stays on-palette, and persist it (e.g. `localStorage`). This is the
+  focus, streak pips, glows. Product surfaces (and the **showcase customizer** in
+  `index.html`) offer the four brand accents (cyan / violet / magenta / amber) plus two
+  section-identity accents — green and grey — that reuse the existing category colors of
+  groups 05 (Applied kit, lime `--color-success`) and 06 (Docs & source, `--color-muted`),
+  both already light-re-inked, so every choice stays on-palette. A real product
+  `.accent-dots` stays on the four brand signals; the two section-identity accents are
+  showcase-only (the customizer there offers six).
+  Persist the choice (e.g. `localStorage`). This is the
   one legitimate place a solid-accent *fill* appears — the picker swatch, which **is** the
   color. Shipped as a reusable component: the `.accent-dots` chrome strip (`components.css`)
   driven by the shared, dependency-free `preview/accent-picker.js` (per-group config via

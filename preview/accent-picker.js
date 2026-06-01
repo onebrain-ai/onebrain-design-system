@@ -16,8 +16,8 @@
                           chosen accent follows the user across surfaces).
      data-accent-default  fallback accent when nothing is stored (default: cyan).
 
-   Each child swatch button carries data-accent="cyan|violet|magenta|amber".
-   Only the four brand accents are offered so any choice stays on-palette.
+   Each child swatch button carries data-accent="cyan|violet|magenta|amber" — the
+   four on-palette brand signals. Keep product .accent-dots to these four.
    ============================================================================ */
 (function () {
   "use strict";
