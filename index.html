@@ -155,6 +155,27 @@
   .sc-frame-wrap.is-device + .sc-vw-readout,
   .sc-canvas:hover .sc-vw-readout { opacity: 1; }
 
+  /* Preview swap — cross-dissolve the iframe + one scanline sweep keyed to the
+     section accent (DESIGN.md §7 "warp transition between sections"). */
+  #frame { transition: opacity var(--dur-base) var(--ease-out-expo); }
+  .sc-frame-wrap.is-swapping #frame { opacity: 0; }
+  .sc-sweep { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .sc-sweep::before { content: ""; position: absolute; inset: 0; opacity: 0;
+    background: linear-gradient(to bottom, transparent 46%,
+      var(--section-accent, var(--color-accent-2)) 50%, transparent 54%); }
+  .sc-frame-wrap.is-sweeping .sc-sweep::before { animation: sc-scan .55s var(--ease-out-expo); }
+  @keyframes sc-scan {
+    0%   { transform: translateY(-100%); opacity: 0; }
+    14%  { opacity: .55; }
+    86%  { opacity: .55; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #frame { transition: none; }
+    .sc-frame-wrap.is-swapping #frame { opacity: 1; }
+    .sc-frame-wrap.is-sweeping .sc-sweep::before { animation: none; }
+  }
+
   /* ---- Right settings panel ---- */
   .sc-panel { grid-column: 3; grid-row: 2; position: relative; overflow: hidden;
     border-inline-start: 1px solid var(--color-border); background: var(--color-bg-deep); }
@@ -274,6 +295,7 @@
     <div class="sc-canvas" id="canvas">
       <div class="sc-frame-wrap" id="frameWrap">
         <iframe id="frame" title="Component preview" src="about:blank"></iframe>
+        <div class="sc-sweep" id="sweep" aria-hidden="true"></div>
       </div>
       <div class="sc-vw-readout" id="vwReadout">Full width</div>
     </div>
@@ -465,7 +487,10 @@
   var $ = function (id) { return document.getElementById(id); };
   var frame = $("frame"), frameWrap = $("frameWrap"), canvas = $("canvas");
   var navList = $("navList"), curTag = $("curTag"), curTitle = $("curTitle"), openRaw = $("openRaw");
-  var vwReadout = $("vwReadout"), scrim = $("scrim");
+  var vwReadout = $("vwReadout"), scrim = $("scrim"), sweep = $("sweep");
+  // Fade the new preview in once it loads; let the scanline finish on its own.
+  frame.addEventListener("load", function () { frameWrap.classList.remove("is-swapping"); });
+  if (sweep) sweep.addEventListener("animationend", function () { frameWrap.classList.remove("is-sweeping"); });
   var narrowMQ = window.matchMedia("(max-width: 920px)");
   /* Tablet/mobile: the viewport (resolution) selector is hidden and the canvas
      is always full-width, so any stored desktop device width is ignored there. */
@@ -543,6 +568,12 @@
     curTag.textContent = meta.tag;
     frame.title = meta.t + " preview";
     syncOpen();
+    // Cross-dissolve: fade the current preview out + replay the scanline sweep,
+    // then fade back in on the new document's load event.
+    frameWrap.classList.add("is-swapping");
+    frameWrap.classList.remove("is-sweeping");
+    void frameWrap.offsetWidth;            // restart the sweep animation
+    frameWrap.classList.add("is-sweeping");
     // Carry current prefs in the hash so the first (cross-origin) paint is themed.
     frame.setAttribute("src", href + hashFrag());
     updateActive();

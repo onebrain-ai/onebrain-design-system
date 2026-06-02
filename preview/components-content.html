@@ -135,6 +135,34 @@ onebrain <span class="tok-key">consolidate</span>   <span class="tok-com"># file
     semantic and fixed; the language tag + copy hover follow the section accent. Sparkline keyed to <code>--chart-1</code>.</p>
 
   </section>
+<script>
+  /* Metric / KPI count-up — animate each value from 0 when it scrolls into view.
+     Skipped under prefers-reduced-motion (final value shown immediately). */
+  (function () {
+    var nums = document.querySelectorAll('.metric-n');
+    if (!nums.length || !('IntersectionObserver' in window)) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    function countUp(el) {
+      var html = el.innerHTML, m = html.match(/[\d.]+/);
+      if (!m) return;
+      var target = parseFloat(m[0]), dec = (m[0].split('.')[1] || '').length;
+      var dur = 900, t0 = performance.now();
+      (function frame(now) {
+        var p = Math.min(1, (now - t0) / dur);
+        var eased = 1 - Math.pow(1 - p, 3);                 // ease-out cubic
+        el.innerHTML = html.replace(/[\d.]+/, (target * eased).toFixed(dec));
+        if (p < 1) requestAnimationFrame(frame);
+        else el.innerHTML = html;                           // restore exact original
+      })(t0);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { countUp(e.target); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function (el) { io.observe(el); });
+  })();
+</script>
 <script src="code-copy.js"></script>
 <script src="only.js"></script>
 <script src="showcase-prefs.js"></script>

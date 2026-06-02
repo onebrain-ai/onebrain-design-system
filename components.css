@@ -680,6 +680,21 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
 .accordion-item[open] > summary .accordion-chevron { transform: rotate(90deg); color: var(--section-accent, var(--color-accent-2)); }
 .accordion-item[open]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--section-accent, var(--color-accent-2)); box-shadow: var(--glow-accent); }
 .accordion-body { padding: 2px 16px 16px; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.65; }
+/* Smooth open/close — animate the disclosure height. Gated behind @supports so
+   browsers without interpolate-size keep today's instant snap (no regression). */
+@supports (interpolate-size: allow-keywords) {
+  .accordion { interpolate-size: allow-keywords; }   /* inherits → enables auto-height anim */
+  .accordion-item::details-content {
+    block-size: 0; overflow: clip; opacity: 0;
+    transition: block-size var(--dur-base) var(--ease-out-expo),
+                opacity var(--dur-fast) ease,
+                content-visibility var(--dur-base) allow-discrete;
+  }
+  .accordion-item[open]::details-content { block-size: auto; opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-item::details-content { transition: none; }
+  }
+}
 
 /* ---------------------------------------------------------------------------
    11. SEGMENTED CONTROL — CSS-only radio group (no JS). The active segment
