@@ -157,8 +157,15 @@
         b.setAttribute('aria-selected', on ? 'true' : 'false');
         b.classList.toggle('is-active', on);
       });
-      if (panel) panel.innerHTML = 'Showing <b style="color:var(--color-white)">' +
-        btn.textContent + '</b> — ' + (counts[btn.textContent] || '') + '.';
+      if (panel) {
+        panel.innerHTML = 'Showing <b style="color:var(--color-white)">' +
+          btn.textContent + '</b> — ' + (counts[btn.textContent] || '') + '.';
+        // Fade the new panel content in to complete the switch gesture.
+        if (panel.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          panel.animate([{ opacity: 0, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }],
+            { duration: 200, easing: 'cubic-bezier(0.16,1,0.3,1)' });
+        }
+      }
     });
   })();
 

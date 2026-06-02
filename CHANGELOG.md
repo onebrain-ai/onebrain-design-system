@@ -11,6 +11,15 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **Motion polish — the four interactions that were still snapping instant** (all opacity/transform only,
+  each with a `prefers-reduced-motion` fallback, per DESIGN.md §7): **(1)** showcase **preview swap** now
+  cross-dissolves the iframe (fade-out → fade-in on load) with one accent-keyed **scanline sweep** —
+  the `.sc-sweep` overlay + `sc-scan` keyframe realize the §7 "warp transition between sections" that was
+  speced but unused (`index.html`); **(2)** **tab panel** content fades in on switch via the Web Animations
+  API (`preview/components-data.html`); **(3)** **accordion** open/close animates its disclosure height via
+  `::details-content` + `interpolate-size: allow-keywords`, gated behind `@supports` so non-supporting browsers
+  keep today's instant snap (`components.css`); **(4)** **metric / KPI tiles** count up from 0 when scrolled
+  into view (IntersectionObserver, tabular-nums, suffix-preserving — `preview/components-content.html`).
 - **Extra components (full-kit coverage)** — five more in `components.css §29–§33` + `preview/components-extra.html`
   (five `data-component` sections surfaced as focused `?only=` entries) + the zero-dependency
   `preview/extras.js` enhancer: **rating** (`.rating` — star value follows the accent; hover preview, click,
