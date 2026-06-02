@@ -852,3 +852,156 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
   .dropzone, .dropzone .ob-icon, .dz-file .dz-remove { transition: none; }
   .page-state-status .dot { animation: none; }
 }
+
+/* ---------------------------------------------------------------------------
+   14. STEPPER / WIZARD — horizontal numbered steps with done / active /
+   upcoming states; the connector fills with the section accent up to the
+   current step. For onboarding / setup flows (matches the /onboarding skill).
+   Authored with logical properties so it mirrors under [dir="rtl"] for free.
+     <ol class="stepper">
+       <li class="stepper-step is-done"><span class="stepper-num"><svg class="ob-icon ob-icon-16"><use href="#ob-check"/></svg></span><span class="stepper-label">Install</span></li>
+       <li class="stepper-step is-active"><span class="stepper-num">2</span><span class="stepper-label">Connect vault</span></li>
+       <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">First capture</span></li>
+     </ol>
+   --------------------------------------------------------------------------- */
+.stepper { display: flex; list-style: none; margin: 0; padding: 0; }
+.stepper-step { position: relative; flex: 1 1 0; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; min-width: 0; }
+.stepper-step::before {           /* connector to the previous step */
+  content: ""; position: absolute; inset-block-start: 17px; z-index: 0;
+  inset-inline-start: -50%; inline-size: 100%; block-size: 2px; background: var(--border-default);
+}
+.stepper-step:first-child::before { display: none; }
+.stepper-num {
+  position: relative; z-index: 1; inline-size: 36px; block-size: 36px; flex: none;
+  display: grid; place-content: center; background: var(--bg-base);
+  border: 1.5px solid var(--border-strong); color: var(--text-tertiary);
+  font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums;
+  transition: border-color var(--dur-fast) ease, color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+.stepper-num .ob-icon { stroke-width: 2.25; }
+.stepper-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; line-height: 1.4; color: var(--text-tertiary); max-width: 16ch; }
+.stepper-step.is-done .stepper-num,
+.stepper-step.is-active .stepper-num { border-color: var(--section-accent); color: var(--section-accent); }
+.stepper-step.is-active .stepper-num { box-shadow: 0 0 0 3px var(--action-primary-weak), var(--glow-accent); }
+.stepper-step.is-active .stepper-label { color: var(--text-primary); }
+.stepper-step.is-done .stepper-label { color: var(--text-secondary); }
+.stepper-step.is-done::before,
+.stepper-step.is-active::before { background: var(--section-accent); }
+/* Vertical variant — stacks for narrow / sidebar contexts. */
+.stepper.stepper-vertical { flex-direction: column; align-items: stretch; }
+.stepper-vertical .stepper-step { flex-direction: row; align-items: flex-start; gap: 14px; text-align: start; padding-block-end: 16px; }
+.stepper-vertical .stepper-step::before { inset-block-start: 0; inset-inline-start: 17px; inline-size: 2px; block-size: 100%; }
+.stepper-vertical .stepper-label { max-width: none; padding-block-start: 9px; }
+
+/* ---------------------------------------------------------------------------
+   15. TIMELINE / ACTIVITY FEED — vertical run of timestamped events with a
+   connector spine and an accent node per item; state variants recolor the node
+   (success / warning / danger). For session logs, the co-evolution loop,
+   history. Logical properties mirror it under RTL.
+     <ul class="timeline">
+       <li class="timeline-item is-success"><span class="timeline-node"></span>
+         <div class="timeline-time">2m ago</div><div class="timeline-title">…</div><div class="timeline-body">…</div></li>
+     </ul>
+   --------------------------------------------------------------------------- */
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline-item { position: relative; padding-inline-start: 30px; padding-block-end: 22px; }
+.timeline-item::before {           /* spine */
+  content: ""; position: absolute; inset-inline-start: 6px; inset-block-start: 6px;
+  inline-size: 2px; block-size: 100%; background: var(--border-default);
+}
+.timeline-item:last-child::before { display: none; }
+.timeline-node {
+  position: absolute; inset-inline-start: 0; inset-block-start: 3px; z-index: 1;
+  inline-size: 14px; block-size: 14px; border-radius: var(--radius-pill);
+  background: var(--bg-base); border: 2px solid var(--section-accent); box-shadow: var(--glow-accent);
+}
+.timeline-time { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-disabled); }
+.timeline-title { font-family: var(--font-mono); font-size: 13px; color: var(--text-primary); margin-block: 3px 4px; }
+.timeline-title b { color: var(--section-accent); font-weight: 500; }
+.timeline-body { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+.timeline-item.is-success .timeline-node { border-color: var(--fb-success); box-shadow: 0 0 8px color-mix(in srgb, var(--fb-success) 55%, transparent); }
+.timeline-item.is-warning .timeline-node { border-color: var(--fb-warning); box-shadow: 0 0 8px color-mix(in srgb, var(--fb-warning) 55%, transparent); }
+.timeline-item.is-danger  .timeline-node { border-color: var(--fb-danger);  box-shadow: 0 0 8px color-mix(in srgb, var(--fb-danger) 55%, transparent); }
+
+/* ---------------------------------------------------------------------------
+   16. TREE VIEW — the vault's PARA folder tree (00-inbox … 07-logs). Folders
+   are native <details> (keyboard + a11y free); the chevron rotates and an
+   active leaf gets the same accent inline-start bar the sidebar/cards use. The
+   indent guide is an inline-start hairline, so it mirrors under RTL.
+   --------------------------------------------------------------------------- */
+.tree, .tree ul { list-style: none; margin: 0; padding: 0; }
+.tree { font-family: var(--font-mono); font-size: 13px; max-width: 360px; }
+.tree ul { padding-inline-start: 16px; margin-inline-start: 9px; border-inline-start: 1px solid var(--border-subtle); }
+.tree-row {
+  display: flex; align-items: center; gap: 8px; padding: 6px 10px; min-height: 32px;
+  color: var(--text-secondary); cursor: pointer; user-select: none;
+  border-inline-start: 2px solid transparent;
+  transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+.tree-row:hover { background: var(--action-primary-weak); color: var(--text-primary); }
+.tree-row .ob-icon { color: var(--text-tertiary); flex: none; }
+.tree-spacer { display: inline-block; inline-size: 16px; flex: none; }
+.tree-count { margin-inline-start: auto; font-size: 10px; letter-spacing: 0.1em; color: var(--text-disabled); font-variant-numeric: tabular-nums; }
+.tree-row.is-active { color: var(--section-accent); background: var(--action-primary-weak); border-inline-start-color: var(--section-accent); }
+.tree-row.is-active .ob-icon { color: var(--section-accent); }
+.tree details > summary { list-style: none; }
+.tree details > summary::-webkit-details-marker { display: none; }
+.tree-chevron { color: var(--text-tertiary); flex: none; transition: transform var(--dur-base) var(--ease-out-expo); }
+.tree details[open] > summary .tree-chevron { transform: rotate(90deg); }
+[dir="rtl"] .tree details[open] > summary .tree-chevron { transform: rotate(-90deg); }
+
+/* ---------------------------------------------------------------------------
+   17. CODE BLOCK — a titled, copyable block for config / commands (onebrain.yml,
+   /slash-commands). Header carries the filename + a language tag + a copy button
+   (preview/code-copy.js, zero-dep). Optional line numbers via .code-lines. The
+   syntax token colors are SEMANTIC (like the chart / state palette) so they stay
+   fixed; only the language tag + copy hover follow the section accent.
+   --------------------------------------------------------------------------- */
+.code-block { border: 1px solid var(--border-default); background: var(--bg-sunken); max-width: 720px; }
+.code-head { display: flex; align-items: center; gap: 10px; padding: 9px 12px 9px 14px; border-bottom: 1px solid var(--border-default); background: var(--bg-surface); }
+.code-name { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; color: var(--text-secondary); }
+.code-lang { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--section-accent); border: 1px solid color-mix(in srgb, var(--section-accent) 32%, transparent); padding: 1px 6px; }
+.code-copy {
+  margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 1px solid var(--border-default); color: var(--text-tertiary);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 4px 9px; cursor: pointer; transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.code-copy:hover { color: var(--section-accent); border-color: var(--section-accent); }
+.code-copy:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.code-copy.is-copied { color: var(--fb-success); border-color: color-mix(in srgb, var(--fb-success) 40%, transparent); }
+.code-block pre { margin: 0; padding: 16px; overflow-x: auto; }
+.code-block pre code { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-secondary); }
+.code-lines { counter-reset: cl; margin: 0; padding: 14px 0; overflow-x: auto; }
+.code-lines .cl { display: block; position: relative; padding-inline: 50px 16px; white-space: pre; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-secondary); }
+.code-lines .cl::before { counter-increment: cl; content: counter(cl); position: absolute; inset-inline-start: 0; inline-size: 34px; text-align: end; color: var(--text-disabled); }
+/* semantic syntax tokens — fixed, not accent-keyed (like chart / state colors) */
+.code-block .tok-com { color: var(--text-disabled); font-style: italic; }
+.code-block .tok-key { color: var(--color-accent-2); }
+.code-block .tok-str { color: var(--color-success); }
+.code-block .tok-fn  { color: var(--color-accent-3); }
+.code-block .tok-num { color: var(--color-accent-4); }
+
+/* ---------------------------------------------------------------------------
+   18. METRIC / KPI TILE — a dashboard stat with a trend delta (↑/↓ %, success /
+   danger) and an optional inline sparkline (.spark, §5.5). Numbers are tabular.
+   Extends the plain .stat with a labelled top row + a trend foot.
+   --------------------------------------------------------------------------- */
+.metric { background: var(--bg-surface); border: 1px solid var(--border-default); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+.metric-top { display: flex; align-items: center; gap: 10px; }
+.metric-label { font-family: var(--font-mono); font-size: var(--eyebrow-size); letter-spacing: 0.26em; text-transform: uppercase; color: var(--text-secondary); }
+.metric-ic { margin-inline-start: auto; color: var(--text-tertiary); }
+.metric-n { font-family: var(--font-display); font-style: italic; font-weight: var(--weight-bold); font-size: var(--text-2xl); line-height: 1; color: var(--color-white); font-variant-numeric: tabular-nums; }
+.metric-foot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.metric-trend { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 11px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.metric-trend .ob-icon { width: 14px; height: 14px; }
+.metric-trend.is-up { color: var(--fb-success); }
+.metric-trend.is-down { color: var(--fb-danger); }
+.metric-trend.is-flat { color: var(--text-tertiary); }
+.metric-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--text-disabled); }
+.metric .spark { width: 100%; height: 34px; margin-top: 2px; }
+
+/* a11y — the structure / content components honor reduced motion too. */
+@media (prefers-reduced-motion: reduce) {
+  .stepper-num, .tree-row, .tree-chevron, .code-copy { transition: none; }
+}

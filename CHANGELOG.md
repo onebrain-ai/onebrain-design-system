@@ -36,9 +36,24 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `grey` = group 06's `--color-muted` (both already light-re-inked) — mirrored across `index.html`
   and `showcase-prefs.js`. The reusable product `.accent-dots` (`accent-picker.js`) stays at the four
   brand signals, and groups 05 / 06 keep their original `--color-success` / `--color-muted` marks.
+- **Five structure + content components** (`components.css §14–§18`) — the highest-value pieces a
+  vault / dev-tool console still needed, so the kit is comprehensive enough to design with directly:
+  **tree view** (`.tree`, PARA folders over native `<details>`), **stepper / wizard** (`.stepper`
+  + `.stepper-vertical`, done/active/upcoming with an accent-filling connector), **timeline /
+  activity feed** (`.timeline`, accent spine + state-colored nodes), **code block** (`.code-block`
+  + `.code-lines` line numbers + a copy button via the new zero-dependency `preview/code-copy.js`),
+  and **metric / KPI tiles** (`.metric`, trend delta ↑↓ + optional `.spark` sparkline). All keyed to
+  the intent tokens (so they follow the accent) and authored with logical properties (so they mirror
+  under `dir="rtl"`); syntax-token + trend colors are semantic and stay fixed. New previews
+  `preview/components-structure.html` + `preview/components-content.html`, wired into the showcase
+  catalog (Components group → 14 items).
 
 ### Changed
 
+- **Showcase search restyled to the input language** — the catalog search dropped its heavy
+  `2px outline + offset + cyan border` focus (a thick double-ring out of step with the system) for
+  the canonical `.cyber-input` treatment: sharp corners, hairline border that brightens to the
+  accent, a 1px ring + soft glow on focus, and the search icon brightening on focus.
 - **Viewport (resolution) selector is desktop-only** — the showcase's `Full · 1440 · 1024 · 768 ·
   390 · 360` bar is hidden at ≤1024px (tablet + mobile), where the canvas is always full-width and
   responsive; any stored desktop device width is ignored at those sizes so a small screen never pins

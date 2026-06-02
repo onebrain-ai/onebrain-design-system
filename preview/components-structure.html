@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Structure components</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:36px 0 18px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .stack{ display:flex; flex-wrap:wrap; gap:36px 56px; align-items:flex-start; }
+  .seglabel{ font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--color-ghost); display:block; margin-bottom:12px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+  /* source-basis rows carry long descriptions — let them wrap on narrow screens */
+  .cyber-list .row{ flex-wrap:wrap; gap:2px 10px; }
+  .cyber-list .row .stamp{ margin-inline-start:auto; }
+  .cyber-list .row code{ overflow-wrap:anywhere; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
+  <div class="pv-grid-bg"></div>
+
+  <!-- minimal inline sprite so markup icons render standalone -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="ob-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+    <symbol id="ob-folder" viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></symbol>
+    <symbol id="ob-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+    <symbol id="ob-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  </svg>
+
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> COMPONENTS · STRUCTURE</span>
+  <h1>Structure</h1>
+  <p class="lede">Three structural primitives the kit was missing — all keyed to <code>components.css</code> and the
+    semantic intent tokens, so they follow the section accent and mirror under <code>dir="rtl"</code>. The
+    <b>tree</b> folders are native <code>&lt;details&gt;</code> (keyboard + a11y for free); the <b>stepper</b> and
+    <b>timeline</b> are pure CSS.</p>
+
+  <!-- ── Tree + Stepper ────────────────────────────────────────────────── -->
+  <div class="sec">// Tree view (the vault's PARA folders) · Stepper (the /onboarding flow)</div>
+  <div class="stack">
+    <div>
+      <span class="seglabel">Vault · PARA</span>
+      <ul class="tree" role="tree" aria-label="Vault folders">
+        <li role="treeitem" aria-expanded="true"><details open>
+          <summary class="tree-row"><svg class="ob-icon ob-icon-16 tree-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-folder"/></svg> 00-inbox <span class="tree-count">3</span></summary>
+          <ul>
+            <li><div class="tree-row"><span class="tree-spacer"></span><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-file"/></svg> vault-as-os.md</div></li>
+            <li><div class="tree-row"><span class="tree-spacer"></span><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-file"/></svg> read-later.md</div></li>
+          </ul>
+        </details></li>
+        <li role="treeitem" aria-expanded="true"><details open>
+          <summary class="tree-row"><svg class="ob-icon ob-icon-16 tree-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-folder"/></svg> 01-projects <span class="tree-count">5</span></summary>
+          <ul>
+            <li><div class="tree-row is-active"><span class="tree-spacer"></span><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-file"/></svg> design-system.md</div></li>
+            <li><div class="tree-row"><span class="tree-spacer"></span><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-file"/></svg> waitlist-launch.md</div></li>
+          </ul>
+        </details></li>
+        <li role="treeitem" aria-expanded="false"><details>
+          <summary class="tree-row"><svg class="ob-icon ob-icon-16 tree-chevron" aria-hidden="true"><use href="#ob-chevron-right"/></svg><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-folder"/></svg> 03-resources <span class="tree-count">28</span></summary>
+          <ul>
+            <li><div class="tree-row"><span class="tree-spacer"></span><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-file"/></svg> harness-os.md</div></li>
+          </ul>
+        </details></li>
+        <li><div class="tree-row"><span class="tree-spacer"></span><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-file"/></svg> MEMORY.md</div></li>
+      </ul>
+    </div>
+
+    <div style="min-width:min(420px,100%);flex:1">
+      <span class="seglabel">Onboarding · horizontal</span>
+      <ol class="stepper" aria-label="Onboarding">
+        <li class="stepper-step is-done"><span class="stepper-num"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-check"/></svg></span><span class="stepper-label">Install plugin</span></li>
+        <li class="stepper-step is-done"><span class="stepper-num"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-check"/></svg></span><span class="stepper-label">Connect harness</span></li>
+        <li class="stepper-step is-active"><span class="stepper-num">3</span><span class="stepper-label">Configure vault</span></li>
+        <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">First capture</span></li>
+      </ol>
+
+      <span class="seglabel" style="margin-top:28px">Onboarding · vertical</span>
+      <ol class="stepper stepper-vertical" aria-label="Onboarding steps" style="max-width:320px">
+        <li class="stepper-step is-done"><span class="stepper-num"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-check"/></svg></span><span class="stepper-label">Install plugin — <code>brew install onebrain</code></span></li>
+        <li class="stepper-step is-active"><span class="stepper-num">2</span><span class="stepper-label">Connect harness — Claude Code / Gemini / Codex</span></li>
+        <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Configure vault — point at your Obsidian folder</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ── Timeline ──────────────────────────────────────────────────────── -->
+  <div class="sec">// Timeline / activity feed (one co-evolution session · node recolors by state)</div>
+  <ul class="timeline" aria-label="Session activity" style="max-width:560px">
+    <li class="timeline-item is-success"><span class="timeline-node"></span>
+      <div class="timeline-time">2m ago · CAPTURE</div>
+      <div class="timeline-title"><b>/capture</b> · note filed to 00-inbox</div>
+      <div class="timeline-body">"Vault-as-OS framing" — Link Suggester proposed wikilinks to [[Harness OS]] and [[PARA]].</div>
+    </li>
+    <li class="timeline-item"><span class="timeline-node"></span>
+      <div class="timeline-time">5m ago · EVOLVE</div>
+      <div class="timeline-title"><b>/connect</b> · graph strengthened</div>
+      <div class="timeline-body">3 new edges between resources; one orphan note adopted into 01-projects.</div>
+    </li>
+    <li class="timeline-item is-warning"><span class="timeline-node"></span>
+      <div class="timeline-time">6m ago · EVOLVE</div>
+      <div class="timeline-title"><b>/distill</b> · 1 stale task flagged</div>
+      <div class="timeline-body">Task in <code>waitlist-launch.md</code> overdue (📅 2026-05-28) — surfaced for review.</div>
+    </li>
+    <li class="timeline-item is-success"><span class="timeline-node"></span>
+      <div class="timeline-time">just now · WRAPUP</div>
+      <div class="timeline-title"><b>/wrapup</b> · session log written</div>
+      <div class="timeline-body">07-logs entry saved so the next session resumes exactly here.</div>
+    </li>
+  </ul>
+
+  <!-- ── Source basis ──────────────────────────────────────────────────── -->
+  <div class="sec">// Source basis — the website's real build-time modules (onebrain-ai/website)</div>
+  <div class="cyber-list" style="max-width:720px">
+    <div class="row"><b>version.ts</b> — latest CLI version from the Releases API at prerender; falls back to <code>3.0.0</code> offline. <span class="stamp">build</span></div>
+    <div class="row"><b>gh-stars.ts</b> — <code>stargazers_count</code> baked at build; the badge hides on <code>0</code>. <span class="stamp">build</span></div>
+    <div class="row"><b>disposable-domains.ts</b> — ~150-domain waitlist guard; a match returns <code>200</code> with no write. <span class="stamp">api</span></div>
+    <div class="row"><b>brain-id.ts</b> — module-scope counter for stable SSR gradient ids (no <code>Math.random</code>). <span class="stamp">ssr</span></div>
+    <div class="row"><b>middleware.ts</b> — adds HSTS / nosniff / DENY / COOP headers to dynamic routes. <span class="stamp">edge</span></div>
+  </div>
+
+  <p class="srcnote">Classes: <code>.tree</code> / <code>.tree-row</code> · <code>.stepper</code> / <code>.stepper-step</code>
+    (+ <code>.stepper-vertical</code>) · <code>.timeline</code> / <code>.timeline-item</code> in
+    <code>components.css §14–§16</code>. Tree folders are native <code>&lt;details&gt;</code>; the timeline node
+    recolors with <code>.is-success</code> / <code>.is-warning</code> / <code>.is-danger</code>. All authored with
+    logical properties, so they mirror at <code>dir="rtl"</code>.</p>
+
+<script src="showcase-prefs.js"></script>
+</body>
+</html>

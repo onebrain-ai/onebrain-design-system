@@ -421,6 +421,16 @@ previews, and the UI kit reproduce them.
   weak tint + hairline ring, never a solid fill), and **file dropzone** (`.dropzone`,
   progressively enhanced by `preview/dropzone.js` — real `<input type="file">`, drag-drop, a
   synced file list). See `preview/components-interactive.html`.
+- **Structure** — **tree view** (`.tree`, the vault's PARA folders over native `<details>`; active
+  leaf gets the accent inline-start bar), **stepper / wizard** (`.stepper`, horizontal or
+  `.stepper-vertical`, done / active / upcoming states with an accent-filling connector — for the
+  `/onboarding` flow), and **timeline / activity feed** (`.timeline`, a connector spine with accent
+  nodes that recolor by state — for session logs + the co-evolution loop). See
+  `preview/components-structure.html`.
+- **Content** — **code block** (`.code-block`, filename + language tag + a copy button via the
+  zero-dependency `preview/code-copy.js`; optional line numbers via `.code-lines`; semantic syntax
+  token colors stay fixed), and **metric / KPI tiles** (`.metric`, a trend delta ↑↓ + optional
+  `.spark` sparkline on top of the plain `.stat`). See `preview/components-content.html`.
 
 ---
 
