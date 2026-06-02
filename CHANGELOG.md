@@ -93,6 +93,12 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   chevron. (3) `.avatar-group` switched from a negative-margin overlap to an 8px **gap** — overlapping
   sharp-cornered square tiles stacked their 2px rings into doubled hairlines and looked cramped, so the
   tiles now sit as a clean evenly-spaced cluster (the `:first-child` margin reset is gone).
+- **Banner action link clashed with the mono banner body.** `.banner-body` forces `--font-mono`, but
+  the action lived in the sibling `.banner-actions` and `.cyber-link` sets no `font-family`, so it
+  inherited the document sans (oversized proportional text next to JetBrains Mono — "View changelog" /
+  "Reconnect"). `.banner-actions` now sets `font-family: var(--font-mono); font-size: 12.5px`, scoped
+  to the banner so the whole strip reads as one mono HUD line; `.cyber-link` elsewhere still inherits
+  its surrounding prose font.
 - **Web fonts fell back to a generic sans on GitHub Pages (Chakra Petch / JetBrains Mono).** All 12
   bundled TTFs in `fonts/` were corrupted by a UTF-8 round-trip during initial packaging — every byte
   ≥ `0x80` was rewritten to the replacement-character sequence `EF BF BD` (≈9,330 hits per file), so
