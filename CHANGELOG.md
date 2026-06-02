@@ -11,6 +11,16 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **Extra components (full-kit coverage)** — five more in `components.css §29–§33` + `preview/components-extra.html`
+  (five `data-component` sections surfaced as focused `?only=` entries) + the zero-dependency
+  `preview/extras.js` enhancer: **rating** (`.rating` — star value follows the accent; hover preview, click,
+  ←/→ keyboard, `data-readonly` display variant), **color picker** (`.color-picker` — swatch grid + hex field,
+  selected ring keyed to the accent; distinct from the theme accent picker), **popover** (`.popover` — click-triggered
+  rich overlay on a native `<details>`, outside-click + Esc dismiss; distinct from the hover `.tooltip`),
+  **carousel** (`.carousel` — scroll-snap track, generated dot indicators, prev/next, ←/→ keyboard, RTL-mirrored
+  chevrons, reduced-motion safe), and **keyboard-shortcut sheet** (`.shortcut-sheet` — grouped reference reusing the
+  `.kbd` primitive). Catalog now lists 59 surfaces across the 11 groups (Rating + Color picker → Forms,
+  Carousel → Data Display, Popover + Keyboard shortcuts → Feedback & Overlays).
 - **Showcase shell** — `index.html` is now a ThemeForest / Storybook-style browser for the whole
   system: a categorized, searchable left rail (Foundations · Forms · Actions · Navigation ·
   Data Display · Feedback & Overlays · Patterns & States · Marketing · Surfaces · Applied kit ·
@@ -125,6 +135,12 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Carousel prev/next chevrons overlapped the slide content.** The 40px controls sat at
+  `inset-inline-start/-end: -8px`, so each extended ~32px inward over the full-bleed slide and
+  covered the card text. `.carousel` now reserves inner gutters (`box-sizing: border-box;
+  padding-inline: 52px`) so the track insets and the chevrons sit *beside* the card
+  (`inset-inline: 6px`, symmetric 6px gap) — verified no overlap and no horizontal overflow down
+  to 360px (the gutter scales inside the carousel box, unlike pushing controls fully outside).
 - **Common-UI menu trigger rendered as an oversized block; grouped avatars looked cramped.** Two
   fixes in `components.css`: (1) `.btn-ghost` / `.btn-quiet` / `.btn-danger` now set
   `box-sizing: border-box`, so `min-height` is the real height instead of stacking on top of padding
