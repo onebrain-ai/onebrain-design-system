@@ -46,6 +46,7 @@
     <button role="tab" aria-selected="false">Tasks</button>
   </div>
 
+  <section data-component="data-table" data-title="Data table" data-crumb="DATA · DATA TABLE">
   <div class="sec">// Data table (tabular nums · sticky header · hover rows)</div>
   <div class="density-row">
     <label class="cyber-switch"><input type="checkbox" id="dense" /> Compact density</label>
@@ -70,6 +71,8 @@
     <button>›</button>
   </div>
 
+  </section>
+  <section data-component="session-log" data-title="Session log" data-crumb="DATA · SESSION LOG">
   <div class="sec">// Session log (list rows · active state)</div>
   <div class="cyber-list" style="max-width:560px">
     <div class="row is-active"><span style="color:var(--section-accent)">›</span><b>/capture</b> idea — vault routing<span class="stamp">09:24</span></div>
@@ -78,6 +81,8 @@
     <div class="row"><span style="color:var(--section-accent)">›</span><b>/wrapup</b> session saved<span class="stamp">10:02</span></div>
   </div>
 
+  </section>
+  <section data-component="stat-modules" data-title="Stat modules" data-crumb="DATA · STAT MODULES">
   <div class="sec">// Stat modules</div>
   <div class="grid3">
     <div class="stat"><div class="stat-n"><em>29</em>+</div><div class="stat-l">Pre-built skills</div></div>
@@ -85,6 +90,8 @@
     <div class="stat"><div class="stat-n">v<em>3.1.6</em></div><div class="stat-l">Plugin · CLI ≥3.1.0</div></div>
   </div>
 
+  </section>
+  <section data-component="avatars" data-title="Avatars" data-crumb="DATA · AVATARS">
   <div class="sec">// Avatars (sub-agents)</div>
   <div class="rowwrap">
     <span class="avatar avatar-lg" style="color:#ff8c00;border-color:color-mix(in srgb,#ff8c00 45%,transparent);background:color-mix(in srgb,#ff8c00 12%,transparent)">IC</span>
@@ -94,6 +101,8 @@
     <span class="avatar" style="color:#ef4444;border-color:color-mix(in srgb,#ef4444 45%,transparent);background:color-mix(in srgb,#ef4444 12%,transparent)">TE</span>
   </div>
 
+  </section>
+  <section data-component="feature-cards" data-title="Feature cards" data-crumb="DATA · FEATURE CARDS">
   <div class="sec">// Feature cards (one accent per card via --section-accent)</div>
   <div class="grid-cards">
     <div class="cyber-card" style="--section-accent:var(--color-accent-2)"><span class="card-meta">01</span><p class="card-title">Persistent Memory</p><p class="card-desc">Every session resumes from <code>MEMORY.md</code> — your agent never forgets.</p></div>
@@ -106,12 +115,14 @@
     <code>data-density</code> token contract in <code>colors_and_type.css</code>. Sub-agent initials/colors
     from the <code>inbox-classifier</code> / <code>task-extractor</code> agents in <code>source_examples/</code>.</p>
 
+  </section>
 <script>
   // Real density toggle — flips the data-density token contract on the table wrap.
   document.getElementById('dense').addEventListener('change', function (e) {
     document.getElementById('tblwrap').setAttribute('data-density', e.target.checked ? 'compact' : 'comfortable');
   });
 </script>
+<script src="only.js"></script>
 <script src="showcase-prefs.js"></script>
 </body>
 </html>

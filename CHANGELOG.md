@@ -12,8 +12,9 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - **Showcase shell** — `index.html` is now a ThemeForest / Storybook-style browser for the whole
-  system: a categorized, searchable left rail (Foundations · Components · Heroes · Surfaces ·
-  Applied kit · Docs — data-driven from one `CATALOG` array, so it's trivial to extend), a center
+  system: a categorized, searchable left rail (Foundations · Forms · Actions · Data Display ·
+  Feedback & Overlays · Patterns & States · Marketing · Surfaces · Applied kit · Docs — one entry
+  per component, data-driven from one `CATALOG` array, so it's trivial to extend), a center
   preview canvas with a responsive **viewport selector** (Full · 1440 · 1024 · 768 · 390 · 360),
   and a right **theme customizer** that re-keys the live preview in real time — theme (dark/light),
   accent (the four brand accents), density (comfortable/compact), and direction (LTR/RTL). All four
@@ -61,9 +62,39 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   All keyed to the intent tokens (follow the accent) and authored with logical properties (mirror
   under RTL); semantic variants stay fixed. New preview `preview/components-common.html`, wired into
   the showcase catalog (Components group → 15 items).
+- **Five advanced product + marketing components** (`components.css §24–§28`) — the heavier pieces that
+  take the kit to full Storybook / ThemeForest breadth: **pricing table** (`.pricing` / `.price-tier`,
+  three tiers with a featured accent-glow tier and a CSS-only `:has()` monthly/annual billing toggle —
+  no JS), **date picker** (`.datepicker`, a calendar popover for `📅` task dates — selected day is an
+  accent ring + tint + text never a solid fill, today carries an accent dot; rendered by the new
+  `preview/datepicker.js` with full keyboard + ARIA, degrades to a native `<input type="date">`),
+  **notification center** (`.notif-center`, unread rows with an accent-ringed icon + dot, an unread-count
+  pill, mark-all-read + per-row read/dismiss via `preview/ui-actions.js`), **resizable panes**
+  (`.resizable` / `.resizer`, a drag splitter that brightens to the accent and honors each pane's
+  min-width, with ←/→ keyboard nudge — `preview/resizable.js`), and **emoji picker** (`.emoji-picker`,
+  category tabs + search + recents + keyboard, where emoji are *content* while the chrome stays on the
+  system's mono type + accent — `preview/emoji-picker.js`). All keyed to the intent tokens (follow the
+  accent) and authored with logical properties (mirror under RTL). New preview
+  `preview/components-advanced.html` (one file, five `data-component` sections + source basis), wired
+  into the catalog as five focused `?only=` entries in their topical groups (Forms · Feedback &
+  Overlays · Patterns & States · Marketing).
 
 ### Changed
 
+- **Catalog restructured into functional groups + one entry per component** (Storybook / ThemeForest
+  taxonomy) — the old flat 15-item "Components" dump is gone. The sidebar now lists **every component
+  as its own findable entry** across topical groups: **Foundations · Forms · Actions · Data Display ·
+  Feedback & Overlays · Patterns & States · Marketing · Surfaces · Applied kit · Docs & source** (51
+  surfaces; Forms and Actions are split so neither group runs long). Bundled preview pages (Common UI,
+  Feedback, Tables & data, Structure, Content, Interactive)
+  were split *in place*: each component section is wrapped in `<section data-component="…">`, and the
+  catalog points at a focused `?only=<id>` view of that page. A new dependency-free
+  **`preview/only.js`** reads `?only=` and shows just that component (retitling the H1/eyebrow), so the
+  showcase gets a true 1-component-per-entry rail **without** duplicating page scaffold into ~30 files
+  or multiplying the audit's source-basis section. Opening a page with no `?only` still renders the
+  full topical page, so every file stays backward-compatible. `Icons` moved to Foundations (asset
+  layer); the `?only=` query coexists with the customizer's `#ob=…` prefs hash, so a focused view is
+  still fully themeable.
 - **Showcase search restyled to the input language** — the catalog search dropped its heavy
   `2px outline + offset + cyan border` focus (a thick double-ring out of step with the system) for
   the canonical `.cyber-input` treatment: sharp corners, hairline border that brightens to the

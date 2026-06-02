@@ -229,7 +229,7 @@
       <span class="wm">OneBrain <em>Design System</em></span>
     </a>
     <div class="sc-bar-spacer"></div>
-    <span class="sc-ver">v<b>1.0.0</b> · 29 surfaces</span>
+    <span class="sc-ver">v<b>1.0.0</b> · 51 surfaces</span>
     <button class="sc-icbtn is-on" id="panelToggle" type="button" aria-label="Toggle theme customizer" aria-pressed="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
     </button>
@@ -344,40 +344,69 @@
       { t: "Spacing",        tag: "space", href: "preview/spacing-tokens.html",        d: "4px scale + layout constants" },
       { t: "Radius & clip",  tag: "space", href: "preview/spacing-radius.html",        d: "sharp corners, corner-cut CTA" },
       { t: "Elevation",      tag: "space", href: "preview/spacing-shadows.html",       d: "neon-glow elevation vs overlay shadow" },
+      { t: "Icons",          tag: "asset", href: "preview/components-icons.html",      d: "Lucide-line sprite, .ob-icon sizes" },
       { t: "Brand assets",   tag: "asset", href: "preview/brand-assets.html",          d: "logo, app icon, favicon, diagrams" }
     ]},
-    { gi: "02", title: "Components", accent: "var(--color-accent)", items: [
-      { t: "Buttons",          tag: "ui",   href: "preview/components-buttons.html",          d: "btn-tech family, nav reveal, state pills" },
-      { t: "Inputs",           tag: "ui",   href: "preview/components-inputs.html",           d: "text fields, error state, composer" },
-      { t: "Cards",            tag: "ui",   href: "preview/components-cards.html",            d: "cyber-card hover, stats, sub-agents" },
-      { t: "Form kit",         tag: "kit",  href: "preview/components-forms.html",            d: "full controls + on-blur validation" },
-      { t: "Feedback",         tag: "kit",  href: "preview/components-feedback.html",         d: "alerts, toasts, progress, modal, dropdown" },
-      { t: "Data display",     tag: "kit",  href: "preview/components-data.html",             d: "table, tabs, breadcrumb, pagination" },
-      { t: "Command palette",  tag: "ui",   href: "preview/components-command-palette.html",  d: "⌘K launcher — filter, keyboard, ARIA" },
-      { t: "Charts",           tag: "viz",  href: "preview/charts.html",                      d: "line / area / bar / donut / sparkline" },
-      { t: "Icons",            tag: "ui",   href: "preview/components-icons.html",            d: "Lucide-line sprite, .ob-icon sizes" },
-      { t: "Interactive",      tag: "ui",   href: "preview/components-interactive.html",      d: "accordion, segmented control, dropzone" },
-      { t: "Structure",        tag: "ui",   href: "preview/components-structure.html",        d: "tree view, stepper / wizard, timeline" },
-      { t: "Content",          tag: "ui",   href: "preview/components-content.html",          d: "code block + copy, KPI / metric tiles" },
-      { t: "Common UI",        tag: "kit",  href: "preview/components-common.html",           d: "banner, toolbar, menu, multi-select, avatars" },
-      { t: "i18n & RTL",       tag: "i18n", href: "preview/i18n-rtl.html",                    d: "Thai · Arabic · CJK + dir=rtl mirror" },
-      { t: "Page states",      tag: "state",href: "preview/page-states.html",                 d: "404 / 500 / 403 / offline / loading" }
+    { gi: "02", title: "Forms", accent: "var(--color-accent)", items: [
+      { t: "Inputs",            tag: "form", href: "preview/components-inputs.html",   d: "text fields, error state, composer" },
+      { t: "Form kit",          tag: "form", href: "preview/components-forms.html",    d: "select, checkbox, radio, switch, range, validation" },
+      { t: "Combobox",          tag: "form", href: "preview/components-common.html?only=combobox",               d: "multi-select token field, type to filter" },
+      { t: "Segmented control", tag: "form", href: "preview/components-interactive.html?only=segmented-control", d: "CSS-only radio group, accent active" },
+      { t: "File dropzone",     tag: "form", href: "preview/components-interactive.html?only=file-dropzone",     d: "drag-drop over a real file input" },
+      { t: "Date picker",       tag: "form", href: "preview/components-advanced.html?only=date-picker",          d: "calendar popover — task dates, keyboard" },
+      { t: "Emoji picker",      tag: "form", href: "preview/components-advanced.html?only=emoji-picker",         d: "category tabs, search, recents — emoji content" }
     ]},
-    { gi: "03", title: "Heroes", accent: "var(--color-accent-3)", items: [
-      { t: "Hero · split",    tag: "v1", href: "preview/hero-split.html",    d: "3D grid + frosted terminal, right" },
-      { t: "Hero · centered", tag: "v2", href: "preview/hero-centered.html", d: "centered grid, pointer-reactive tilt" }
+    { gi: "03", title: "Actions", accent: "var(--color-accent)", items: [
+      { t: "Buttons",          tag: "action", href: "preview/components-buttons.html",  d: "btn-tech family, nav reveal, state pills" },
+      { t: "Toolbar",          tag: "action", href: "preview/components-common.html?only=toolbar",     d: "editor action bar — grouped icon buttons" },
+      { t: "Menu",             tag: "action", href: "preview/components-common.html?only=menu",        d: "rich dropdown — icon · title · desc · shortcut" },
+      { t: "Command palette",  tag: "action", href: "preview/components-command-palette.html",         d: "⌘K launcher — filter, keyboard, ARIA" }
     ]},
-    { gi: "04", title: "Surfaces", accent: "var(--color-accent-4)", items: [
+    { gi: "04", title: "Data Display", accent: "var(--color-accent-3)", items: [
+      { t: "Cards",            tag: "data", href: "preview/components-cards.html",     d: "cyber-card hover, stats, sub-agents" },
+      { t: "Feature cards",    tag: "data", href: "preview/components-data.html?only=feature-cards",            d: "one accent per card via --section-accent" },
+      { t: "Data table",       tag: "data", href: "preview/components-data.html?only=data-table",              d: "tabular nums, sticky header, hover rows" },
+      { t: "Session log",      tag: "data", href: "preview/components-data.html?only=session-log",             d: "list rows + active state" },
+      { t: "Stat modules",     tag: "data", href: "preview/components-data.html?only=stat-modules",            d: "headline metric modules" },
+      { t: "Metric tiles",     tag: "data", href: "preview/components-content.html?only=metric-kpi-tiles",     d: "trend delta ↑↓ + sparkline" },
+      { t: "Code block",       tag: "data", href: "preview/components-content.html?only=code-block",           d: "filename + lang tag + copy + line numbers" },
+      { t: "Charts",           tag: "viz",  href: "preview/charts.html",               d: "line / area / bar / donut / sparkline" },
+      { t: "Avatar group",     tag: "data", href: "preview/components-common.html?only=avatar-group",          d: "stacked sub-agent avatars + overflow" },
+      { t: "Tree & stepper",   tag: "data", href: "preview/components-structure.html?only=tree-view-stepper",  d: "PARA vault tree + /onboarding wizard" },
+      { t: "Timeline",         tag: "data", href: "preview/components-structure.html?only=timeline-activity-feed", d: "session feed — nodes recolor by state" },
+      { t: "Accordion",        tag: "data", href: "preview/components-interactive.html?only=disclosure-accordion", d: "native <details> disclosure, accent bar" }
+    ]},
+    { gi: "05", title: "Feedback & Overlays", accent: "var(--color-accent-4)", items: [
+      { t: "Banner",           tag: "feedback", href: "preview/components-common.html?only=banner",                              d: "inline system notice — icon, action, dismiss" },
+      { t: "Alerts",           tag: "feedback", href: "preview/components-feedback.html?only=alerts",                           d: "semantic states — color + icon" },
+      { t: "Toasts",           tag: "feedback", href: "preview/components-feedback.html?only=toasts",                           d: "aria-live, auto-dismiss 3–5s" },
+      { t: "Notification center", tag: "feedback", href: "preview/components-advanced.html?only=notification-center",           d: "unread rows, mark all read, dismiss" },
+      { t: "Badges · tags · counts", tag: "feedback", href: "preview/components-feedback.html?only=badges-tags-counts",        d: "status pills, chips, counters" },
+      { t: "Progress · skeleton · spinner", tag: "feedback", href: "preview/components-feedback.html?only=progress-skeleton-spinner", d: "loading + busy states" },
+      { t: "Empty state",      tag: "feedback", href: "preview/components-feedback.html?only=empty-state",                      d: "what lives here + first action" },
+      { t: "Overlays",         tag: "overlay",  href: "preview/components-feedback.html?only=overlays-modal-tooltip-dropdown",  d: "modal · tooltip · dropdown" }
+    ]},
+    { gi: "06", title: "Patterns & States", accent: "var(--color-accent-2)", items: [
+      { t: "Resizable panes",  tag: "layout",  href: "preview/components-advanced.html?only=resizable-panes",   d: "drag splitter, min-width, keyboard" },
+      { t: "i18n & RTL",       tag: "i18n",    href: "preview/i18n-rtl.html",               d: "Thai · Arabic · CJK + dir=rtl mirror" },
+      { t: "Page states",      tag: "state",   href: "preview/page-states.html",            d: "404 / 500 / 403 / offline / loading" }
+    ]},
+    { gi: "07", title: "Marketing", accent: "var(--color-accent-3)", items: [
+      { t: "Pricing table",   tag: "mkt", href: "preview/components-advanced.html?only=pricing-table", d: "3 tiers, featured glow, billing toggle" },
+      { t: "Hero · split",    tag: "v1",  href: "preview/hero-split.html",    d: "3D grid + frosted terminal, right" },
+      { t: "Hero · centered", tag: "v2",  href: "preview/hero-centered.html", d: "centered grid, pointer-reactive tilt" }
+    ]},
+    { gi: "08", title: "Surfaces", accent: "var(--color-accent-4)", items: [
       { t: "Dashboard",       tag: "app",     href: "preview/surface-dashboard.html", d: "charts, sortable table, feed" },
       { t: "Pitch deck",      tag: "deck",    href: "preview/surface-deck.html",      d: "1920×1080 fit, 7 slides, keyboard" },
       { t: "Mobile app",      tag: "ios",     href: "preview/surface-mobile.html",    d: "iOS flow + live accent setting" },
       { t: "Desktop console", tag: "desktop", href: "preview/surface-desktop.html",   d: "three panes + ⌘K palette" },
       { t: "Landing",         tag: "web",     href: "preview/surface-landing.html",   d: "hero, features, stack, waitlist" }
     ]},
-    { gi: "05", title: "Applied kit", accent: "var(--color-success)", items: [
+    { gi: "09", title: "Applied kit", accent: "var(--color-success)", items: [
       { t: "Operator console", tag: "react", href: "ui_kits/app/index.html", d: "Sidebar · AssistantsList · ChatArea · InputBar" }
     ]},
-    { gi: "06", title: "Docs & source", accent: "var(--color-muted)", items: [
+    { gi: "10", title: "Docs & source", accent: "var(--color-muted)", items: [
       { t: "DESIGN.md",       tag: "rules",   href: "docs.html?doc=DESIGN.md",         d: "visual principles + rules" },
       { t: "README.md",       tag: "guide",   href: "docs.html?doc=README.md",         d: "how to use the system" },
       { t: "CONTRIBUTING.md", tag: "extend",  href: "docs.html?doc=CONTRIBUTING.md",   d: "sync, maturity, branch policy" },
@@ -390,7 +419,7 @@
   ];
 
   /* Accent options the showcase customizer offers — the four brand accents plus two
-     section-identity accents (green = group 05 success, grey = group 06 muted).
+     section-identity accents (green = Applied kit · success, grey = Docs & source · muted).
      Mirrors showcase-prefs.js so the canvas stays on-palette. */
   var ACCENTS = {
     cyan:    { c: "var(--color-accent-2)", g: "linear-gradient(135deg, var(--color-accent-2), var(--color-accent))" },

@@ -61,6 +61,7 @@
     state colors, and layout uses logical properties so they mirror under RTL for free.</p>
 
   <!-- ── Banner / announcement ─────────────────────────────────────────── -->
+  <section data-component="banner" data-title="Banner" data-crumb="COMMON UI · BANNER">
   <div class="sec">// Banner — system notices (dismissable)</div>
   <div class="banner-stack">
     <div class="banner" role="status">
@@ -88,6 +89,9 @@
   </div>
 
   <!-- ── Toolbar ───────────────────────────────────────────────────────── -->
+  </section>
+
+  <section data-component="toolbar" data-title="Toolbar" data-crumb="COMMON UI · TOOLBAR">
   <div class="sec">// Toolbar — vault note-editor action bar</div>
   <div class="toolbar" role="toolbar" aria-label="Editor" style="max-width:760px">
     <div class="toolbar-group">
@@ -107,6 +111,9 @@
   </div>
 
   <!-- ── Menu (rich) ───────────────────────────────────────────────────── -->
+  </section>
+
+  <section data-component="menu" data-title="Menu" data-crumb="COMMON UI · MENU">
   <div class="sec">// Menu — a richer dropdown (icon · title · description · shortcut)</div>
   <div style="min-height:400px">
   <details class="menu-wrap" open>
@@ -138,6 +145,9 @@
   </div>
 
   <!-- ── Combobox / multi-select ───────────────────────────────────────── -->
+  </section>
+
+  <section data-component="combobox" data-title="Combobox" data-crumb="COMMON UI · COMBOBOX">
   <div class="sec">// Combobox — multi-select skill picker (type to filter)</div>
   <div class="panel cb-wrap">
     <label class="field-label" for="cb-skills">Pin skills to the rail</label>
@@ -158,6 +168,9 @@
   </div>
 
   <!-- ── Avatar group ──────────────────────────────────────────────────── -->
+  </section>
+
+  <section data-component="avatar-group" data-title="Avatar group" data-crumb="COMMON UI · AVATARS">
   <div class="sec">// Avatar group — sub-agents on a task</div>
   <div class="row-demo">
     <div>
@@ -182,6 +195,9 @@
   </div>
 
   <!-- ── Source basis ──────────────────────────────────────────────────── -->
+  </section>
+
+  <section data-component="source-basis" data-title="Source basis">
   <div class="sec">// Source basis — the website's real build-time modules (onebrain-ai/website)</div>
   <div class="cyber-list" style="max-width:720px">
     <div class="row"><b>version.ts</b> — the promo banner announces this build's version; from the Releases API at prerender, falls back to <code>3.0.0</code>. <span class="stamp">build</span></div>
@@ -198,8 +214,11 @@
     <code>[data-toggle-active]</code> toolbar press). Default accents follow <code>--section-accent</code>; banner
     <code>.is-info/.is-success/.is-warning/.is-danger</code> use the fixed semantic state colors.</p>
 
+  </section>
+
 <script src="combobox.js"></script>
 <script src="ui-actions.js"></script>
+<script src="only.js"></script>
 <script src="showcase-prefs.js"></script>
 </body>
 </html>

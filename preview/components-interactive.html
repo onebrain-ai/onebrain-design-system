@@ -43,6 +43,7 @@
     control is a CSS-only radio group; the dropzone progressively enhances a real <code>&lt;input type="file"&gt;</code>.</p>
 
   <!-- ── Segmented control ─────────────────────────────────────────────── -->
+  <section data-component="segmented-control" data-title="Segmented control" data-crumb="INTERACTIVE · SEGMENTED CONTROL">
   <div class="sec">// Segmented control (CSS-only · active = accent text + tint + ring, never solid fill)</div>
   <div class="segrow">
     <div>
@@ -71,6 +72,8 @@
   </div>
 
   <!-- ── Accordion ─────────────────────────────────────────────────────── -->
+  </section>
+  <section data-component="disclosure-accordion" data-title="Disclosure / accordion" data-crumb="INTERACTIVE · DISCLOSURE / ACCORDION">
   <div class="sec">// Disclosure / accordion (native &lt;details&gt; · open item keys to accent + left bar)</div>
   <div class="accordion" style="--section-accent:var(--color-accent-2)">
     <details class="accordion-item" open>
@@ -98,6 +101,8 @@
   </div>
 
   <!-- ── Dropzone ──────────────────────────────────────────────────────── -->
+  </section>
+  <section data-component="file-dropzone" data-title="File dropzone" data-crumb="INTERACTIVE · FILE DROPZONE">
   <div class="sec">// File dropzone (progressive enhancement · real &lt;input type="file"&gt; + drag-drop)</div>
   <div class="dropzone" data-dropzone>
     <svg class="ob-icon ob-icon-24" aria-hidden="true"><use href="#ob-upload"/></svg>
@@ -107,6 +112,8 @@
   </div>
 
   <!-- ── Source basis ──────────────────────────────────────────────────── -->
+  </section>
+  <section data-component="source-basis-the-accordion-documenting-the-website-s-real-modules" data-title="Source basis — the accordion documenting the website's real modules" data-crumb="INTERACTIVE · SOURCE BASIS — THE ACCORDION DOCUMENTING THE WEBSITE'S REAL MODULES">
   <div class="sec">// Source basis — the accordion documenting the website's real modules (onebrain-ai/website)</div>
   <div class="accordion" style="--section-accent:var(--color-accent-3); max-width:760px">
     <details class="accordion-item">
@@ -147,7 +154,9 @@
     the input via <code>DataTransfer</code> so form submit carries the files). No-JS fallback: the bare
     <code>&lt;input type="file"&gt;</code> still works.</p>
 
+  </section>
   <script src="dropzone.js"></script>
+<script src="only.js"></script>
 <script src="showcase-prefs.js"></script>
 </body>
 </html>

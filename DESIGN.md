@@ -442,6 +442,16 @@ previews, and the UI kit reproduce them.
   `preview/combobox.js` from a native `<select multiple>` — form submit + fallback intact), and
   **avatar group** (`.avatar-group`, overlapping `.avatar`s with a `+N` overflow tile, ringed to the
   surface behind via `--avatar-ring`). See `preview/components-common.html`.
+- **Advanced (product + marketing)** — **pricing table** (`.pricing` / `.price-tier`, tiered plan cards
+  with a featured accent-glow tier and a CSS-only `:has()` monthly/annual billing toggle), **date
+  picker** (`.datepicker`, a calendar popover for `📅` task dates — selected = accent ring + tint +
+  text, never a solid fill; today = accent dot; rendered by `preview/datepicker.js`, degrades to a
+  native `<input type="date">`), **notification center** (`.notif-center`, unread rows with an
+  accent-ringed icon + dot, an unread-count pill, mark-all-read + dismiss via `preview/ui-actions.js`),
+  **resizable panes** (`.resizable` / `.resizer`, a drag splitter keyed to the accent that honors a pane
+  min-width — `preview/resizable.js`), and **emoji picker** (`.emoji-picker`, category tabs + search +
+  recents — emoji are content, the chrome stays on the system's mono type + accent —
+  `preview/emoji-picker.js`). See `preview/components-advanced.html`.
 
 ---
 
