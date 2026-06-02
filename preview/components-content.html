@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Content components</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:36px 0 18px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .stack{ display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; }
+  .metric-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(184px,1fr)); gap:16px; max-width:780px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+  /* source-basis rows carry long descriptions — let them wrap on narrow screens */
+  .cyber-list .row{ flex-wrap:wrap; gap:2px 10px; }
+  .cyber-list .row .stamp{ margin-inline-start:auto; }
+  .cyber-list .row code{ overflow-wrap:anywhere; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
+  <div class="pv-grid-bg"></div>
+
+  <!-- minimal inline sprite so markup icons render standalone -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="ob-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="ob-capture" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="ob-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="ob-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="ob-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+    <symbol id="ob-trend-up" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+    <symbol id="ob-trend-down" viewBox="0 0 24 24"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></symbol>
+  </svg>
+
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> COMPONENTS · CONTENT</span>
+  <h1>Content</h1>
+  <p class="lede">Two content primitives for a dev-tool surface — keyed to <code>components.css</code>. The
+    <b>code block</b> carries a filename, a language tag, and a copy button (<code>preview/code-copy.js</code>,
+    zero-dependency, sandbox-safe); its syntax colors are semantic and stay fixed. The <b>metric tiles</b> add a
+    trend delta + optional sparkline on top of the plain <code>.stat</code>.</p>
+
+  <!-- ── Code block ────────────────────────────────────────────────────── -->
+  <div class="sec">// Code block (filename + language tag + copy · line numbers via .code-lines)</div>
+  <div class="stack">
+    <div class="code-block" style="flex:1; min-width:min(360px,100%)">
+      <div class="code-head">
+        <span class="code-name">onebrain.yml</span>
+        <span class="code-lang">yaml</span>
+        <button class="code-copy" data-code-copy data-label="Copy" type="button"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-copy"/></svg> <span data-cc-text>Copy</span></button>
+      </div>
+      <div class="code-lines" role="group" aria-label="onebrain.yml">
+<span class="cl"><span class="tok-com"># OneBrain — vault + scheduled skills</span></span>
+<span class="cl"><span class="tok-key">vault</span>: <span class="tok-str">~/brain</span></span>
+<span class="cl"><span class="tok-key">harness</span>: <span class="tok-str">claude-code</span></span>
+<span class="cl"><span class="tok-key">schedule</span>:</span>
+<span class="cl">  - <span class="tok-key">skill</span>: <span class="tok-fn">consolidate</span></span>
+<span class="cl">    <span class="tok-key">cron</span>: <span class="tok-str">"0 9 * * *"</span></span>
+<span class="cl">  - <span class="tok-key">skill</span>: <span class="tok-fn">weekly</span></span>
+<span class="cl">    <span class="tok-key">at</span>: <span class="tok-str">"fri 17:00"</span></span>
+      </div>
+    </div>
+
+    <div class="code-block" style="flex:1; min-width:min(360px,100%)">
+      <div class="code-head">
+        <span class="code-name">session</span>
+        <span class="code-lang">bash</span>
+        <button class="code-copy" data-code-copy data-label="Copy" type="button"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-copy"/></svg> <span data-cc-text>Copy</span></button>
+      </div>
+<pre><code><span class="tok-com"># install, then run the co-evolution loop</span>
+<span class="tok-fn">brew</span> install onebrain
+onebrain <span class="tok-key">capture</span> <span class="tok-str">"idea: vault as OS"</span>
+onebrain <span class="tok-key">consolidate</span>   <span class="tok-com"># files inbox → PARA</span></code></pre>
+    </div>
+  </div>
+
+  <!-- ── Metric / KPI tiles ────────────────────────────────────────────── -->
+  <div class="sec">// Metric / KPI tiles (trend delta ↑↓ · optional sparkline)</div>
+  <div class="metric-grid">
+    <div class="metric">
+      <div class="metric-top"><span class="metric-label">Notes captured</span><svg class="ob-icon ob-icon-16 metric-ic" aria-hidden="true"><use href="#ob-capture"/></svg></div>
+      <div class="metric-n">1.2k</div>
+      <div class="metric-foot"><span class="metric-trend is-up"><svg class="ob-icon" aria-hidden="true"><use href="#ob-trend-up"/></svg> 12%</span><span class="metric-sub">vs last week</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-top"><span class="metric-label">Wikilinks</span><svg class="ob-icon ob-icon-16 metric-ic" aria-hidden="true"><use href="#ob-link"/></svg></div>
+      <div class="metric-n">3.4k</div>
+      <div class="metric-foot"><span class="metric-trend is-up"><svg class="ob-icon" aria-hidden="true"><use href="#ob-trend-up"/></svg> 6%</span><span class="metric-sub">graph density</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-top"><span class="metric-label">Sessions</span><svg class="ob-icon ob-icon-16 metric-ic" aria-hidden="true"><use href="#ob-clock"/></svg></div>
+      <div class="metric-n">142</div>
+      <div class="metric-foot"><span class="metric-trend is-down"><svg class="ob-icon" aria-hidden="true"><use href="#ob-trend-down"/></svg> 4%</span><span class="metric-sub">vs last week</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-top"><span class="metric-label">Vault size</span><svg class="ob-icon ob-icon-16 metric-ic" aria-hidden="true"><use href="#ob-db"/></svg></div>
+      <div class="metric-n">86<span style="font-size:1rem"> MB</span></div>
+      <div class="metric-foot"><span class="metric-trend is-flat">—</span><span class="metric-sub">plain Markdown</span></div>
+    </div>
+    <div class="metric" style="grid-column:1 / -1">
+      <div class="metric-top"><span class="metric-label">Captures / day · last 14</span><span class="metric-sub" style="margin-inline-start:auto">38 today</span></div>
+      <svg class="spark" viewBox="0 0 280 34" preserveAspectRatio="none" aria-hidden="true">
+        <polyline fill="none" stroke="var(--chart-1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+          points="0,26 22,22 44,24 66,16 88,18 110,12 132,14 154,8 176,13 198,9 220,6 242,10 264,5 280,7"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Source basis ──────────────────────────────────────────────────── -->
+  <div class="sec">// Source basis — the website's real build-time modules (onebrain-ai/website)</div>
+  <div class="cyber-list" style="max-width:720px">
+    <div class="row"><b>version.ts</b> — the CLI version shown in a metric/badge; from the Releases API at prerender, falls back to <code>3.0.0</code>. <span class="stamp">build</span></div>
+    <div class="row"><b>gh-stars.ts</b> — the star-count metric; <code>stargazers_count</code> baked at build, hidden on <code>0</code>. <span class="stamp">build</span></div>
+    <div class="row"><b>disposable-domains.ts</b> — waitlist guard; a blocklist match returns <code>200</code> with no write. <span class="stamp">api</span></div>
+    <div class="row"><b>brain-id.ts</b> — stable SSR gradient ids via a module counter (no <code>Math.random</code>). <span class="stamp">ssr</span></div>
+    <div class="row"><b>middleware.ts</b> — HSTS / nosniff / DENY / COOP headers wrapped so they ship even on a 500. <span class="stamp">edge</span></div>
+  </div>
+
+  <p class="srcnote">Classes: <code>.code-block</code> / <code>.code-head</code> / <code>.code-lines</code> ·
+    <code>.metric</code> / <code>.metric-trend</code> in <code>components.css §17–§18</code>. Copy enhancer:
+    <code>preview/code-copy.js</code> (reads via <code>innerText</code>, Clipboard API with an execCommand fallback for
+    sandboxed contexts). Syntax token colors (<code>.tok-key</code> / <code>.tok-str</code> / <code>.tok-fn</code>) are
+    semantic and fixed; the language tag + copy hover follow the section accent. Sparkline keyed to <code>--chart-1</code>.</p>
+
+<script src="code-copy.js"></script>
+<script src="showcase-prefs.js"></script>
+</body>
+</html>

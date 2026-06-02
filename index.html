@@ -70,12 +70,17 @@
   .sc-search { position: relative; padding: 12px; border-bottom: 1px solid var(--color-border-2); }
   .sc-search svg { position: absolute; left: 22px; top: 50%; transform: translateY(-50%);
     width: 15px; height: 15px; color: var(--color-muted); pointer-events: none; }
-  .sc-search input { width: 100%; height: 38px; padding: 0 34px 0 36px;
+  .sc-search input { width: 100%; box-sizing: border-box; height: 38px; padding: 0 34px 0 36px;
+    appearance: none; -webkit-appearance: none;
     background: var(--color-surface-2); border: 1px solid var(--color-border);
     color: var(--color-text); font-family: var(--font-mono); font-size: 12.5px;
-    border-radius: var(--radius-sm); }
+    letter-spacing: 0.02em; outline: none;
+    transition: border-color var(--dur-fast), box-shadow var(--dur-fast); }
   .sc-search input::placeholder { color: var(--color-muted); }
-  .sc-search input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-color: var(--section-accent); }
+  .sc-search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  .sc-search input:focus { border-color: var(--section-accent);
+    box-shadow: 0 0 0 1px var(--focus-ring), 0 0 16px color-mix(in srgb, var(--focus-ring) 22%, transparent); }
+  .sc-search:focus-within svg { color: var(--section-accent); }
   .sc-search .kbd { position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
     font-family: var(--font-mono); font-size: 10px; color: var(--color-ghost);
     border: 1px solid var(--color-border); padding: 1px 5px; pointer-events: none; }
@@ -224,7 +229,7 @@
       <span class="wm">OneBrain <em>Design System</em></span>
     </a>
     <div class="sc-bar-spacer"></div>
-    <span class="sc-ver">v<b>1.0.0</b> · 26 surfaces</span>
+    <span class="sc-ver">v<b>1.0.0</b> · 28 surfaces</span>
     <button class="sc-icbtn is-on" id="panelToggle" type="button" aria-label="Toggle theme customizer" aria-pressed="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
     </button>
@@ -352,6 +357,8 @@
       { t: "Charts",           tag: "viz",  href: "preview/charts.html",                      d: "line / area / bar / donut / sparkline" },
       { t: "Icons",            tag: "ui",   href: "preview/components-icons.html",            d: "Lucide-line sprite, .ob-icon sizes" },
       { t: "Interactive",      tag: "ui",   href: "preview/components-interactive.html",      d: "accordion, segmented control, dropzone" },
+      { t: "Structure",        tag: "ui",   href: "preview/components-structure.html",        d: "tree view, stepper / wizard, timeline" },
+      { t: "Content",          tag: "ui",   href: "preview/components-content.html",          d: "code block + copy, KPI / metric tiles" },
       { t: "i18n & RTL",       tag: "i18n", href: "preview/i18n-rtl.html",                    d: "Thai · Arabic · CJK + dir=rtl mirror" },
       { t: "Page states",      tag: "state",href: "preview/page-states.html",                 d: "404 / 500 / 403 / offline / loading" }
     ]},

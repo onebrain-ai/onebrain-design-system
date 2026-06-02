@@ -110,12 +110,15 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   ├── cyber-select.js        Custom <select> listbox enhancer (on-brand open state, full ARIA)
 │   ├── command-palette.js     ⌘K command-palette enhancer (filter, keyboard nav, ARIA dialog/listbox)
 │   ├── dropzone.js            File-dropzone enhancer (drag-drop + synced file list, no-JS fallback)
+│   ├── code-copy.js           Code-block copy enhancer (Clipboard API + execCommand fallback, sandbox-safe)
 │   ├── components-forms.html      Full form kit (consumes components.css) — inputs, select, checkbox/radio/switch/range, validation, composer, buttons
 │   ├── components-feedback.html   Alerts, toasts, badges, progress, skeleton, spinner, empty-state, modal/tooltip/dropdown
 │   ├── components-data.html       Table, list, tabs, breadcrumb, pagination, avatars, stats, density toggle
 │   ├── components-command-palette.html  ⌘K skill launcher (consumes components.css + command-palette.js)
 │   ├── components-icons.html      Lucide-line icon sprite — .ob-icon, sizes 16/20/24, product vocabulary
 │   ├── components-interactive.html  Accordion (native details), CSS-only segmented control, file dropzone
+│   ├── components-structure.html  Tree view (PARA folders), stepper / wizard, timeline / activity feed
+│   ├── components-content.html    Code block (+ copy, line numbers) and KPI / metric tiles (trend + sparkline)
 │   ├── charts.html                Inline-SVG line / area / bar / donut / sparkline keyed to --chart-1…6
 │   ├── i18n-rtl.html              Thai · Arabic · CJK fallbacks + dir=rtl mirror of cards/alerts/accordion
 │   ├── page-states.html          .page-state templates — 404 / 500 / 403 / offline / loading, re-tint via --section-accent
@@ -171,6 +174,8 @@ surfaces (shared `ob-accent` key). See DESIGN.md §2 "User-settable accent (runt
 | [`preview/charts.html`](preview/charts.html) | **Consumes `components.css`.** Inline-SVG line / area / bar (6 categorical series) / donut / sparkline + bar-meter — no chart library, all keyed to the chart scale | `.chart-frame`, `.chart-legend`, `.donut`, `.spark`, `.bar-meter`, `--chart-1…6`, `--chart-grid/-axis/-track` |
 | [`preview/components-icons.html`](preview/components-icons.html) | **Consumes `components.css` + `assets/icons.svg`.** The Lucide-line `<symbol>` sprite at sizes 16/20/24, product-vocabulary names, `currentColor` in context; a "source basis" list fronts the real website modules with icons | `.ob-icon`, `.ob-icon-16/-20/-24`, `assets/icons.svg#ob-*` |
 | [`preview/components-interactive.html`](preview/components-interactive.html) | **Consumes `components.css` + `dropzone.js`.** Native-`<details>` accordion, CSS-only segmented control, drag-drop file dropzone; the "source basis" accordion documents the real website modules | `.accordion`, `.segmented`, `.dropzone`, `.dz-files`, `DataTransfer` |
+| [`preview/components-structure.html`](preview/components-structure.html) | **Consumes `components.css`.** Tree view (vault PARA folders over native `<details>`), stepper / wizard (horizontal + vertical), timeline / activity feed (state-colored nodes); a "source basis" list ties them to the real website modules | `.tree`, `.stepper`/`.stepper-vertical`, `.timeline`, logical props |
+| [`preview/components-content.html`](preview/components-content.html) | **Consumes `components.css` + `code-copy.js`.** Code block (filename + language tag + copy + line numbers, semantic syntax colors) and KPI / metric tiles (trend ↑↓ + `.spark` sparkline) | `.code-block`/`.code-lines`, `.metric`/`.metric-trend`, `--chart-1` |
 | [`preview/i18n-rtl.html`](preview/i18n-rtl.html) | **Consumes `components.css`.** Thai · Arabic · CJK rendering through the fallback stacks + a `dir="rtl"` mirror of cards / alerts / accordion, and LTR-isolated code in RTL prose | `--font-sans`/`--font-display` fallbacks, `[dir="rtl"]` (§13), `unicode-bidi:isolate` |
 | [`preview/page-states.html`](preview/page-states.html) | **Consumes `components.css`.** Full-page 404 / 500 / 403 / offline / loading templates for the operator console; each re-tints from one var and a "source basis" list ties them to the real website edge modules | `.page-state`, `.page-state-code/-title/-sub/-actions/-status`, `--section-accent` |
 | [`preview/brand-assets.html`](preview/brand-assets.html) | The real preserved files loaded via `<img>`/`<object>` — logo, app icon, favicon, the 3 live diagrams, font specimens | `assets/brain.svg`, `build/icon.png`, `build/favicon.ico`, `assets/diagrams/*.svg`, `fonts/*.ttf` |
