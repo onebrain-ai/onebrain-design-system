@@ -47,6 +47,20 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   under `dir="rtl"`); syntax-token + trend colors are semantic and stay fixed. New previews
   `preview/components-structure.html` + `preview/components-content.html`, wired into the showcase
   catalog (Components group → 14 items).
+- **Five common-UI components** (`components.css §19–§23`) — the everyday surface furniture, so the
+  kit reaches Storybook/ThemeForest breadth: **banner / announcement** (`.banner`, icon + message +
+  action + dismiss; default keys to the accent, `.is-info/.is-success/.is-warning/.is-danger` use
+  the fixed state colors), **toolbar** (`.toolbar`, grouped `.toolbar-btn` icons + `.toolbar-sep` +
+  `.toolbar-spacer`, accent-keyed pressed state), **menu** (`.menu`, a richer dropdown — label, icon
+  + title + `.menu-desc` + trailing `.kbd`, checkable + danger rows; wrap in `<details class="menu-wrap">`
+  for a no-JS disclosure), **combobox / multi-select** (`.combobox`, removable-token field + filter +
+  listbox, progressively enhanced by the new `preview/combobox.js` from a native `<select multiple>`
+  — form submit + no-JS fallback intact, full keyboard + ARIA), and **avatar group** (`.avatar-group`,
+  evenly-gapped `.avatar` tiles + a `+N` tile, ringed via `--avatar-ring`). Banner dismiss + toolbar press
+  are wired by the new tiny delegated `preview/ui-actions.js` (`[data-dismiss]` / `[data-toggle-active]`).
+  All keyed to the intent tokens (follow the accent) and authored with logical properties (mirror
+  under RTL); semantic variants stay fixed. New preview `preview/components-common.html`, wired into
+  the showcase catalog (Components group → 15 items).
 
 ### Changed
 
@@ -70,6 +84,15 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Common-UI menu trigger rendered as an oversized block; grouped avatars looked cramped.** Two
+  fixes in `components.css`: (1) `.btn-ghost` / `.btn-quiet` / `.btn-danger` now set
+  `box-sizing: border-box`, so `min-height` is the real height instead of stacking on top of padding
+  + border — a `<summary class="btn-ghost">` (content-box by UA default) was ballooning to
+  44 + 24 + 2 = **70px**; it now resolves to the intended 44px. (2) `.menu-wrap > summary` is
+  `display: inline-flex; align-items: center`, killing the `list-item` block stretch and aligning the
+  chevron. (3) `.avatar-group` switched from a negative-margin overlap to an 8px **gap** — overlapping
+  sharp-cornered square tiles stacked their 2px rings into doubled hairlines and looked cramped, so the
+  tiles now sit as a clean evenly-spaced cluster (the `:first-child` margin reset is gone).
 - **Web fonts fell back to a generic sans on GitHub Pages (Chakra Petch / JetBrains Mono).** All 12
   bundled TTFs in `fonts/` were corrupted by a UTF-8 round-trip during initial packaging — every byte
   ≥ `0x80` was rewritten to the replacement-character sequence `EF BF BD` (≈9,330 hits per file), so

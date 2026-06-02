@@ -431,6 +431,17 @@ previews, and the UI kit reproduce them.
   zero-dependency `preview/code-copy.js`; optional line numbers via `.code-lines`; semantic syntax
   token colors stay fixed), and **metric / KPI tiles** (`.metric`, a trend delta ↑↓ + optional
   `.spark` sparkline on top of the plain `.stat`). See `preview/components-content.html`.
+- **Common UI** — **banner / announcement** (`.banner`, an inline notice with an icon + message +
+  action + dismiss; the default keys to the accent, `.is-info/.is-success/.is-warning/.is-danger`
+  use the fixed state colors — dismissed via `preview/ui-actions.js`), **toolbar** (`.toolbar`, a
+  dense editor/console action bar — grouped `.toolbar-btn` icons split by `.toolbar-sep`, a
+  `.toolbar-spacer`, accent-keyed pressed state), **menu** (`.menu`, a richer dropdown body with a
+  `.menu-label`, an icon + title + `.menu-desc` + trailing `.kbd` per row, checkable + danger items;
+  wrap in a native `<details class="menu-wrap">` for a no-JS disclosure), **combobox / multi-select**
+  (`.combobox`, a removable-token field + filter input + listbox, progressively enhanced by
+  `preview/combobox.js` from a native `<select multiple>` — form submit + fallback intact), and
+  **avatar group** (`.avatar-group`, overlapping `.avatar`s with a `+N` overflow tile, ringed to the
+  surface behind via `--avatar-ring`). See `preview/components-common.html`.
 
 ---
 

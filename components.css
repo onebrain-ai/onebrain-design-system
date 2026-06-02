@@ -50,7 +50,7 @@
 .btn-ghost, .btn-quiet, .btn-danger {
   font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.18em;
   text-transform: uppercase; cursor: pointer; padding: 12px 22px; text-decoration: none;
-  min-height: var(--control-h); background: transparent; border: 1px solid;
+  box-sizing: border-box; min-height: var(--control-h); background: transparent; border: 1px solid;
   transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast);
 }
 .btn-ghost { color: var(--action-primary); border-color: color-mix(in srgb, var(--action-primary) 40%, transparent); }
@@ -1001,7 +1001,143 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
 .metric-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--text-disabled); }
 .metric .spark { width: 100%; height: 34px; margin-top: 2px; }
 
-/* a11y — the structure / content components honor reduced motion too. */
+/* ---------------------------------------------------------------------------
+   19. BANNER / ANNOUNCEMENT — a full-width inline message strip for system
+   notices (new version, vault offline, blocked signup). Icon + message + an
+   optional action + dismiss. The default keys to --section-accent; semantic
+   variants (.is-info / .is-success / .is-warning / .is-danger) override the
+   inline-start bar + icon to the fixed state color. Dismiss via preview/ui-actions.js.
+     <div class="banner is-warning" role="status">
+       <svg class="banner-ic ob-icon ob-icon-20"><use href="assets/icons.svg#ob-harness"/></svg>
+       <p class="banner-body"><b>Vault offline.</b> Working locally; changes sync on reconnect.</p>
+       <div class="banner-actions"><a class="cyber-link" href="#">Reconnect</a>
+         <button class="banner-x" data-dismiss aria-label="Dismiss"> … </button></div>
+     </div>
+   --------------------------------------------------------------------------- */
+.banner { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: var(--bg-surface); border: 1px solid var(--border-default); border-inline-start: 2px solid var(--section-accent); }
+.banner-ic { flex: none; color: var(--section-accent); display: grid; place-items: center; }
+.banner-body { flex: 1 1 auto; min-width: 0; margin: 0; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; color: var(--text-secondary); }
+.banner-body b { color: var(--text-primary); font-weight: 500; }
+.banner-actions { display: flex; align-items: center; gap: 12px; flex: none; }
+.banner-x { display: inline-grid; place-items: center; width: 28px; height: 28px; flex: none; background: transparent; border: 0; color: var(--text-tertiary); cursor: pointer; transition: color var(--dur-fast), background var(--dur-fast); }
+.banner-x:hover, .banner-x:focus-visible { color: var(--text-primary); background: var(--action-primary-weak); outline: none; }
+.banner-x:focus-visible { box-shadow: 0 0 0 2px var(--section-accent); }
+.banner.is-info    { border-inline-start-color: var(--fb-info); }    .banner.is-info .banner-ic    { color: var(--fb-info); }
+.banner.is-success { border-inline-start-color: var(--fb-success); } .banner.is-success .banner-ic { color: var(--fb-success); }
+.banner.is-warning { border-inline-start-color: var(--fb-warning); } .banner.is-warning .banner-ic { color: var(--fb-warning); }
+.banner.is-danger  { border-inline-start-color: var(--fb-danger); }  .banner.is-danger .banner-ic  { color: var(--fb-danger); }
+.banner[hidden] { display: none; }
+
+/* ---------------------------------------------------------------------------
+   20. TOOLBAR — a dense action bar for editor / console headers: grouped icon
+   buttons split by hairline separators, with a flexible spacer. Active reads
+   --section-accent (a state the app drives); preview/ui-actions.js toggles it.
+     <div class="toolbar" role="toolbar">
+       <div class="toolbar-group">
+         <button class="toolbar-btn is-active" data-toggle-active aria-pressed="true"> … </button> … </div>
+       <span class="toolbar-sep"></span> …
+       <span class="toolbar-spacer"></span>
+       <button class="toolbar-btn"> … </button>
+     </div>
+   --------------------------------------------------------------------------- */
+.toolbar { display: flex; align-items: center; gap: 4px; padding: 6px; background: var(--bg-surface); border: 1px solid var(--border-default); flex-wrap: wrap; }
+.toolbar-group { display: flex; align-items: center; gap: 2px; }
+.toolbar-sep { inline-size: 1px; align-self: stretch; min-block-size: 24px; background: var(--border-default); margin-inline: 6px; }
+.toolbar-spacer { flex: 1 1 auto; }
+.toolbar-btn { display: inline-grid; place-items: center; inline-size: 36px; block-size: 36px; flex: none; background: transparent; border: 0; color: var(--text-secondary); cursor: pointer; transition: color var(--dur-fast), background var(--dur-fast); }
+.toolbar-btn:hover { color: var(--text-primary); background: var(--action-primary-weak); }
+.toolbar-btn:focus-visible { outline: none; color: var(--text-primary); box-shadow: 0 0 0 2px var(--section-accent); }
+.toolbar-btn[aria-pressed="true"], .toolbar-btn.is-active { color: var(--section-accent); background: var(--action-primary-weak); }
+.toolbar-btn[disabled] { opacity: var(--disabled-opacity); pointer-events: none; }
+.toolbar-label { padding-inline: 10px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-tertiary); }
+
+/* ---------------------------------------------------------------------------
+   21. MENU — a richer dropdown body: section labels, an icon + title + optional
+   description per row, a trailing .kbd shortcut, checkable + danger items. Wrap
+   it in native <details class="menu-wrap"><summary> for a no-JS disclosure, or
+   drop the .menu inside a JS-positioned .dropdown shell. Icons key to accent on
+   hover; checked rows show an accent inline-start bar (never a solid fill).
+     <details class="menu-wrap">
+       <summary class="btn-ghost"> Actions </summary>
+       <div class="menu" role="menu">
+         <div class="menu-label">Capture</div>
+         <button class="menu-item" role="menuitem">
+           <svg class="ob-icon ob-icon-20"><use href="assets/icons.svg#ob-capture"/></svg>
+           <span class="menu-text"><span class="menu-title">New note</span>
+             <span class="menu-desc">Save a titled idea</span></span>
+           <kbd class="kbd">C</kbd></button> … </div>
+     </details>
+   --------------------------------------------------------------------------- */
+.menu-wrap { position: relative; display: inline-block; }
+.menu-wrap > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; }
+.menu-wrap > summary::-webkit-details-marker { display: none; }
+.menu-wrap[open] > .menu { animation: menu-in var(--dur-fast) var(--ease-out-expo); }
+.menu-wrap[open] > summary ~ .menu { position: absolute; inset-block-start: calc(100% + 6px); inset-inline-start: 0; }
+@keyframes menu-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.menu { min-width: 248px; z-index: var(--z-dropdown); background: var(--bg-elevated); border: 1px solid var(--border-default); box-shadow: var(--elev-3); padding: 6px; }
+.menu-label { padding: 8px 12px 4px; font-family: var(--font-mono); font-size: var(--eyebrow-size); letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-disabled); }
+.menu-item { position: relative; display: flex; align-items: center; gap: 12px; inline-size: 100%; padding: 9px 12px; background: transparent; border: 0; text-align: start; color: var(--text-secondary); font-family: var(--font-mono); font-size: 12.5px; cursor: pointer; text-decoration: none; transition: background var(--dur-fast), color var(--dur-fast); }
+.menu-item > .ob-icon { flex: none; color: var(--text-tertiary); transition: color var(--dur-fast); }
+.menu-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.menu-title { color: var(--text-primary); }
+.menu-desc { font-size: 11px; color: var(--text-tertiary); line-height: 1.4; }
+.menu-item .kbd { margin-inline-start: auto; flex: none; }
+.menu-item:hover, .menu-item:focus-visible { background: var(--action-primary-weak); color: var(--text-primary); outline: none; }
+.menu-item:hover > .ob-icon, .menu-item:focus-visible > .ob-icon { color: var(--section-accent); }
+.menu-item.is-checked { color: var(--text-primary); }
+.menu-item.is-checked::before { content: ""; position: absolute; inset-block: 6px; inset-inline-start: 0; inline-size: 2px; background: var(--section-accent); }
+.menu-item.is-checked > .ob-icon { color: var(--section-accent); }
+.menu-item.is-danger { color: var(--fb-danger); }
+.menu-item.is-danger:hover { background: color-mix(in srgb, var(--fb-danger) 14%, transparent); color: var(--fb-danger); }
+.menu-sep { block-size: 1px; background: var(--border-subtle); margin: 6px 0; }
+
+/* ---------------------------------------------------------------------------
+   22. COMBOBOX / MULTI-SELECT — a token field for picking many values (skills,
+   PARA folders, a blocklist). Selected values render as removable .combobox-token
+   chips beside a type-to-filter input; the option listbox reuses the menu look.
+   Progressively enhanced by preview/combobox.js from a native <select multiple>
+   (form submit + no-JS fallback intact). Field focus + tokens key to accent.
+     <label class="field-label" for="cb-skills">Skills</label>
+     <select id="cb-skills" name="skills" multiple data-combobox
+             data-placeholder="Add a skill…"> <option>capture</option> … </select>
+   --------------------------------------------------------------------------- */
+.combobox { position: relative; }
+.combobox-field { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-block-size: var(--control-h); padding: 6px 8px; background: var(--bg-surface); border: 1px solid var(--border-default); cursor: text; transition: border-color var(--dur-fast), box-shadow var(--dur-fast); }
+.combobox-field:focus-within { border-color: var(--section-accent); box-shadow: 0 0 0 1px var(--section-accent), 0 0 18px color-mix(in srgb, var(--section-accent) 28%, transparent); }
+.combobox-token { display: inline-flex; align-items: center; gap: 6px; padding-block: 3px; padding-inline: 9px 5px; background: var(--action-primary-weak); border: 1px solid color-mix(in srgb, var(--section-accent) 40%, transparent); color: var(--section-accent); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em; }
+.combobox-token button { display: inline-grid; place-items: center; inline-size: 16px; block-size: 16px; padding: 0; background: transparent; border: 0; color: inherit; cursor: pointer; opacity: 0.75; transition: opacity var(--dur-fast); }
+.combobox-token button:hover, .combobox-token button:focus-visible { opacity: 1; outline: none; }
+.combobox-token button svg { inline-size: 12px; block-size: 12px; }
+.combobox-input { flex: 1 1 90px; min-inline-size: 90px; border: 0; background: transparent; color: var(--text-primary); font-family: var(--font-mono); font-size: 13px; padding: 4px 2px; outline: none; }
+.combobox-input::placeholder { color: var(--text-tertiary); }
+.combobox-list { position: absolute; inset-block-start: calc(100% + 6px); inset-inline: 0; max-block-size: 248px; overflow-y: auto; z-index: var(--z-dropdown); background: var(--bg-elevated); border: 1px solid var(--border-default); box-shadow: var(--elev-3); padding: 6px; }
+.combobox-list[hidden] { display: none; }
+.combobox-opt { position: relative; display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-secondary); cursor: pointer; }
+.combobox-opt .opt-check { inline-size: 16px; block-size: 16px; flex: none; opacity: 0; color: var(--section-accent); }
+.combobox-opt[aria-selected="true"] { color: var(--text-primary); }
+.combobox-opt[aria-selected="true"] .opt-check { opacity: 1; }
+.combobox-opt.is-active { background: var(--action-primary-weak); color: var(--text-primary); }
+.combobox-empty { padding: 12px; font-family: var(--font-mono); font-size: 12px; color: var(--text-tertiary); text-align: center; }
+
+/* ---------------------------------------------------------------------------
+   23. AVATAR GROUP — overlapping avatars for collaborators / sub-agents, with a
+   +N overflow tile. Each avatar rings in the page ground so the stack reads as
+   layered; set --avatar-ring to the surface behind it. Extends .avatar (§5).
+     <div class="avatar-group" style="--avatar-ring: var(--color-surface)">
+       <span class="avatar" title="Inbox Classifier">IC</span> …
+       <span class="avatar avatar-more">+3</span>
+     </div>
+   --------------------------------------------------------------------------- */
+/* Square (sharp-corner) tiles read as a clean gapped cluster, not an overlap —
+   overlapping square edges stack their 2px rings into doubled hairlines. */
+.avatar-group { display: inline-flex; align-items: center; gap: 8px; }
+.avatar-group .avatar { box-shadow: 0 0 0 2px var(--avatar-ring, var(--color-bg)); }
+.avatar-group .avatar-more { background: var(--bg-elevated); border-color: var(--border-strong); color: var(--text-secondary); }
+
+/* a11y — the structure / content / common components honor reduced motion too. */
 @media (prefers-reduced-motion: reduce) {
-  .stepper-num, .tree-row, .tree-chevron, .code-copy { transition: none; }
+  .stepper-num, .tree-row, .tree-chevron, .code-copy,
+  .banner-x, .toolbar-btn, .menu-item, .menu-item > .ob-icon,
+  .combobox-field, .combobox-token button { transition: none; }
+  .menu-wrap[open] > .menu { animation: none; }
 }

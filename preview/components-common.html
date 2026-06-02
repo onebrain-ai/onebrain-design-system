@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneBrain — Common UI components</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../components.css" />
+<link rel="stylesheet" href="_preview.css" />
+<style>
+  body{ margin:0; padding:40px clamp(16px,5vw,56px) 80px; }
+  .pv-grid-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:var(--grid-size) var(--grid-size);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 100%); }
+  h1{ font-family:var(--font-display); font-style:italic; font-weight:700; text-transform:uppercase; letter-spacing:var(--tracking-tight); line-height:.95; font-size:clamp(2rem,5vw,3.4rem); margin:18px 0 6px; }
+  .lede{ font-family:var(--font-mono); color:var(--color-faint); max-width:var(--prose-max); line-height:1.65; font-size:.9rem; margin:0 0 36px; }
+  .sec{ font-family:var(--font-mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--color-ghost); margin:40px 0 16px; border-top:1px solid var(--color-border-2); padding-top:18px; }
+  .banner-stack{ display:flex; flex-direction:column; gap:14px; max-width:760px; }
+  .panel{ background:var(--color-surface); border:1px solid var(--color-border-2); padding:22px; max-width:760px; }
+  .panel + .panel{ margin-top:16px; }
+  .field-label{ display:block; }
+  .cb-wrap{ max-width:480px; }
+  .row-demo{ display:flex; flex-wrap:wrap; gap:32px; align-items:center; }
+  .row-demo .cap{ font-family:var(--font-mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--color-ghost); margin-bottom:10px; }
+  .srcnote{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--color-ghost); margin:42px 0 0; line-height:1.8; border-top:1px solid var(--color-border-2); padding-top:14px; max-width:82ch; }
+  .srcnote code{ color:var(--color-accent-2); }
+  .cyber-list .row{ flex-wrap:wrap; gap:2px 10px; }
+  .cyber-list .row .stamp{ margin-inline-start:auto; }
+  .cyber-list .row code{ overflow-wrap:anywhere; }
+</style>
+</head>
+<body class="ob-root pv-boot">
+  <div class="pv-orb" style="--pv-orb-accent: var(--section-accent)"></div>
+  <div class="pv-grid-bg"></div>
+
+  <!-- minimal inline sprite so markup icons render standalone -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="ob-skill" viewBox="0 0 24 24"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.6 5.8 21 7 14 2 9.3 9 8.5"/></symbol>
+    <symbol id="ob-vault" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 9V4M12 20v-5"/></symbol>
+    <symbol id="ob-harness" viewBox="0 0 24 24"><rect width="16" height="10" x="4" y="7" rx="2"/><path d="M9 7V4h6v3M8 17v3M16 17v3"/></symbol>
+    <symbol id="ob-capture" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="ob-memory" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 0-4 4 4 4 0 0 0 0 8 4 4 0 0 0 8 0 4 4 0 0 0 0-8 4 4 0 0 0-4-4Z"/><path d="M12 6v12"/></symbol>
+    <symbol id="ob-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="ob-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="ob-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+    <symbol id="ob-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></symbol>
+    <symbol id="ob-bold" viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 0 8H6zM6 12h9a4 4 0 0 1 0 8H6z"/></symbol>
+    <symbol id="ob-italic" viewBox="0 0 24 24"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></symbol>
+    <symbol id="ob-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+    <symbol id="ob-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="ob-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="ob-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+    <symbol id="ob-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  </svg>
+
+  <span class="cyber-pill"><span class="cyber-dot is-pulse"></span> COMPONENTS · COMMON UI</span>
+  <h1>Common UI</h1>
+  <p class="lede">The everyday surface furniture — system banners, an editor toolbar, a rich
+    menu, a multi-select token field, and a stacked avatar group. Every accent reads the
+    section-accent intent (so the whole set re-keys), variants reuse the fixed semantic
+    state colors, and layout uses logical properties so they mirror under RTL for free.</p>
+
+  <!-- ── Banner / announcement ─────────────────────────────────────────── -->
+  <div class="sec">// Banner — system notices (dismissable)</div>
+  <div class="banner-stack">
+    <div class="banner" role="status">
+      <svg class="banner-ic ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-skill"/></svg>
+      <p class="banner-body"><b>OneBrain v3.0.0 is live.</b> New this release: <code>/distill</code> now synthesizes across every session log.</p>
+      <div class="banner-actions"><a class="cyber-link" href="#">View changelog</a>
+        <button class="banner-x" data-dismiss aria-label="Dismiss"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-x"/></svg></button></div>
+    </div>
+    <div class="banner is-info" role="status">
+      <svg class="banner-ic ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-search"/></svg>
+      <p class="banner-body"><b>Vault indexed.</b> 1,204 notes are searchable via qmd — lexical + vector + HyDE.</p>
+      <div class="banner-actions"><button class="banner-x" data-dismiss aria-label="Dismiss"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-x"/></svg></button></div>
+    </div>
+    <div class="banner is-warning" role="alert">
+      <svg class="banner-ic ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-harness"/></svg>
+      <p class="banner-body"><b>Vault offline.</b> Working locally; changes sync on reconnect.</p>
+      <div class="banner-actions"><a class="cyber-link" href="#">Reconnect</a>
+        <button class="banner-x" data-dismiss aria-label="Dismiss"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-x"/></svg></button></div>
+    </div>
+    <div class="banner is-danger" role="alert">
+      <svg class="banner-ic ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-x"/></svg>
+      <p class="banner-body"><b>Signup blocked.</b> Disposable email domains aren't allowed — use a permanent address.</p>
+      <div class="banner-actions"><button class="banner-x" data-dismiss aria-label="Dismiss"><svg class="ob-icon ob-icon-16" aria-hidden="true"><use href="#ob-x"/></svg></button></div>
+    </div>
+  </div>
+
+  <!-- ── Toolbar ───────────────────────────────────────────────────────── -->
+  <div class="sec">// Toolbar — vault note-editor action bar</div>
+  <div class="toolbar" role="toolbar" aria-label="Editor" style="max-width:760px">
+    <div class="toolbar-group">
+      <button class="toolbar-btn is-active" data-toggle-active aria-pressed="true" title="Bold"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-bold"/></svg></button>
+      <button class="toolbar-btn" data-toggle-active aria-pressed="false" title="Italic"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-italic"/></svg></button>
+      <button class="toolbar-btn" data-toggle-active aria-pressed="false" title="List"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-list"/></svg></button>
+      <button class="toolbar-btn" data-toggle-active aria-pressed="false" title="Code"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-code"/></svg></button>
+    </div>
+    <span class="toolbar-sep"></span>
+    <div class="toolbar-group">
+      <button class="toolbar-btn" title="Insert wikilink"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-link"/></svg></button>
+      <button class="toolbar-btn" title="Capture to inbox"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-capture"/></svg></button>
+    </div>
+    <span class="toolbar-spacer"></span>
+    <button class="toolbar-btn" title="Search vault"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-search"/></svg></button>
+    <button class="toolbar-btn" title="Settings"><svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-settings"/></svg></button>
+  </div>
+
+  <!-- ── Menu (rich) ───────────────────────────────────────────────────── -->
+  <div class="sec">// Menu — a richer dropdown (icon · title · description · shortcut)</div>
+  <div style="min-height:400px">
+  <details class="menu-wrap" open>
+    <summary class="btn-ghost">Note actions <svg class="ob-icon ob-icon-16" aria-hidden="true" style="margin-inline-start:6px;vertical-align:middle"><use href="#ob-chevron-down"/></svg></summary>
+    <div class="menu" role="menu" aria-label="Note actions">
+      <div class="menu-label">Capture</div>
+      <button class="menu-item" role="menuitem">
+        <svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-capture"/></svg>
+        <span class="menu-text"><span class="menu-title">New note</span><span class="menu-desc">Save a titled idea to the inbox</span></span>
+        <kbd class="kbd">C</kbd></button>
+      <button class="menu-item" role="menuitem">
+        <svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-link"/></svg>
+        <span class="menu-text"><span class="menu-title">Bookmark URL</span><span class="menu-desc">Save a link to read later</span></span>
+        <kbd class="kbd">B</kbd></button>
+      <div class="menu-sep"></div>
+      <div class="menu-label">Organize</div>
+      <button class="menu-item" role="menuitem">
+        <svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-vault"/></svg>
+        <span class="menu-text"><span class="menu-title">Consolidate inbox</span><span class="menu-desc">Process &amp; file captured notes</span></span></button>
+      <button class="menu-item is-checked" role="menuitemcheckbox" aria-checked="true">
+        <svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-link"/></svg>
+        <span class="menu-text"><span class="menu-title">Show backlinks</span></span></button>
+      <div class="menu-sep"></div>
+      <button class="menu-item is-danger" role="menuitem">
+        <svg class="ob-icon ob-icon-20" aria-hidden="true"><use href="#ob-trash"/></svg>
+        <span class="menu-text"><span class="menu-title">Delete note</span></span></button>
+    </div>
+  </details>
+  </div>
+
+  <!-- ── Combobox / multi-select ───────────────────────────────────────── -->
+  <div class="sec">// Combobox — multi-select skill picker (type to filter)</div>
+  <div class="panel cb-wrap">
+    <label class="field-label" for="cb-skills">Pin skills to the rail</label>
+    <select id="cb-skills" name="skills" multiple data-combobox data-placeholder="Add a skill…">
+      <option value="capture" selected>capture</option>
+      <option value="distill" selected>distill</option>
+      <option value="braindump">braindump</option>
+      <option value="bookmark">bookmark</option>
+      <option value="consolidate">consolidate</option>
+      <option value="connect">connect</option>
+      <option value="research">research</option>
+      <option value="summarize">summarize</option>
+      <option value="daily">daily</option>
+      <option value="weekly">weekly</option>
+      <option value="recap">recap</option>
+      <option value="learn">learn</option>
+    </select>
+  </div>
+
+  <!-- ── Avatar group ──────────────────────────────────────────────────── -->
+  <div class="sec">// Avatar group — sub-agents on a task</div>
+  <div class="row-demo">
+    <div>
+      <div class="cap">On the page ground</div>
+      <div class="avatar-group">
+        <span class="avatar" title="Inbox Classifier">IC</span>
+        <span class="avatar" title="Knowledge Linker">KL</span>
+        <span class="avatar" title="Link Suggester">LS</span>
+        <span class="avatar" title="Tag Suggester">TS</span>
+        <span class="avatar avatar-more" title="2 more">+2</span>
+      </div>
+    </div>
+    <div class="panel" style="padding:18px 20px">
+      <div class="cap">Ringed to a surface</div>
+      <div class="avatar-group" style="--avatar-ring: var(--color-surface)">
+        <span class="avatar avatar-lg" title="Inbox Classifier">IC</span>
+        <span class="avatar avatar-lg" title="Knowledge Linker">KL</span>
+        <span class="avatar avatar-lg" title="Task Extractor">TE</span>
+        <span class="avatar avatar-lg avatar-more" title="5 more">+5</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Source basis ──────────────────────────────────────────────────── -->
+  <div class="sec">// Source basis — the website's real build-time modules (onebrain-ai/website)</div>
+  <div class="cyber-list" style="max-width:720px">
+    <div class="row"><b>version.ts</b> — the promo banner announces this build's version; from the Releases API at prerender, falls back to <code>3.0.0</code>. <span class="stamp">build</span></div>
+    <div class="row"><b>disposable-domains.ts</b> — the danger banner mirrors the waitlist guard; a blocklist match returns <code>200</code> with no write. <span class="stamp">api</span></div>
+    <div class="row"><b>gh-stars.ts</b> — a star count renders as a metric/badge; <code>stargazers_count</code> baked at build, hidden on <code>0</code>. <span class="stamp">build</span></div>
+    <div class="row"><b>brain-id.ts</b> — stable SSR gradient ids via a module counter (no <code>Math.random</code>). <span class="stamp">ssr</span></div>
+    <div class="row"><b>middleware.ts</b> — HSTS / nosniff / DENY / COOP headers wrapped so they ship even on a 500. <span class="stamp">edge</span></div>
+  </div>
+
+  <p class="srcnote">Classes: <code>.banner</code> (§19) · <code>.toolbar</code> (§20) · <code>.menu</code> (§21) ·
+    <code>.combobox</code> (§22) · <code>.avatar-group</code> (§23) in <code>components.css</code>. Enhancers:
+    <code>preview/combobox.js</code> (multi-select token field over a native <code>&lt;select multiple&gt;</code> — form
+    submit + no-JS fallback intact) and <code>preview/ui-actions.js</code> (<code>[data-dismiss]</code> banner close,
+    <code>[data-toggle-active]</code> toolbar press). Default accents follow <code>--section-accent</code>; banner
+    <code>.is-info/.is-success/.is-warning/.is-danger</code> use the fixed semantic state colors.</p>
+
+<script src="combobox.js"></script>
+<script src="ui-actions.js"></script>
+<script src="showcase-prefs.js"></script>
+</body>
+</html>
