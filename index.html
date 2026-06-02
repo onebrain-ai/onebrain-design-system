@@ -229,7 +229,7 @@
       <span class="wm">OneBrain <em>Design System</em></span>
     </a>
     <div class="sc-bar-spacer"></div>
-    <span class="sc-ver">v<b>1.0.0</b> · 51 surfaces</span>
+    <span class="sc-ver">v<b>1.0.0</b> · 54 surfaces</span>
     <button class="sc-icbtn is-on" id="panelToggle" type="button" aria-label="Toggle theme customizer" aria-pressed="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
     </button>
@@ -362,7 +362,12 @@
       { t: "Menu",             tag: "action", href: "preview/components-common.html?only=menu",        d: "rich dropdown — icon · title · desc · shortcut" },
       { t: "Command palette",  tag: "action", href: "preview/components-command-palette.html",         d: "⌘K launcher — filter, keyboard, ARIA" }
     ]},
-    { gi: "04", title: "Data Display", accent: "var(--color-accent-3)", items: [
+    { gi: "04", title: "Navigation", accent: "var(--color-accent-2)", items: [
+      { t: "Tabs",             tag: "nav", href: "preview/components-data.html?only=tabs",        d: "ARIA tablist, underline slide, click to switch" },
+      { t: "Breadcrumb",       tag: "nav", href: "preview/components-data.html?only=breadcrumb",  d: "vault path, mono, current page" },
+      { t: "Pagination",       tag: "nav", href: "preview/components-data.html?only=pagination",  d: "tabular nums, prev / next, current page" }
+    ]},
+    { gi: "05", title: "Data Display", accent: "var(--color-accent-3)", items: [
       { t: "Cards",            tag: "data", href: "preview/components-cards.html",     d: "cyber-card hover, stats, sub-agents" },
       { t: "Feature cards",    tag: "data", href: "preview/components-data.html?only=feature-cards",            d: "one accent per card via --section-accent" },
       { t: "Data table",       tag: "data", href: "preview/components-data.html?only=data-table",              d: "tabular nums, sticky header, hover rows" },
@@ -376,7 +381,7 @@
       { t: "Timeline",         tag: "data", href: "preview/components-structure.html?only=timeline-activity-feed", d: "session feed — nodes recolor by state" },
       { t: "Accordion",        tag: "data", href: "preview/components-interactive.html?only=disclosure-accordion", d: "native <details> disclosure, accent bar" }
     ]},
-    { gi: "05", title: "Feedback & Overlays", accent: "var(--color-accent-4)", items: [
+    { gi: "06", title: "Feedback & Overlays", accent: "var(--color-accent-4)", items: [
       { t: "Banner",           tag: "feedback", href: "preview/components-common.html?only=banner",                              d: "inline system notice — icon, action, dismiss" },
       { t: "Alerts",           tag: "feedback", href: "preview/components-feedback.html?only=alerts",                           d: "semantic states — color + icon" },
       { t: "Toasts",           tag: "feedback", href: "preview/components-feedback.html?only=toasts",                           d: "aria-live, auto-dismiss 3–5s" },
@@ -386,27 +391,27 @@
       { t: "Empty state",      tag: "feedback", href: "preview/components-feedback.html?only=empty-state",                      d: "what lives here + first action" },
       { t: "Overlays",         tag: "overlay",  href: "preview/components-feedback.html?only=overlays-modal-tooltip-dropdown",  d: "modal · tooltip · dropdown" }
     ]},
-    { gi: "06", title: "Patterns & States", accent: "var(--color-accent-2)", items: [
+    { gi: "07", title: "Patterns & States", accent: "var(--color-accent-2)", items: [
       { t: "Resizable panes",  tag: "layout",  href: "preview/components-advanced.html?only=resizable-panes",   d: "drag splitter, min-width, keyboard" },
       { t: "i18n & RTL",       tag: "i18n",    href: "preview/i18n-rtl.html",               d: "Thai · Arabic · CJK + dir=rtl mirror" },
       { t: "Page states",      tag: "state",   href: "preview/page-states.html",            d: "404 / 500 / 403 / offline / loading" }
     ]},
-    { gi: "07", title: "Marketing", accent: "var(--color-accent-3)", items: [
+    { gi: "08", title: "Marketing", accent: "var(--color-accent-3)", items: [
       { t: "Pricing table",   tag: "mkt", href: "preview/components-advanced.html?only=pricing-table", d: "3 tiers, featured glow, billing toggle" },
       { t: "Hero · split",    tag: "v1",  href: "preview/hero-split.html",    d: "3D grid + frosted terminal, right" },
       { t: "Hero · centered", tag: "v2",  href: "preview/hero-centered.html", d: "centered grid, pointer-reactive tilt" }
     ]},
-    { gi: "08", title: "Surfaces", accent: "var(--color-accent-4)", items: [
+    { gi: "09", title: "Surfaces", accent: "var(--color-accent-4)", items: [
       { t: "Dashboard",       tag: "app",     href: "preview/surface-dashboard.html", d: "charts, sortable table, feed" },
       { t: "Pitch deck",      tag: "deck",    href: "preview/surface-deck.html",      d: "1920×1080 fit, 7 slides, keyboard" },
       { t: "Mobile app",      tag: "ios",     href: "preview/surface-mobile.html",    d: "iOS flow + live accent setting" },
       { t: "Desktop console", tag: "desktop", href: "preview/surface-desktop.html",   d: "three panes + ⌘K palette" },
       { t: "Landing",         tag: "web",     href: "preview/surface-landing.html",   d: "hero, features, stack, waitlist" }
     ]},
-    { gi: "09", title: "Applied kit", accent: "var(--color-success)", items: [
+    { gi: "10", title: "Applied kit", accent: "var(--color-success)", items: [
       { t: "Operator console", tag: "react", href: "ui_kits/app/index.html", d: "Sidebar · AssistantsList · ChatArea · InputBar" }
     ]},
-    { gi: "10", title: "Docs & source", accent: "var(--color-muted)", items: [
+    { gi: "11", title: "Docs & source", accent: "var(--color-muted)", items: [
       { t: "DESIGN.md",       tag: "rules",   href: "docs.html?doc=DESIGN.md",         d: "visual principles + rules" },
       { t: "README.md",       tag: "guide",   href: "docs.html?doc=README.md",         d: "how to use the system" },
       { t: "CONTRIBUTING.md", tag: "extend",  href: "docs.html?doc=CONTRIBUTING.md",   d: "sync, maturity, branch policy" },
