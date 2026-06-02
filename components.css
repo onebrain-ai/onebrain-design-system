@@ -1018,7 +1018,7 @@ textarea.cyber-input { resize: vertical; min-height: 96px; line-height: 1.6; }
 .banner-ic { flex: none; color: var(--section-accent); display: grid; place-items: center; }
 .banner-body { flex: 1 1 auto; min-width: 0; margin: 0; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; color: var(--text-secondary); }
 .banner-body b { color: var(--text-primary); font-weight: 500; }
-.banner-actions { display: flex; align-items: center; gap: 12px; flex: none; }
+.banner-actions { display: flex; align-items: center; gap: 12px; flex: none; font-family: var(--font-mono); font-size: 12.5px; }
 .banner-x { display: inline-grid; place-items: center; width: 28px; height: 28px; flex: none; background: transparent; border: 0; color: var(--text-tertiary); cursor: pointer; transition: color var(--dur-fast), background var(--dur-fast); }
 .banner-x:hover, .banner-x:focus-visible { color: var(--text-primary); background: var(--action-primary-weak); outline: none; }
 .banner-x:focus-visible { box-shadow: 0 0 0 2px var(--section-accent); }
