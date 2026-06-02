@@ -33,19 +33,34 @@
     borders, hover rows, and a real density switch. These are the dashboard/admin building blocks. Toggle
     <code>data-density</code> to see comfortable ↔ compact.</p>
 
-  <nav><ol class="breadcrumb" style="padding:0;margin:0 0 18px">
+  <section data-component="breadcrumb" data-title="Breadcrumb" data-crumb="NAVIGATION · BREADCRUMB">
+  <div class="sec">// Breadcrumb (vault path · mono · current page)</div>
+  <nav aria-label="Vault path"><ol class="breadcrumb" style="padding:0;margin:0">
     <li><a href="#" onclick="return false">Vault</a></li>
     <li><a href="#" onclick="return false">07-logs</a></li>
     <li aria-current="page">Sessions</li>
   </ol></nav>
+  <nav aria-label="Project path" style="margin-top:14px"><ol class="breadcrumb" style="padding:0;margin:0">
+    <li><a href="#" onclick="return false">Vault</a></li>
+    <li><a href="#" onclick="return false">01-projects</a></li>
+    <li><a href="#" onclick="return false">design-system</a></li>
+    <li aria-current="page">components.css</li>
+  </ol></nav>
 
-  <div class="cyber-tabs" role="tablist" style="margin-bottom:22px">
-    <button role="tab" aria-selected="true" class="is-active">Sessions</button>
-    <button role="tab" aria-selected="false">Skills</button>
-    <button role="tab" aria-selected="false">Memory</button>
-    <button role="tab" aria-selected="false">Tasks</button>
+  </section>
+  <section data-component="tabs" data-title="Tabs" data-crumb="NAVIGATION · TABS">
+  <div class="sec">// Tabs (underline slide · click to switch · ARIA tablist)</div>
+  <div class="cyber-tabs" role="tablist" id="navtabs" aria-label="Vault view" style="margin-bottom:16px">
+    <button role="tab" aria-selected="true" class="is-active" aria-controls="tabpanel">Sessions</button>
+    <button role="tab" aria-selected="false" aria-controls="tabpanel">Skills</button>
+    <button role="tab" aria-selected="false" aria-controls="tabpanel">Memory</button>
+    <button role="tab" aria-selected="false" aria-controls="tabpanel">Tasks</button>
+  </div>
+  <div id="tabpanel" role="tabpanel" style="font-family:var(--font-mono);color:var(--color-faint);font-size:.85rem;line-height:1.6">
+    Showing <b id="tabname" style="color:var(--color-white)">Sessions</b> — 5 entries from <code>07-logs/</code>.
   </div>
 
+  </section>
   <section data-component="data-table" data-title="Data table" data-crumb="DATA · DATA TABLE">
   <div class="sec">// Data table (tabular nums · sticky header · hover rows)</div>
   <div class="density-row">
@@ -63,12 +78,17 @@
       </tbody>
     </table>
   </div>
-  <div class="pagination" style="margin-top:14px">
-    <button>‹</button>
+
+  </section>
+  <section data-component="pagination" data-title="Pagination" data-crumb="NAVIGATION · PAGINATION">
+  <div class="sec">// Pagination (tabular nums · prev / next · current page)</div>
+  <div class="pagination" id="pager">
+    <button data-rel="prev" aria-label="Previous page">‹</button>
     <a href="#" onclick="return false" aria-current="page">1</a>
     <a href="#" onclick="return false">2</a>
     <a href="#" onclick="return false">3</a>
-    <button>›</button>
+    <a href="#" onclick="return false">4</a>
+    <button data-rel="next" aria-label="Next page">›</button>
   </div>
 
   </section>
@@ -121,6 +141,47 @@
   document.getElementById('dense').addEventListener('change', function (e) {
     document.getElementById('tblwrap').setAttribute('data-density', e.target.checked ? 'compact' : 'comfortable');
   });
+
+  // Tabs — real click-to-switch: move aria-selected/.is-active + update the panel.
+  (function () {
+    var tabs = document.getElementById('navtabs');
+    var panel = document.getElementById('tabpanel');
+    if (!tabs) return;
+    var counts = { Sessions: '5 entries from 07-logs/', Skills: '29+ skills in the rail',
+                   Memory: '142 facts in memory/', Tasks: '7 open tasks due this week' };
+    tabs.addEventListener('click', function (e) {
+      var btn = e.target.closest('button[role="tab"]');
+      if (!btn) return;
+      tabs.querySelectorAll('button[role="tab"]').forEach(function (b) {
+        var on = b === btn;
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        b.classList.toggle('is-active', on);
+      });
+      if (panel) panel.innerHTML = 'Showing <b style="color:var(--color-white)">' +
+        btn.textContent + '</b> — ' + (counts[btn.textContent] || '') + '.';
+    });
+  })();
+
+  // Pagination — real prev/next + page select: move aria-current, clamp ends.
+  (function () {
+    var pager = document.getElementById('pager');
+    if (!pager) return;
+    var pages = function () { return Array.prototype.slice.call(pager.querySelectorAll('a')); };
+    function select(a) {
+      pages().forEach(function (p) { p.removeAttribute('aria-current'); });
+      a.setAttribute('aria-current', 'page');
+    }
+    pager.addEventListener('click', function (e) {
+      var rel = e.target.closest('button[data-rel]');
+      var link = e.target.closest('a');
+      var list = pages();
+      var cur = list.findIndex(function (p) { return p.getAttribute('aria-current') === 'page'; });
+      if (rel) {
+        var next = rel.getAttribute('data-rel') === 'next' ? cur + 1 : cur - 1;
+        if (next >= 0 && next < list.length) select(list[next]);
+      } else if (link) { e.preventDefault(); select(link); }
+    });
+  })();
 </script>
 <script src="only.js"></script>
 <script src="showcase-prefs.js"></script>

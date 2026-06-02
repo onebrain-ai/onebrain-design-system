@@ -12,9 +12,9 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - **Showcase shell** — `index.html` is now a ThemeForest / Storybook-style browser for the whole
-  system: a categorized, searchable left rail (Foundations · Forms · Actions · Data Display ·
-  Feedback & Overlays · Patterns & States · Marketing · Surfaces · Applied kit · Docs — one entry
-  per component, data-driven from one `CATALOG` array, so it's trivial to extend), a center
+  system: a categorized, searchable left rail (Foundations · Forms · Actions · Navigation ·
+  Data Display · Feedback & Overlays · Patterns & States · Marketing · Surfaces · Applied kit ·
+  Docs — one entry per component, data-driven from one `CATALOG` array, so it's trivial to extend), a center
   preview canvas with a responsive **viewport selector** (Full · 1440 · 1024 · 768 · 390 · 360),
   and a right **theme customizer** that re-keys the live preview in real time — theme (dark/light),
   accent (the four brand accents), density (comfortable/compact), and direction (LTR/RTL). All four
@@ -33,10 +33,11 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   reads the hash, then the shell's stored prefs, so it remembers the last choice.
 - **Two section-identity accents in the showcase customizer** — `green` and `grey`, added beside the
   four brand accents (cyan / violet / magenta / amber) so the customizer offers six. They reuse the
-  existing category colors rather than new hexes — `green` = group 05's lime `--color-success`,
-  `grey` = group 06's `--color-muted` (both already light-re-inked) — mirrored across `index.html`
-  and `showcase-prefs.js`. The reusable product `.accent-dots` (`accent-picker.js`) stays at the four
-  brand signals, and groups 05 / 06 keep their original `--color-success` / `--color-muted` marks.
+  existing category colors rather than new hexes — `green` = the Applied kit group's lime
+  `--color-success`, `grey` = the Docs group's `--color-muted` (both already light-re-inked) —
+  mirrored across `index.html` and `showcase-prefs.js`. The reusable product `.accent-dots`
+  (`accent-picker.js`) stays at the four brand signals, and the Applied kit / Docs groups keep
+  their original `--color-success` / `--color-muted` marks.
 - **Five structure + content components** (`components.css §14–§18`) — the highest-value pieces a
   vault / dev-tool console still needed, so the kit is comprehensive enough to design with directly:
   **tree view** (`.tree`, PARA folders over native `<details>`), **stepper / wizard** (`.stepper`
@@ -78,6 +79,15 @@ package uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `preview/components-advanced.html` (one file, five `data-component` sections + source basis), wired
   into the catalog as five focused `?only=` entries in their topical groups (Forms · Feedback &
   Overlays · Patterns & States · Marketing).
+- **Navigation group + three findable nav components** — `Tabs`, `Breadcrumb`, and `Pagination`
+  had classes in `components.css` but no addressable demo (search matched the names, but clicking
+  showed nothing). They are now real `data-component` sections in `components-data.html` with live
+  interaction — tabs switch `aria-selected`/`.is-active` + update a panel, pagination moves
+  `aria-current` on prev/next/click and clamps at the ends — surfaced as a dedicated **Navigation**
+  catalog group (inserted at gi 04; later groups renumber to 05–11, accent picker unaffected since
+  it keys on tokens). Also fixes a leak: the breadcrumb + tabs were previously page-level chrome
+  that stayed visible in every other component's `?only=` focused view; sectioning them scopes them
+  to their own views.
 
 ### Changed
 
