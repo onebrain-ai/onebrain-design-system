@@ -452,6 +452,15 @@ previews, and the UI kit reproduce them.
   min-width — `preview/resizable.js`), and **emoji picker** (`.emoji-picker`, category tabs + search +
   recents — emoji are content, the chrome stays on the system's mono type + accent —
   `preview/emoji-picker.js`). See `preview/components-advanced.html`.
+- **Extras (full-kit coverage)** — **rating** (`.rating`, a star rating where every glyph is the same ★ and
+  `.is-on` colors it with the accent — the value follows the theme; hover preview + click + ←/→ keyboard, or
+  `data-readonly` for a static display), **color picker** (`.color-picker`, a swatch grid + hex field for tagging
+  notes — the swatch IS the color, like the accent picker, while the selected ring uses the accent; distinct from
+  the theme accent picker that re-keys a whole surface), **popover** (`.popover`, a click-triggered rich overlay —
+  title + body + actions on a native `<details>` so it works with no JS; distinct from the hover `.tooltip`),
+  **carousel** (`.carousel`, a scroll-snap track with prev/next + dot indicators, keyboard, RTL-mirrored chevrons,
+  reduced-motion safe), and **keyboard-shortcut sheet** (`.shortcut-sheet`, a grouped reference reusing the `.kbd`
+  primitive). Interaction via `preview/extras.js`. See `preview/components-extra.html`.
 
 ---
 

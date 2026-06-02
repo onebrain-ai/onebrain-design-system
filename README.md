@@ -116,6 +116,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   ├── datepicker.js          Calendar date-picker enhancer (month nav, selection, keyboard) over a native <input type=date>
 │   ├── resizable.js           Drag-to-resize splitter for .resizable panes (pointer events, min-width, ←/→ keyboard)
 │   ├── emoji-picker.js        Emoji-picker enhancer — category tabs, search, recents, keyboard (emoji as content)
+│   ├── extras.js              Rating, color picker, carousel, and popover-dismiss enhancers (zero-dependency)
 │   ├── only.js                Single-component focus for bundled pages — ?only=<id> shows one .section, retitles H1
 │   ├── components-forms.html      Full form kit (consumes components.css) — inputs, select, checkbox/radio/switch/range, validation, composer, buttons
 │   ├── components-feedback.html   Alerts, toasts, badges, progress, skeleton, spinner, empty-state, modal/tooltip/dropdown
@@ -127,6 +128,7 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 │   ├── components-content.html    Code block (+ copy, line numbers) and KPI / metric tiles (trend + sparkline)
 │   ├── components-common.html     Banner, toolbar, rich menu, multi-select combobox, avatar group
 │   ├── components-advanced.html   Pricing table, date picker, notification center, resizable panes, emoji picker
+│   ├── components-extra.html      Rating, color picker, popover, carousel, keyboard-shortcut sheet
 │   ├── charts.html                Inline-SVG line / area / bar / donut / sparkline keyed to --chart-1…6
 │   ├── i18n-rtl.html              Thai · Arabic · CJK fallbacks + dir=rtl mirror of cards/alerts/accordion
 │   ├── page-states.html          .page-state templates — 404 / 500 / 403 / offline / loading, re-tint via --section-accent
@@ -186,6 +188,7 @@ surfaces (shared `ob-accent` key). See DESIGN.md §2 "User-settable accent (runt
 | [`preview/components-content.html`](preview/components-content.html) | **Consumes `components.css` + `code-copy.js`.** Code block (filename + language tag + copy + line numbers, semantic syntax colors) and KPI / metric tiles (trend ↑↓ + `.spark` sparkline) | `.code-block`/`.code-lines`, `.metric`/`.metric-trend`, `--chart-1` |
 | [`preview/components-common.html`](preview/components-common.html) | **Consumes `components.css` + `combobox.js` + `ui-actions.js`.** System banners (semantic variants + dismiss), an editor toolbar, a rich menu, a multi-select token combobox, and an avatar group; a "source basis" list ties them to the real website modules | `.banner`, `.toolbar`, `.menu`/`.menu-wrap`, `.combobox`, `.avatar-group` |
 | [`preview/components-advanced.html`](preview/components-advanced.html) | **Consumes `components.css` + `datepicker.js` + `resizable.js` + `emoji-picker.js` + `ui-actions.js`.** Pricing table (featured glow + CSS `:has()` billing toggle), calendar date picker, notification center, resizable panes, and an emoji picker; one file, five `data-component` sections surfaced as focused `?only=` entries | `.pricing`/`.price-tier`, `.datepicker`, `.notif-center`, `.resizable`/`.resizer`, `.emoji-picker` |
+| [`preview/components-extra.html`](preview/components-extra.html) | **Consumes `components.css` + `extras.js`.** Star rating (accent-following, keyboard, read-only variant), generic color picker (swatch + hex), click popover (native `<details>`), scroll-snap carousel, and a keyboard-shortcut sheet; one file, five `data-component` sections surfaced as focused `?only=` entries | `.rating`, `.color-picker`, `.popover`, `.carousel`, `.shortcut-sheet` |
 | [`preview/i18n-rtl.html`](preview/i18n-rtl.html) | **Consumes `components.css`.** Thai · Arabic · CJK rendering through the fallback stacks + a `dir="rtl"` mirror of cards / alerts / accordion, and LTR-isolated code in RTL prose | `--font-sans`/`--font-display` fallbacks, `[dir="rtl"]` (§13), `unicode-bidi:isolate` |
 | [`preview/page-states.html`](preview/page-states.html) | **Consumes `components.css`.** Full-page 404 / 500 / 403 / offline / loading templates for the operator console; each re-tints from one var and a "source basis" list ties them to the real website edge modules | `.page-state`, `.page-state-code/-title/-sub/-actions/-status`, `--section-accent` |
 | [`preview/brand-assets.html`](preview/brand-assets.html) | The real preserved files loaded via `<img>`/`<object>` — logo, app icon, favicon, the 3 live diagrams, font specimens | `assets/brain.svg`, `build/icon.png`, `build/favicon.ico`, `assets/diagrams/*.svg`, `fonts/*.ttf` |
