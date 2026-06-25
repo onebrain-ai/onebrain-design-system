@@ -1,0 +1,28 @@
+THIRD-PARTY NOTICES — OneBrain Design System
+
+The OneBrain Design System is licensed under MIT OR Apache-2.0 (see LICENSE-MIT
+and LICENSE-APACHE). It bundles or derives from third-party material that retains
+its own license, listed below.
+
+--------------------------------------------------------------------------------
+
+* Chakra Petch (fonts/ChakraPetch-*.ttf)
+  © The Chakra Petch Project Authors. Licensed under the SIL Open Font License 1.1.
+  https://openfontlicense.org
+
+* JetBrains Mono (fonts/JetBrainsMono-*.ttf)
+  © 2020 The JetBrains Mono Project Authors. Licensed under the SIL Open Font
+  License 1.1. https://openfontlicense.org
+
+* Inter (referenced as a system / Google Fonts fallback only — not bundled)
+  © The Inter Project Authors. SIL Open Font License 1.1.
+
+* Source CSS vocabulary and brand SVGs in `colors_and_type.css`, `components.css`,
+  `source_examples/`, `assets/`, and `build/` are derived from `onebrain-ai/website`
+  and `onebrain-ai/onebrain` (MIT OR Apache-2.0). Brand marks (brain.svg, icons,
+  diagrams) remain the property of OneBrain and must not be redrawn, recolored, or
+  reused to identify a different product.
+
+The SIL Open Font License (OFL) governs the bundled font files independently of
+the project's MIT/Apache license; each font retains its own OFL license. Do not
+relicense the font files — they are governed by the OFL.
