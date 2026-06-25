@@ -69,7 +69,7 @@ ring are all lifted from that file.
 
 - Name/tagline: "OneBrain — Your AI Thinking Partner" / "Your personal AI OS"
   (`.claude-plugin/marketplace.json`, `README.md`).
-- Version: plugin `3.1.6`, requires CLI `≥3.1.0`, license AGPL-3.0
+- Version: plugin `3.1.6`, requires CLI `≥3.1.0`, license MIT OR Apache-2.0
   (`.claude/plugins/onebrain/.claude-plugin/plugin.json`).
 - Vault structure (PARA: `00-inbox` … `07-logs`) and the "personal chief of staff"
   persona (`INSTRUCTIONS.md`).

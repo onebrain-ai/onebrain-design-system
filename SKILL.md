@@ -55,7 +55,7 @@ surfaces, decks, or diagrams so the output instantly reads as "futuristic, AI, O
 - **`index.html`** — a HUD launcher that links every preview card + surface (open it first
   to review the whole system). Governance lives in `CONTRIBUTING.md` (how to extend in
   sync), `ACCESSIBILITY.md` (a11y commitments + verify checklist), `CHANGELOG.md`, and
-  `LICENSE` (AGPL-3.0 + OFL font notices); `package.json` exposes `build:tokens` + `start`.
+  `LICENSE-MIT` / `LICENSE-APACHE` (MIT OR Apache-2.0) + `NOTICE` (OFL font notices); `package.json` exposes `build:tokens` + `start`.
 
 ## Source context
 

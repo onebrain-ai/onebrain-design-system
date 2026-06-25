@@ -13,7 +13,7 @@ component rule below traces to the OneBrain product code:
 - **`onebrain-ai/website`** — the marketing site (`onebrain.run`), Astro + Tailwind CSS v4.
   Its `src/styles/global.css` is the authoritative token + component source.
 - **`onebrain-ai/onebrain`** — the product itself: a Claude Code / AI-harness plugin
-  (v3.1.6, AGPL-3.0) with 29+ skills, 5 sub-agents, and an Obsidian-vault knowledge layer.
+  (v3.1.6, MIT OR Apache-2.0) with 29+ skills, 5 sub-agents, and an Obsidian-vault knowledge layer.
 
 When extending the system, derive new values with `oklch()` / `color-mix()` from the
 tokens below — do not introduce colors or fonts outside this palette.

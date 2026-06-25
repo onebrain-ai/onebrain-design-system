@@ -27,7 +27,7 @@ tool, everything lives in plain Markdown you own forever: no cloud sync, no prop
 format. (Product Context for the design system: the surfaces below are what it dresses.)
 
 *Evidenced by:* `onebrain-ai/onebrain` `README.md`, `marketplace.json`,
-`plugin.json` (v3.1.6, requires CLI ≥3.1.0, AGPL-3.0), and `INSTRUCTIONS.md`.
+`plugin.json` (v3.1.6, requires CLI ≥3.1.0, MIT OR Apache-2.0), and `INSTRUCTIONS.md`.
 
 **Core capabilities (source-backed):**
 - **Persistent memory** — `MEMORY.md` + a `memory/` store loaded at session start; the
@@ -76,7 +76,8 @@ Both repos were read with the bounded `github-design-context` intake (this-devic
 ├── ACCESSIBILITY.md           Consolidated a11y commitments + verify checklist
 ├── CONTRIBUTING.md            How to extend tokens / components / surfaces in sync
 ├── CHANGELOG.md               Versioned change history (Keep a Changelog)
-├── LICENSE                    AGPL-3.0 + third-party (OFL fonts) notices
+├── LICENSE-MIT, LICENSE-APACHE  dual license (MIT OR Apache-2.0)
+├── NOTICE                     third-party (OFL fonts) notices
 ├── package.json               Package manifest (v1.0.0 · build:tokens · start)
 ├── colors_and_type.css        Primitives + semantic intent tokens + @font-face bindings
 ├── components.css             Reusable component layer (buttons, forms, nav, data, feedback, overlays, accent picker)

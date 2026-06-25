@@ -2,7 +2,7 @@
   "name": "@onebrain/tokens",
   "version": "1.0.0",
   "description": "OneBrain Design System — cross-platform design tokens (W3C DTCG source + generated CSS / JS / TS / Tailwind / iOS / Android).",
-  "license": "AGPL-3.0",
+  "license": "MIT OR Apache-2.0",
   "main": "dist/tokens.js",
   "types": "dist/tokens.d.ts",
   "style": "dist/tokens.css",
